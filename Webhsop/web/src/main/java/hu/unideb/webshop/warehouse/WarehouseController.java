@@ -114,6 +114,7 @@ public class WarehouseController implements Serializable {
     }
 
     public void updateSelectedWHRegistry() {
+    	/*
         if (selectedWarehouse != null) {
             List<RegistryDTO> list = manageRegistryFacadeService
                     .getRegistrysByMaterial(selectedWarehouse);
@@ -141,10 +142,11 @@ public class WarehouseController implements Serializable {
                 selectedWHRegistryList.add(map.get(id));
             }
 
-        }
+        }*/
     }
 
     public void updateSelectedWHBeerRegistry() {
+    	/*
         if (selectedWarehouse != null) {
             List<RegistryDTO> list = manageRegistryFacadeService
                     .getRegistrysByBeer(selectedWarehouse);
@@ -170,7 +172,7 @@ public class WarehouseController implements Serializable {
                 selectedWHRegistryBeerList.add(map.get(id));
             }
 
-        }
+        }*/
     }
 
     public void unselectWarehouse() {

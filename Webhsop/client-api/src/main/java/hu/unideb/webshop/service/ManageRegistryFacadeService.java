@@ -1,6 +1,5 @@
 package hu.unideb.webshop.service;
 
-import hu.unideb.webshop.dto.BeerDTO;
 import hu.unideb.webshop.dto.LeaderTestInfoDTO;
 import hu.unideb.webshop.dto.MaterialDTO;
 import hu.unideb.webshop.dto.OrderDTO;
@@ -43,13 +42,7 @@ public interface ManageRegistryFacadeService {
 	 */
 	List<RegistryDTO> getRegistrysByMaterial(WarehouseDTO warehouse);
 
-	/**
-	 * Gets the registrys by beer.
-	 *
-	 * @param warehouse the warehouse
-	 * @return the registrys by beer
-	 */
-	List<RegistryDTO> getRegistrysByBeer(WarehouseDTO warehouse);
+
 
 	/**
 	 * Find by material.
@@ -109,15 +102,7 @@ public interface ManageRegistryFacadeService {
 	boolean keepMaterialForOrder(OrderDTO order, MaterialDTO material,
 			int quantity);
 
-	/**
-	 * Creates the beer need for order.
-	 *
-	 * @param order the order
-	 * @param beer the beer
-	 * @param quantity the quantity
-	 * @return true, if successful
-	 */
-	boolean createBeerNeedForOrder(OrderDTO order, BeerDTO beer, int quantity);
+
 
 	/**
 	 * Cost of material.

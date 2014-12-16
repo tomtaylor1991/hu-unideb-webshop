@@ -40,11 +40,12 @@ public class Warehouses implements Serializable {
 	}
 
 	private void generateMaterialChartList() {
+		/*
 		materials = new LinkedList<PieChartModel>();
 		List<RegistryDTO> selectedWHRegistryList = null;
 		List<WarehouseDTO> warehouses = manageWarehouseFacadeService
 				.getWarehouseList(0, 100);
-		/***/
+
 		for (WarehouseDTO selectedWarehouse : warehouses) {
 			List<RegistryDTO> list = manageRegistryFacadeService
 					.getRegistrysByMaterial(selectedWarehouse);
@@ -71,7 +72,7 @@ public class Warehouses implements Serializable {
 			for (Long id : map.keySet()) {
 				selectedWHRegistryList.add(map.get(id));
 			}
-			/***/
+
 			PieChartModel pieModel2 = new PieChartModel();
 
 			if (selectedWHRegistryList.size() == 0) {
@@ -89,19 +90,20 @@ public class Warehouses implements Serializable {
 			pieModel2.setFill(false);
 			pieModel2.setShowDataLabels(true);
 			pieModel2.setDiameter(150);
-			/***/
+
 			materials.add(pieModel2);
-			/***/
+
 		}
-		/***/
+*/
 	}
 
 	private void generateBeerChartList() {
+		/*
 		beers = new LinkedList<PieChartModel>();
 		List<RegistryDTO> selectedWHRegistryBeerList = null;
 		List<WarehouseDTO> warehouses = manageWarehouseFacadeService
 				.getWarehouseList(0, 100);
-		/***/
+		
 		for (WarehouseDTO selectedWarehouse : warehouses) {
 			List<RegistryDTO> list = manageRegistryFacadeService
 					.getRegistrysByBeer(selectedWarehouse);
@@ -126,7 +128,7 @@ public class Warehouses implements Serializable {
 			for (Long id : map.keySet()) {
 				selectedWHRegistryBeerList.add(map.get(id));
 			}
-			/***/
+			
 			PieChartModel pieModel2 = new PieChartModel();
 
 			if (selectedWHRegistryBeerList.size() == 0) {
@@ -144,11 +146,11 @@ public class Warehouses implements Serializable {
 			pieModel2.setFill(false);
 			pieModel2.setShowDataLabels(true);
 			pieModel2.setDiameter(150);
-			/***/
+			
 			beers.add(pieModel2);
-			/***/
+			
 		}
-		/***/
+		*/
 	}
 
 	public ManageWarehouseFacadeService getManageWarehouseFacadeService() {

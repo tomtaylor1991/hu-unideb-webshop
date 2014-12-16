@@ -1,9 +1,5 @@
 package hu.unideb.webshop.worker;
 
-import hu.unideb.webshop.LocaleSwitcher;
-import hu.unideb.webshop.dto.BeerDTO;
-import hu.unideb.webshop.dto.ComponentDTO;
-import hu.unideb.webshop.dto.RecipeDTO;
 import hu.unideb.webshop.dto.RegistryDTO;
 import hu.unideb.webshop.dto.WarehouseDTO;
 import hu.unideb.webshop.service.ManageComponentFacadeService;
@@ -13,16 +9,13 @@ import hu.unideb.webshop.service.ManageWarehouseFacadeService;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 @ViewScoped
 @ManagedBean(name = "workerController")
@@ -180,15 +173,15 @@ public class WorkerController implements Serializable {
             warehouses.add(w.getName());
             map.put(w.getName(), w);
         }
-
+/*
         for (RegistryDTO r : manageRegistryFacadeService.findByStatus("NEED")) {
             if (r.getBeer() != null && r.getOrder() != null) {
                 visibleRegistry.add(r);
             }
-        }
+        }*/
     }
 
-    public void selectRegistry() {
+    public void selectRegistry() {/*
         recipe.clear();
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, LocaleSwitcher.getMessage("worker_info"),
@@ -208,9 +201,11 @@ public class WorkerController implements Serializable {
         RecipeDTO r = manageRecipeFacadeService
                 .getRecipeByBeer(selectedRegistry.getBeer());
         recipe.add(new RecipeEntry(LocaleSwitcher.getMessage("worker_recipe_header_comment") + ":", r.getComment(), ""));
+        */
     }
 
     public void addReadyBeerToWarehouse() {
+    	/*
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, LocaleSwitcher.getMessage("worker_info"),
                         LocaleSwitcher.getMessage("worker_success_1") + " "
@@ -228,6 +223,7 @@ public class WorkerController implements Serializable {
         selectedRegistry.setWarehouse(map.get(destWarehouse));
         manageRegistryFacadeService.updateRegistry(selectedRegistry);
         visibleRegistry.remove(selectedRegistry);
+        */
     }
 
 }

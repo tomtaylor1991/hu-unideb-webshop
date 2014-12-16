@@ -2,18 +2,14 @@ package hu.unideb.webshop.leader;
 
 import hu.unideb.webshop.LocaleSwitcher;
 import hu.unideb.webshop.Status;
-import hu.unideb.webshop.dto.BeerDTO;
 import hu.unideb.webshop.dto.LeaderTestInfoDTO;
+import hu.unideb.webshop.dto.LeaderTestInfoDTO.BeerList;
 import hu.unideb.webshop.dto.OrderDTO;
 import hu.unideb.webshop.dto.RegistryDTO;
-import hu.unideb.webshop.dto.LeaderTestInfoDTO.BeerList;
-import hu.unideb.webshop.dto.LeaderTestInfoDTO.Need;
 import hu.unideb.webshop.service.ManageOrderFacadeService;
 import hu.unideb.webshop.service.ManageRegistryFacadeService;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -394,6 +390,7 @@ public class LeaderController implements Serializable {
 	 * Ready for create.
 	 */
 	public void readyForCreate() {
+		/*
 		try {
 			if (selectedOrder != null) {
 				for (Need need : isServe.getAllMaterial()) {
@@ -402,9 +399,6 @@ public class LeaderController implements Serializable {
 									need.getMaterial(), need.getNeedQuantity());
 				}
 
-				/**
-             *
-             */
 				for (RegistryDTO currentRegistry : registryList) {
 					if (currentRegistry.getQuantity() > 0) {
 						manageRegistryFacadeService.createBeerNeedForOrder(
@@ -414,9 +408,7 @@ public class LeaderController implements Serializable {
 					currentRegistry.setQuantity(0);
 					manageRegistryFacadeService.updateRegistry(currentRegistry);
 				}
-				/**
-             *
-             */
+
 				selectedOrder.setStatus("READYFORCREATE");
 				manageOrderFacadeService.updateOrder(selectedOrder);
 
@@ -424,7 +416,7 @@ public class LeaderController implements Serializable {
 			}
 		} catch (NullPointerException e) {
 			System.out.println(e.getMessage());
-		}
+		}*/
 	}
 
 	/**
@@ -470,6 +462,7 @@ public class LeaderController implements Serializable {
 	 * Keep beer.
 	 */
 	public void keepBeer() {
+		/*
 		if (selectedOrder != null) {
 			// leaderController.freeBeers
 			for (RegistryDTO currentRegistry : registryList) {
@@ -484,9 +477,7 @@ public class LeaderController implements Serializable {
 						}
 						freeRegistry.setOrder(selectedOrder);
 						freeRegistry.setStatus("READY");
-						/**
-                         *
-                         */
+
 						if (currentQuantity < freeQuantity) {
 							// különvalasztunk
 							// új registry a maradt materialnak
@@ -520,13 +511,14 @@ public class LeaderController implements Serializable {
 				}
 			}
 			// selectedOrder = null;
-		}
+		}*/
 	}
 
 	/**
 	 * Evaluation.
 	 */
 	public void evaluation() {
+		/*
 		if (selectedOrder == null) {
 			return;
 		}
@@ -534,9 +526,7 @@ public class LeaderController implements Serializable {
 		isHaveBeerSuccess = false;
 		isMaterialFull = false;
 		isAllBeerSuccess = false;
-		/**
-         *
-         */
+
 		originalOrderList = new LinkedList<LeaderTestInfoDTO.BeerList>();
 		for (RegistryDTO r : manageRegistryFacadeService.findByStatusAndOrder(
 				null, selectedOrder)) {
@@ -552,9 +542,7 @@ public class LeaderController implements Serializable {
 		List<RegistryDTO> reg = manageRegistryFacadeService
 				.findByOrder(selectedOrder);
 		registryList = new LinkedList<RegistryDTO>();
-		/**
-         *
-         */
+		
 		for (RegistryDTO r : reg) {
 			if (r.getStatus() == "" || r.getStatus() == null) {
 				registryList.add(r);
@@ -610,7 +598,7 @@ public class LeaderController implements Serializable {
 
 		// /
 		// originalOrderList = isServe.getBeerList();
-		isTransport();
+		isTransport();*/
 	}
 
 	/**

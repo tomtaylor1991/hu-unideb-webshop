@@ -1,6 +1,5 @@
 package hu.unideb.webshop.service.impl;
 
-import hu.unideb.webshop.dto.BeerDTO;
 import hu.unideb.webshop.dto.RecipeDTO;
 import hu.unideb.webshop.service.ManageRecipeFacadeService;
 import hu.unideb.webshop.service.RecipeService;
@@ -48,10 +47,5 @@ public class ManageRecipeFacadeServiceImpl implements ManageRecipeFacadeService 
 		return recipeService.getRowNumber();
 	}
 
-	@Override
-	public RecipeDTO getRecipeByBeer(BeerDTO beer) {
-
-		return recipeService.getRecipeByBeer(beer);
-	}
 
 }

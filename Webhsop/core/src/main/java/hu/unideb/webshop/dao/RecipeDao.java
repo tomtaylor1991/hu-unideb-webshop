@@ -18,6 +18,5 @@ public interface RecipeDao extends PagingAndSortingRepository<Recipe, Long>,
 	@Query(value = "SELECT count(*) FROM RECIPE", nativeQuery = true)
 	int countById();
 	
-	//@Query(value = "SELECT * FROM RECIPE WHERE beerId = ?1", nativeQuery = true)
-	Recipe findOneByBeerId(Long beerId);
+
 }

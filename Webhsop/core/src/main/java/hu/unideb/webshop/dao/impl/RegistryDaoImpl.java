@@ -1,9 +1,8 @@
 package hu.unideb.webshop.dao.impl;
 
 import hu.unideb.webshop.dao.BaseConvertDao;
-import hu.unideb.webshop.dao.BeerDao;
-import hu.unideb.webshop.dao.MaterialDao;
 import hu.unideb.webshop.dao.OrderDao;
+import hu.unideb.webshop.dao.ProductDao;
 import hu.unideb.webshop.dao.WarehouseDao;
 import hu.unideb.webshop.dto.RegistryDTO;
 import hu.unideb.webshop.entity.Registry;
@@ -13,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class RegistryDaoImpl implements BaseConvertDao<Registry, RegistryDTO> {
 
 	@Autowired
-	BeerDao beerDao;
-
-	@Autowired
-	MaterialDao materialDao;
+	ProductDao productDao;
 
 	@Autowired
 	WarehouseDao warehouseDao;
@@ -35,11 +31,8 @@ public class RegistryDaoImpl implements BaseConvertDao<Registry, RegistryDTO> {
 		}
 		ret.setModDate(dto.getModDate());
 		ret.setModUserId(dto.getModUserId());
-		if (dto.getBeer() != null) {
-			ret.setBeer(beerDao.toEntity(dto.getBeer(), null));
-		}
-		if (dto.getMaterial() != null) {
-			ret.setMaterial(materialDao.toEntity(dto.getMaterial(), null));
+		if (dto.getProduct() != null) {
+			ret.setProduct(productDao.toEntity(dto.getProduct(), null));
 		}
 		if (dto.getWarehouse() != null) {
 			ret.setWarehouse(warehouseDao.toEntity(dto.getWarehouse(), null));
@@ -56,11 +49,8 @@ public class RegistryDaoImpl implements BaseConvertDao<Registry, RegistryDTO> {
 	@Override
 	public RegistryDTO toDto(Registry entity) {
 		RegistryDTO ret = new RegistryDTO();
-		if (entity.getBeer() != null) {
-			ret.setBeer(beerDao.toDto(entity.getBeer()));
-		}
-		if (entity.getMaterial() != null) {
-			ret.setMaterial(materialDao.toDto(entity.getMaterial()));
+		if (entity.getProduct() != null) {
+			ret.setProduct(productDao.toDto(entity.getProduct()));
 		}
 		if (entity.getWarehouse() != null) {
 			ret.setWarehouse(warehouseDao.toDto(entity.getWarehouse()));

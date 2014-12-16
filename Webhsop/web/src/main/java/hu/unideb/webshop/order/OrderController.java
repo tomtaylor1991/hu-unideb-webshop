@@ -1,11 +1,9 @@
 package hu.unideb.webshop.order;
 
 import hu.unideb.webshop.LocaleSwitcher;
-import hu.unideb.webshop.dto.BeerDTO;
 import hu.unideb.webshop.dto.OrderDTO;
 import hu.unideb.webshop.dto.PartnerDTO;
 import hu.unideb.webshop.dto.RegistryDTO;
-import hu.unideb.webshop.service.ManageBeerFacadeService;
 import hu.unideb.webshop.service.ManageOrderFacadeService;
 import hu.unideb.webshop.service.ManagePartnerFacadeService;
 import hu.unideb.webshop.service.ManageRegistryFacadeService;
@@ -36,9 +34,6 @@ public class OrderController implements Serializable {
 
 	@ManagedProperty(value = "#{manageOrderFacadeService}")
 	private ManageOrderFacadeService manageOrderFacadeService;
-
-	@ManagedProperty(value = "#{manageBeerFacadeService}")
-	private ManageBeerFacadeService manageBeerFacadeService;
 
 	@ManagedProperty(value = "#{manageRegistryFacadeService}")
 	private ManageRegistryFacadeService manageRegistryFacadeService;
@@ -104,14 +99,6 @@ public class OrderController implements Serializable {
 		this.beerName = beerName;
 	}
 
-	public ManageBeerFacadeService getManageBeerFacadeService() {
-		return manageBeerFacadeService;
-	}
-
-	public void setManageBeerFacadeService(
-			ManageBeerFacadeService manageBeerFacadeService) {
-		this.manageBeerFacadeService = manageBeerFacadeService;
-	}
 
 	public ManageOrderFacadeService getManageOrderFacadeService() {
 		return manageOrderFacadeService;
@@ -140,6 +127,7 @@ public class OrderController implements Serializable {
 	}
 
 	public List<String> completeText(String query) {
+		/*
 		List<String> results = new ArrayList<String>();
 		List<BeerDTO> beers = new ArrayList<BeerDTO>();
 		beers = manageBeerFacadeService.getBeerList(0, 10);
@@ -148,7 +136,8 @@ public class OrderController implements Serializable {
 				results.add(b.getName());
 			}
 		}
-		return results;
+		return results;*/
+		return null;
 	}
 
 	public List<String> completePartnerName(String query) {
@@ -195,6 +184,7 @@ public class OrderController implements Serializable {
 	}
 
 	public void addBeerToOrder() {
+		/*
 		if (beerName == null) {
 			beerName = "";
 			return;
@@ -231,7 +221,7 @@ public class OrderController implements Serializable {
 			return;
 		}
 
-		newRegistry.setBeer(beer);
+	//	newRegistry.setBeer(beer);
 		newRegistry.setQuantity(quantity);
 		newRegistry.setOriginalQuantity(quantity);
 		if (addedBeers == null) {
@@ -251,6 +241,7 @@ public class OrderController implements Serializable {
 									.getMessage("order_inorder_info"))));
 		}
 		newRegistry = new RegistryDTO();
+		*/
 	}
 
 	public void onRowUnselect(UnselectEvent event) {
@@ -282,6 +273,7 @@ public class OrderController implements Serializable {
 	}
 
 	public void removeBeerFromOrder(RegistryDTO registry) {
+		/*
 		for (RegistryDTO reg : addedBeers) {
 			if (reg.getBeer() != null) {
 				if (reg.getBeer().getName()
@@ -298,6 +290,7 @@ public class OrderController implements Serializable {
 								String.format("%s %s", registry.getBeer()
 										.getName(), LocaleSwitcher
 										.getMessage("orders_delete_info"))));
+										*/
 	}
 
 	public ManagePartnerFacadeService getManagePartnerFacadeService() {

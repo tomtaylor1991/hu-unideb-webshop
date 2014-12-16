@@ -9,7 +9,7 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<jta-data-source>webshop-ds</jta-data-source>
 		<class>hu.unideb.webshop.entity.Recipe</class>
-		<class>hu.unideb.webshop.entity.Beer</class>
+		<class>hu.unideb.webshop.entity.Product</class>
 		<class>hu.unideb.webshop.entity.Material</class>
 		<class>hu.unideb.webshop.entity.Warehouse</class>
 		<class>hu.unideb.webshop.entity.Component</class>

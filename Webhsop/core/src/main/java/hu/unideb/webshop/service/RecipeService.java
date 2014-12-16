@@ -1,6 +1,5 @@
 package hu.unideb.webshop.service;
 
-import hu.unideb.webshop.dto.BeerDTO;
 import hu.unideb.webshop.dto.RecipeDTO;
 
 import java.util.List;
@@ -54,13 +53,7 @@ public interface RecipeService {
 	 */
 	void updateRecipe(RecipeDTO recipe);
 	
-	/**
-	 * Gets the recipe by beer.
-	 *
-	 * @param beer the beer
-	 * @return the recipe by beer
-	 */
-	RecipeDTO getRecipeByBeer(BeerDTO beer);
+	
 	
 	/**
 	 * Gets the row number.

@@ -1,8 +1,6 @@
 package hu.unideb.webshop.service.impl;
 
-import hu.unideb.webshop.dao.BeerDao;
 import hu.unideb.webshop.dao.RecipeDao;
-import hu.unideb.webshop.dto.BeerDTO;
 import hu.unideb.webshop.dto.RecipeDTO;
 import hu.unideb.webshop.entity.Recipe;
 import hu.unideb.webshop.service.RecipeService;
@@ -31,9 +29,6 @@ class RecipeServiceImpl implements RecipeService {
 
     @Autowired
     RecipeDao recipeDao;
-
-    @Autowired
-    BeerDao beerDao;
 
     @Autowired
     UserService userService;
@@ -122,11 +117,6 @@ class RecipeServiceImpl implements RecipeService {
         return ret;
     }
 
-    @Override
-    public RecipeDTO getRecipeByBeer(BeerDTO beer) {
-        RecipeDTO r = recipeDao.toDto(recipeDao.findOneByBeerId(beer.getId()));
-        return r;
-    }
 
     @Override
     public int getRowNumber() {

@@ -6,7 +6,7 @@
 	<persistence-unit name="hu.unideb.webshopTest">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<class>hu.unideb.webshop.entity.Recipe</class>
-		<class>hu.unideb.webshop.entity.Beer</class>
+		<class>hu.unideb.webshop.entity.Product</class>
 		<class>hu.unideb.webshop.entity.Material</class>
 		<class>hu.unideb.webshop.entity.Warehouse</class>
 		<class>hu.unideb.webshop.entity.Component</class>

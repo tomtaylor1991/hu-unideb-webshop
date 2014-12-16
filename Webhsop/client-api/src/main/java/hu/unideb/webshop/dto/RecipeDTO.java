@@ -9,7 +9,7 @@ public class RecipeDTO extends BaseDTO implements Serializable {
 	private Long id;		
 	private String name;
 	private Double cost;
-	private BeerDTO beer;
+
 	private String comment;
 
 	public RecipeDTO() {
@@ -40,14 +40,6 @@ public class RecipeDTO extends BaseDTO implements Serializable {
 		this.cost = cost;
 	}
 
-	
-	public BeerDTO getBeer() {
-		return beer;
-	}
-
-	public void setBeer(BeerDTO beer) {
-		this.beer = beer;
-	}
 
 	
 	public String getComment() {

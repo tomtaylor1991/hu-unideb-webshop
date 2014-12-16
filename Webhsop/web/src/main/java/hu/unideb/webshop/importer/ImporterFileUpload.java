@@ -162,6 +162,7 @@ public class ImporterFileUpload implements Serializable {
     }
 
     public void save() {
+    	/*
         if (selectedWH == null || latestUpload == null
                 || latestUpload.size() == 0) {
 
@@ -193,7 +194,7 @@ public class ImporterFileUpload implements Serializable {
                             "Success material loading to the following warehouse: "
                             + selectedWH.getName()));
             clear();
-        }
+        }*/
     }
 
     public void changeChooseButtonStatus() {

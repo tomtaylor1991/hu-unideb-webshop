@@ -40,6 +40,7 @@ public class ImporterController implements Serializable {
     }
 
     public void addRegistryToList() {
+    	/*
         if (selectedMaterial != null) {
             RegistryDTO registry = new RegistryDTO();
             registry.setMaterial(selectedMaterial);
@@ -56,10 +57,11 @@ public class ImporterController implements Serializable {
                 registryList.add(registry);
             }
             selectedMaterial = null;
-        }
+        }*/
     }
 
     public void saveToDB() {
+    	/*
         for (RegistryDTO r : registryList) {
             r.setWarehouse(selectedWH);
             r.setStatus("FREE");
@@ -76,7 +78,7 @@ public class ImporterController implements Serializable {
         registryList = new ArrayList<>();
         selectedMaterial = null;
         quantity = 0;
-        selectedWH = null;
+        selectedWH = null;*/
     }
 
     public void removeRegistryFromList() {

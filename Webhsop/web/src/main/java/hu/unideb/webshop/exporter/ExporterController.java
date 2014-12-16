@@ -75,6 +75,7 @@ public class ExporterController implements Serializable {
 	}
 
 	public void transport() {
+		/*
 		FacesContext.getCurrentInstance().addMessage(
 				null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", String
@@ -94,18 +95,18 @@ public class ExporterController implements Serializable {
 			int sum = 0;
 			if (r.getBeer() != null) {
 				sum += r.getBeer().getPrice() * r.getQuantity();
-				/***/
+			
 				IncomeDTO income = new IncomeDTO();
 				income.setPrice(sum);
 				income.setOrderId(new Long(1));
 				income.setComment(r.getBeer().getName() + "," + r.getQuantity());
 				manageIncomeFacadeService.createIncome(income);
-				/***/
+		
 			}
 			manageRegistryFacadeService.deleteRegistry(r);
 			// }
 		}
-
+*/
 	}
 
 	public ManageIncomeFacadeService getManageIncomeFacadeService() {
