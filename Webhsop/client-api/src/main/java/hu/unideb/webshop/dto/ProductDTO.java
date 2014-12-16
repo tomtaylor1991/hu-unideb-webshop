@@ -14,6 +14,7 @@ public class ProductDTO extends BaseDTO implements Serializable{
 	private double specialPrice;
 	private boolean isHighlight;
 	private String shortText;
+	private CategoryDTO category;
 	public String getName() {
 		return name;
 	}
@@ -67,6 +68,12 @@ public class ProductDTO extends BaseDTO implements Serializable{
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public CategoryDTO getCategory() {
+		return category;
+	}
+	public void setCategory(CategoryDTO category) {
+		this.category = category;
 	}
 	
 	

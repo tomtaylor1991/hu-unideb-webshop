@@ -84,6 +84,8 @@
 								<p:submenu label="#{out.data}" icon="ui-icon-document">
 									<p:menuitem value="#{out.recipes}"
 										actionListener="#{menuView.showRecipes}" />
+									<p:menuitem value="manage category"
+										outcome="/pages/secure/manage_category.xhtml" />
 									<p:menuitem value="#{out.materials}"
 										actionListener="#{menuView.showMaterials}" />
 									<p:menuitem value="#{out.warehouses}"
@@ -112,7 +114,7 @@
 									<p:separator />
 									<p:menuitem value="#{out.need_material_diagram}"
 										outcome="/pages/secure/leader_diagrams/material_needs.xhtml" />
-									
+
 									<p:menuitem value="#{out.income_diagram}"
 										outcome="/pages/secure/leader_diagrams/income.xhtml" />
 									<p:menuitem value="#{out.warehouse_diagram}"
@@ -178,9 +180,9 @@
 
 		<!-- footer -->
 
-        <div id="footer" class="ui-footer">
-                <h:outputText value="@Copyright 2014" />
-        </div>
+		<div id="footer" class="ui-footer">
+			<h:outputText value="@Copyright 2014" />
+		</div>
 
 		<!-- end footer -->
 		<div id="bottom"></div>

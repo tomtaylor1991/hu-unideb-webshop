@@ -16,6 +16,7 @@
 		<class>hu.unideb.webshop.entity.Order</class>
 		<class>hu.unideb.webshop.entity.Partner</class>
 		<class>hu.unideb.webshop.entity.Income</class>
+		<class>hu.unideb.webshop.entity.Category</class>
 		<!-- <class>hu.unideb.webshop.entity.User</class> <class>hu.unideb.webshop.entity.Role</class> -->
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>

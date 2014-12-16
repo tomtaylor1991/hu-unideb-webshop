@@ -1,7 +1,9 @@
 package hu.unideb.webshop.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,6 +21,10 @@ public class Product extends BaseEntity {
 	private double specialPrice;
 	private boolean isHighlight;
 	private String shortText;
+	
+	@ManyToOne
+	@JoinColumn(name = "category_id")
+	private Category category;
 
 	public String getName() {
 		return name;
@@ -82,6 +88,14 @@ public class Product extends BaseEntity {
 
 	public void setShortText(String shortText) {
 		this.shortText = shortText;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 }

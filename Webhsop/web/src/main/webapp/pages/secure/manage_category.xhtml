@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/masterLayout.xhtml">
+
+	<ui:define name="pageTitle">#{out.index_title}</ui:define>
+
+	<ui:define name="head-extra">
+		<!-- custom css -->
+	</ui:define>
+
+	<ui:define name="content">
+		<p:growl id="msgs" showDetail="true" />
+		<h:form id="categoryList">
+			<p:dataTable id="categoryTable" var="currentCategory"
+				value="#{categoryManagerController.categoryModel}"
+				rowKey="#{currentCategory.id}" selectionMode="single"
+				selection="#{categoryManagerController.selectedCategory}"
+				paginator="true" rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="5,10,15" lazy="true"
+				emptyMessage="#{out.empty_message}">
+				<p:ajax event="rowSelect"/>
+
+				<p:column headerText="Name" sortBy="#{currentCategory.name}"
+					filterBy="#{currentCategory.name}">
+					<h:outputText value="#{currentCategory.name}" />
+				</p:column>
+				<p:column headerText="Priority" sortBy="#{currentCategory.priority}">
+					<h:outputText value="#{currentCategory.priority}" />
+				</p:column>
+			</p:dataTable>
+			<p:commandButton value="test" action="#{categoryManagerController.test()}"/>
+		</h:form>
+	</ui:define>
+</ui:composition>

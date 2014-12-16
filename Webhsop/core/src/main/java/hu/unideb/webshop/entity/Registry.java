@@ -28,7 +28,7 @@ public class Registry extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "order_id")
 	private Order order;
-
+	
 	public int getQuantity() {
 		return quantity;
 	}

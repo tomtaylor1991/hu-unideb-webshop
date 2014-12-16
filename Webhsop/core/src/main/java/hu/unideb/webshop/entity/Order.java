@@ -5,26 +5,20 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-/**
- * The Class Order.
- */
+
 @Entity
 @Table(name = "ORDERS")
 public class Order extends BaseEntity {
 
-	/** The Constant serialVersionUID. */
+
 	private static final long serialVersionUID = 1L;
 
-	/** The name of the order. */
 	private String name;
-	
-	/** The date of the order. */
+
 	private Date date;
-	
-	/** The status of the order. */
+
 	private String status;
 
-	/** The partner id. */
 	private Long partnerId;
 	
 	/**
