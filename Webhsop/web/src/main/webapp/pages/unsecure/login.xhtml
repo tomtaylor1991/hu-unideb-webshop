@@ -1,0 +1,68 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/masterLayout.xhtml"
+                xmlns:sec="http://www.springframework.org/security/tags">
+    <ui:define name="head-extra">
+        <!-- custom css -->
+    </ui:define>
+    <ui:define name="pageTitle">#{out.login_title}</ui:define>
+    <ui:define name="content">
+        <div>
+
+            <h:form id="loginFormId" prependId="false">
+                <p:messages id="messages" showDetail="true" autoUpdate="true"
+                            closable="true" />
+                <h:panelGrid styleClass="panelGridCenter" columns="4"
+                             cellpadding="5">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="7">
+                                <h:outputText value="#{out.login_login}" />
+                            </p:column>
+                        </p:row>
+
+                    </f:facet>
+                    <div id="loginFieldsPnlId">
+                        <div id="loginFieldUsrContId">
+                            <h:outputText id="outTxtUserNameId"
+                                          value="#{out.login_username}: " name="outTxtUserNameNm"></h:outputText>
+                            <p:inputText id="userName" required="true"
+                                         value="#{loginMgmtBean.userName}"
+                                         requiredMessage="#{out.login_require_username}" />
+                            <h:outputLabel id="outLblUserNameId" for="userName"
+                                           name="outLblUserNameNm" style="font-weight:bold"></h:outputLabel>
+                        </div>
+                        <div id="loginFieldPassContId">
+                            <h:outputText id="outTxtPasswordId"
+                                          value="#{out.login_password}: " name="outTxtPasswordNm"></h:outputText>
+                            <p:password id="password" required="true"
+                                        value="#{loginMgmtBean.password}"
+                                        requiredMessage="#{out.login_require_password}"
+                                        name="inTxtPasswordNm" />
+                            <h:outputLabel id="outLblPasswordId" for="password"
+                                           name="outLblPasswordNm" style="font-weight:bold"></h:outputLabel>
+                        </div>
+                    </div>
+                    <div id="loginBtnPanelId">
+                        <p:commandButton id="btnLoginId" value="#{out.login_login}"
+                                         action="#{loginMgmtBean.login}" styleClass="loginPanelBtn"
+                                         icon="ui-icon-check" />
+                        <p:commandButton id="btnCancelId" value="#{out.login_cancel}"
+                                         action="#{loginMgmtBean.cancel}" styleClass="loginPanelBtn"
+                                         immediate="true" update="loginFormId" />
+                    </div>
+                </h:panelGrid>
+            </h:form>
+
+        </div>
+        <div>
+            <sec:authorize ifAnyGranted="ROLE_ADMIN, ROLE_USER">
+                <h1>you are logged in as #{request.userPrincipal.name}!</h1>
+            </sec:authorize>
+        </div>
+    </ui:define>
+</ui:composition>

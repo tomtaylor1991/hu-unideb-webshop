@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/masterLayout.xhtml">
+
+    <ui:define name="pageTitle">#{out.exporter_title}</ui:define>
+    <ui:define name="header"> -> #{out.exporter_title}</ui:define>
+
+    <ui:define name="head-extra">
+        <!-- custom css -->
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="orderForm">
+            <p:growl id="msgs" showDetail="true" />
+            <p:dataTable id="orderTable" var="currentOrder"
+                         value="#{exporterController.visibleOrders}" selectionMode="single"
+                         selection="#{exporterController.selectedOrder}"
+                         rowKey="#{currentOrder.id}" paginator="true" rows="10"
+                         emptyMessage="#{out.empty_message}"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         rowsPerPageTemplate="5,10,15" lazy="true">
+                <p:ajax event="rowSelect"
+                        update=":orderForm:msgs,:orderCommandsForm" />
+                <p:ajax event="rowUnselect"
+                        update=":orderForm:msgs,:orderCommandsForm" />
+
+                <p:column headerText="#{out.exporter_order_name}"
+                          sortBy="#{currentOrder.name}" filterBy="#{currentOrder.name}">
+                    <h:outputText value="#{currentOrder.name}" />
+                </p:column>
+                <p:column headerText="#{out.exporter_order_date}"
+                          sortBy="#{currentOrder.date}" filterBy="#{currentOrder.date}">
+                    <h:outputText value="#{currentOrder.date}" />
+                </p:column>
+                <p:column headerText="#{out.exporter_partner_address}"
+                          sortBy="#{currentOrder.partnerDTO.address}" 
+                          filterBy="#{currentOrder.partnerDTO.address}">
+                    <h:outputText value="#{currentOrder.partnerDTO.address}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <h:form id="orderCommandsForm">
+            <h:panelGrid columns="4" cellpadding="5">
+                <p:commandButton ajax="true" icon="ui-icon-eject" disabled="#{exporterController.selectedOrder == null}"
+                                 action="#{exporterController.transport()}" title="#{out.exporter_transport}"
+                                 update=":orderForm,:orderCommandsForm"
+                                 value="#{out.exporter_transport}">
+                </p:commandButton>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

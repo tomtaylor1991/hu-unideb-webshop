@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+	version="1.0">
+	<persistence-unit name="hu.unideb.webshop"
+		transaction-type="JTA">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<jta-data-source>webshop-ds</jta-data-source>
+		<class>hu.unideb.webshop.entity.Recipe</class>
+		<class>hu.unideb.webshop.entity.Beer</class>
+		<class>hu.unideb.webshop.entity.Material</class>
+		<class>hu.unideb.webshop.entity.Warehouse</class>
+		<class>hu.unideb.webshop.entity.Component</class>
+		<class>hu.unideb.webshop.entity.Order</class>
+		<class>hu.unideb.webshop.entity.Partner</class>
+		<class>hu.unideb.webshop.entity.Income</class>
+		<!-- <class>hu.unideb.webshop.entity.User</class> <class>hu.unideb.webshop.entity.Role</class> -->
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+		<properties>
+			<property value="org.hibernate.dialect.MySQL5InnoDBDialect"
+				name="hibernate.dialect" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+
+		</properties>
+	</persistence-unit>
+</persistence>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
+	version="2.2">
+<application>
+	<locale-config>
+		<default-locale>en</default-locale>
+	</locale-config>
+<!-- 
+	<resource-bundle>
+		<base-name>net.javabeat.jsf.application</base-name>
+		<var>msg</var>
+	</resource-bundle>
+	<message-bundle>resources.application</message-bundle>
+	<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+	 -->
+	 <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+<!-- locale configuration -->
+        <locale-config>
+            <!-- default locale and supported locales -->
+            <default-locale>en</default-locale>
+	        <supported-locale>hu</supported-locale>
+        </locale-config>
+        <!-- resource bundle configuration -->
+        <resource-bundle>
+            <!-- properties file base name with full package -->
+            <base-name>
+                hu.unideb.webshop.messages.Messages
+            </base-name>
+            <!-- properties file key will be accessed using this variable #{msg.keyName}, where keyName is the property file key -->
+            <var>out</var>	
+            </resource-bundle>
+	</application>
+		<navigation-rule>
+	        <from-view-id>/pages/unsecure/login.xhtml</from-view-id>
+	        <navigation-case>
+	            <from-action>#{loginMgmtBean.login}</from-action>
+	            <from-outcome>correct</from-outcome>
+	            <to-view-id>/pages/unsecure/index.xhtml</to-view-id>
+	        </navigation-case>
+        </navigation-rule>
+        
+        <navigation-rule>
+        <from-view-id>/index.xhtml</from-view-id>
+        <navigation-case>
+              <from-action>#{loginMgmtBean.logout}</from-action>
+              <from-outcome>loggedout</from-outcome>
+              <to-view-id>/pages/login.xhtml</to-view-id>
+              <redirect></redirect>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/pages/unsecure/signup.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{loginController.addUser}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/pages/unsecure/login.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+ 	</navigation-rule>
+</faces-config>

@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/masterLayout.xhtml">
+
+    <ui:define name="pageTitle">#{out.index_title}</ui:define>
+
+    <ui:define name="head-extra">
+
+    </ui:define>
+
+    <ui:define name="content">
+        <h:outputText value="#{out.leader_warehouse_diagram_beer}" stlye="font-weight:bold;color:red;"/>
+        <br/>
+        <p:panelGrid columns="2">
+            <c:forEach items="#{warehousesController.beers}" var="c">
+                <p:chart type="pie" model="#{c}" style="width:400px;height:300px" />
+            </c:forEach>
+        </p:panelGrid>
+        <h:outputText value="#{out.leader_warehouse_diagram_material}" stlye="font-weight:bold;color:red;"/>
+        <br/>		
+        <p:panelGrid columns="2">
+            <c:forEach items="#{warehousesController.materials}" var="c">
+                <p:chart type="pie" model="#{c}" style="width:400px;height:300px" />
+            </c:forEach>
+        </p:panelGrid>
+
+    </ui:define>
+</ui:composition>

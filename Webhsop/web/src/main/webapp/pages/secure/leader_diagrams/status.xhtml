@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/masterLayout.xhtml">
+
+	<ui:define name="pageTitle">#{out.index_title}</ui:define>
+
+	<ui:define name="head-extra">
+		<h:outputScript name="charts/charts.js" library="primefaces" />
+		<h:outputStylesheet name="charts/charts.css" library="primefaces" />
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form id="dest">
+			<p:panelGrid columns="2" style="text-align:center;">
+				<p:chart type="pie" id="dest1" model="#{statuses.pieModel1}"
+					style="width:600px;height:480px" widgetVar="chart" />
+				<p:dataTable var="income" value="#{statuses.data}" id="dest2"
+					emptyMessage="#{out.empty_message}" style="width:300px;">
+					<f:facet name="header">
+						<p:outputLabel value="#{out.statuses}" />
+					</f:facet>
+					<p:column headerText="#{out.status}">
+						<h:outputText value="#{income.name}" />
+					</p:column>
+
+					<p:column headerText="#{out.leader_quantity}">
+						<h:outputText value="#{income.quantity}" />
+					</p:column>
+				</p:dataTable>
+				<p:poll interval="5" listener="#{statuses.update()}" update="dest1 dest2" />
+			</p:panelGrid>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

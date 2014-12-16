@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/masterLayout.xhtml">
+
+	<ui:define name="pageTitle">#{out.index_title}</ui:define>
+
+	<ui:define name="head-extra">
+		<h:outputScript name="charts/charts.js" library="primefaces" />
+		<h:outputStylesheet name="charts/charts.css" library="primefaces" />
+	</ui:define>
+
+	<ui:define name="content">
+
+		<h:form id="diagrams">
+			<h:outputText value="Today:  #{incomeController.todayIncome}  $" />
+			<p:poll interval="3"
+				listener="#{incomeController.calculateIncomes()}" update="diagrams" />
+		</h:form>
+
+		<!-- Barchart -->
+		<p:chart type="bar" model="#{incomeController.barModel}"
+			widgetVar="chart2" style="height:350px"
+			rendered="#{!incomeController.isLineChart}" />
+		<!-- Linechart -->
+		<p:chart type="line" model="#{incomeController.areaModel}"
+			id="lineChart2" style="height:350px" widgetVar="chart"
+			rendered="#{incomeController.isLineChart}" />
+
+		<p:commandButton type="button" value="#{out.reset_button}" icon="ui-icon-cancel"
+			onclick="PF('chart').resetZoom()"
+			rendered="#{incomeController.isLineChart}" />
+		<p:commandButton type="button" value="#{out.reset_button}" icon="ui-icon-cancel"
+			onclick="PF('chart2').resetZoom()"
+			rendered="#{!incomeController.isLineChart}" />
+		<p:commandButton type="button" value="#{leader_export_button}"
+			icon="ui-icon-extlink" onclick="exportChart()"
+			rendered="#{incomeController.isLineChart}" />
+		<p:commandButton type="button" value="#{leader_export_button}"
+			icon="ui-icon-extlink" onclick="exportChart2()"
+			rendered="#{!incomeController.isLineChart}" />
+		<p:dialog widgetVar="dlg" showEffect="fade" modal="true"
+			header="Chart as an Image" resizable="true">
+			<p:outputPanel id="output" layout="block"
+				style="width:800px;height:600px" />
+		</p:dialog>
+		<p:dialog widgetVar="dlg2" showEffect="fade" modal="true"
+			header="Chart as an Image" resizable="true">
+			<p:outputPanel id="output2" layout="block"
+				style="width:800px;height:600px" />
+		</p:dialog>
+		<script type="text/javascript">
+			function exportChart() {
+				//export image
+				$('#output').empty().append(PF('chart').exportAsImage());
+
+				//show the dialog
+				PF('dlg').show();
+			}
+			function exportChart2() {
+				//export image
+				$('#output2').empty().append(PF('chart2').exportAsImage());
+
+				//show the dialog
+				PF('dlg2').show();
+			}
+		</script>
+		<br />
+		<h:form id="dayForm">
+			<p:outputLabel for="startDay" value="#{out.start_day}" />
+			<p:calendar id="startDay" value="#{incomeController.startDay}"
+				pattern="yyyy-MM-dd" mask="true" />
+			<br />
+			<br />
+			<p:outputLabel for="endDay" value="#{out.end_day}" />
+			<p:calendar id="endDay" value="#{incomeController.endDay}"
+				pattern="yyyy-MM-dd" mask="true" />
+			<br />
+			<h:outputText value="#{out.line_or_bar_chart}" />
+			<p:selectBooleanCheckbox value="#{incomeController.isLineChart}" />
+			<br />
+			<h:commandButton value="#{out.leader_show}" update=":dayForm"
+				actionListener="#{incomeController.refreshChart()}" ajax="true" />
+		</h:form>
+
+	</ui:define>
+</ui:composition>

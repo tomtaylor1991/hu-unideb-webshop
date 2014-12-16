@@ -1,0 +1,71 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/masterLayout.xhtml">
+
+    <ui:define name="pageTitle">#{out.index_title}</ui:define>
+
+    <ui:define name="head-extra">
+        <h:outputScript name="charts/charts.js" library="primefaces" />
+        <h:outputStylesheet name="charts/charts.css" library="primefaces" />
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="dest">
+            <h:outputText value="#{out.leader_all}: " />
+            <h:outputText value="#{dailyIncome.money} Ft" id="dest1" />
+            <br />
+            <p:dataTable var="income" value="#{dailyIncome.in}" id="dest2"
+                         emptyMessage="#{out.empty_message}">
+                <f:facet name="header">
+                    <p:outputLabel value="#{out.leader_income}"/>
+                </f:facet>
+                <p:column headerText="#{out.leader_name}">
+                    <h:outputText value="#{income.name}" />
+                </p:column>
+
+                <p:column headerText="#{out.leader_quantity}">
+                    <h:outputText value="#{income.quantity}" />
+                </p:column>
+
+                <p:column headerText="#{out.leader_price}">
+                    <h:outputText value="#{income.cost}" />
+                </p:column>
+            </p:dataTable>
+            <p:dataTable var="income" value="#{dailyIncome.out}" id="dest3"
+                         emptyMessage="#{out.empty_message}">
+                <f:facet name="header">
+                    <p:outputLabel value="#{out.leader_outlay}"/>
+                </f:facet>
+                <p:column headerText="#{out.leader_name}">
+                    <h:outputText value="#{income.name}" />
+                </p:column>
+
+                <p:column headerText="#{out.leader_quantity}">
+                    <h:outputText value="#{income.quantity}" />
+                </p:column>
+
+                <p:column headerText="#{out.leader_price}">
+                    <h:outputText value="#{income.cost}" />
+                </p:column>
+            </p:dataTable>
+            <p:poll interval="10" listener="#{dailyIncome.update()}"
+                    update="dest1 dest2 dest3 :dest4" />
+
+        </h:form>
+        <h:outputText value="#{dailyIncome.allMoney} Ft" id="dest4" />
+        <h:form>
+            <p:outputLabel for="endDay" value="#{out.leader_select_day}  " />
+            <p:calendar id="endDay" value="#{dailyIncome.date}"
+                        pattern="yyyy-MM-dd" mask="true">
+                <p:ajax event="dateSelect" />
+            </p:calendar>
+            <p:commandButton value="  #{out.leader_show}"
+                             actionListener="#{dailyIncome.update()}" update=":dest:dest1 :dest:dest2 :dest:dest3 :dest4"  ajax="true" />
+
+        </h:form>
+    </ui:define>
+</ui:composition>

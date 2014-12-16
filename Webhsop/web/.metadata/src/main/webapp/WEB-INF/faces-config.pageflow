@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14146041106020" configfile="/webshop-web/src/main/webapp/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="pages/unsecure/login.xhtml" id="pf14167711073986" referenceLink="//@navigationRule.2/@navigationCase.0/@toViewId|" outlinks="pf14167711073987" inlinks="pf14167711073988" path="/pages/unsecure/login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/unsecure/index.xhtml" id="pf14167711073989" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf14167711073987" path="/pages/unsecure/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="index.xhtml" id="pf141677110739810" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf141677110739811" path="/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/login.xhtml" id="pf141677110739812" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf141677110739811" path="/pages/login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/unsecure/signup.xhtml" id="pf141677110739813" referenceLink="//@navigationRule.2/@fromViewId|" outlinks="pf14167711073988" path="/pages/unsecure/signup.xhtml"/>
+  <links id="pf14167711073987" target="pf14167711073989" source="pf14167711073986"/>
+  <links id="pf141677110739811" target="pf141677110739812" source="pf141677110739810"/>
+  <links id="pf14167711073988" target="pf14167711073986" source="pf141677110739813"/>
+</pageflow:Pageflow>

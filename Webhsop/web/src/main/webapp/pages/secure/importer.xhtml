@@ -1,0 +1,175 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/masterLayout.xhtml">
+	<ui:define name="pageTitle">#{out.importers_title}</ui:define>
+	<ui:define name="header"> -> #{out.importers_title}</ui:define>
+
+	<ui:define name="head-extra">
+		<!-- custom css -->
+	</ui:define>
+
+	<ui:define name="content">
+		<p:messages id="messages" showDetail="true" autoUpdate="true"
+			closable="true" />
+		<h:form id="choose">
+			<h:outputText value="#{out.importer_csv}" style="font-weight:bold;"
+				rendered="#{importerFileUpload.isShowChooseButton}" />
+			<p:fileUpload uploadLabel="#{out.importer_csv}"
+				rendered="#{importerFileUpload.isShowChooseButton}"
+				value="#{out.importer_csv}"
+				fileUploadListener="#{importerFileUpload.handleFileUpload}"
+				mode="advanced" update=":messages :visibleListOfCSVData :choose"
+				auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(csv)$/" />
+		</h:form>
+		<h:form id="visibleListOfCSVData">
+			<h:form rendered="#{not empty importerFileUpload.latestUploadToView}">
+				<p:commandButton action="#{importerFileUpload.save()}"
+					update=":visibleListOfCSVData :messages :choose"
+					icon="ui-icon-close" value="#{out.importer_load}" />
+				<p:commandButton action="#{importerFileUpload.clear()}"
+					update=":visibleListOfCSVData :choose" icon="ui-icon-close"
+					value="#{out.importer_cancel}" />
+				<br />
+				<p:separator style="width:100%;height:10px" />
+				<h:outputText value="#{out.importer_selectwh}"
+					rendered="#{importerFileUpload.selectedWH==null}"
+					style="font-weight:bold; color: red; background-color:#F2F2F2; margin: 4px;" />
+				<p:dataTable var="wh" id="whList"
+					value="#{importerFileUpload.allWH}" selectionMode="single"
+					selection="#{importerFileUpload.selectedWH}" rowKey="#{wh}"
+					emptyMessage="#{out.empty_message}">
+					<p:ajax event="rowSelect" update="" />
+					<p:column headerText="#{out.importer_whname}">
+						<h:outputText value="#{wh.name}" />
+					</p:column>
+					<p:column headerText="#{out.importer_whaddress}">
+						<h:outputText value="#{wh.address}" />
+					</p:column>
+				</p:dataTable>
+				<p:separator style="width:100%;height:10px" />
+				<br />
+				<h:outputLabel for="date" value="Date: " />
+				<h:outputText id="date" value="#{importerFileUpload.date}">
+					<f:convertDateTime pattern="EEE, M/d/yy hh:mm" />
+				</h:outputText>
+				<br />
+				<p:dataTable var="line"
+					value="#{importerFileUpload.latestUploadToView}"
+					emptyMessage="#{out.empty_message}">
+					<p:column headerText="#{out.importer_materialname}">
+						<h:outputText value="#{line[0]}" />
+					</p:column>
+					<p:column headerText="#{out.importer_quantity}">
+						<h:outputText value="#{line[1]}" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</h:form>
+
+		<p:dialog header="#{out.importer_select_material}"
+			widgetVar="materialDialog" modal="true" showEffect="fade"
+			hideEffect="fade" resizable="true">
+			<p:outputPanel id="materialDetail" style="text-align:center;">
+				<p:dataTable var="material" id="materialTableList"
+					value="#{recipeController.allMaterial}" scrollable="true"
+					scrollHeight="200" emptyMessage="#{out.empty_message}">
+					<p:ajax event="rowSelect" />
+					<p:column headerText="#{out.importer_materialname}">
+						<h:outputText value="#{material.materialName}" />
+					</p:column>
+					<p:column headerText="#{out.importer_materialcost}">
+						<h:outputText value="#{material.cost}" />
+					</p:column>
+					<p:column style="width:32px;text-align: center">
+						<p:commandButton update="@([id$=selectedMaterialName])"
+							oncomplete="PF('materialDialog').hide()" icon="ui-icon-plusthick"
+							title="Select">
+							<f:setPropertyActionListener value="#{material}"
+								target="#{importerController.selectedMaterial}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</p:dialog>
+		<h:messages></h:messages>
+		<p:panel header="#{out.importer_header}" style="top:0px;"
+			id="mainPanel">
+
+			<h:form>
+				<div class="ui-grid ui-grid-responsive ui-grid-row ui-grid-col-6">
+					<h:panelGrid columns="3" style="width:100%" cellpadding="5">
+						<h:outputLabel for="selectedMaterialName"
+							value="#{out.importer_selected_material}"
+							style="font-weight:bold" />
+
+						<h:outputText
+							value="#{importerController.selectedMaterial.materialName}"
+							id="selectedMaterialName" style="font-weight:bold" />
+
+						<p:commandButton oncomplete="PF('materialDialog').show()"
+							icon="ui-icon-search" title="Select material"
+							value="#{out.importer_select_material}" />
+
+						<h:outputLabel for="quantity" value="#{out.importer_quantity}"
+							style="font-weight:bold" />
+						<p:inputText id="quantity" value="#{importerController.quantity}" />
+						<br />
+						<p:commandButton update=":TableList selectedMaterialName quantity"
+							action="#{importerController.addRegistryToList()}"
+							icon="ui-icon-close" value="#{out.importer_addtolist}" />
+					</h:panelGrid>
+				</div>
+			</h:form>
+
+			<br />
+			<p:separator />
+			<br />
+			<p:dataTable var="c" id="TableList"
+				value="#{importerController.registryList}"
+				emptyMessage="#{out.empty_message}">
+				<p:ajax event="rowSelect" />
+				<p:column headerText="#{out.importer_materialname}">
+					<h:outputText value="#{c.material.materialName}" />
+				</p:column>
+				<p:column headerText="#{out.importer_quantity}">
+					<h:outputText value="#{c.quantity}" />
+				</p:column>
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton update="TableList"
+						action="#{importerController.removeRegistryFromList()}"
+						icon="ui-icon-close" title="Select">
+						<f:setPropertyActionListener value="#{c}"
+							target="#{importerController.deletedElement}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+			<p:separator style="width:100%;height:10px" />
+			<h:form>
+				<h:outputText value="#{out.importer_selectwh}"
+					rendered="#{importerController.selectedWH==null}"
+					style="font-weight:bold; color: red; background-color:#F2F2F2; margin: 4px;" />
+				<p:dataTable var="wh2" id="whList2"
+					value="#{importerFileUpload.allWH}" selectionMode="single"
+					selection="#{importerController.selectedWH}" rowKey="#{wh2}"
+					emptyMessage="#{out.empty_message}">
+					<p:ajax event="rowSelect" update=":submit" />
+					<p:column headerText="#{out.importer_whname}">
+						<h:outputText value="#{wh2.name}" />
+					</p:column>
+					<p:column headerText="#{out.importer_whaddress}">
+						<h:outputText value="#{wh2.address}" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+			<p:separator style="width:100%;height:10px" />
+			<p:commandButton id="submit" update="TableList"
+				disabled="#{importerController.selectedWH==null}"
+				action="#{importerController.saveToDB()}" icon="ui-icon-close"
+				value="#{out.importer_load}" />
+		</p:panel>
+	</ui:define>
+</ui:composition>

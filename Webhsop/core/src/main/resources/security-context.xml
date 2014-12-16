@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+    xmlns:sec="http://www.springframework.org/schema/security"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xsi:schemaLocation="
+     http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+    <!-- Enable method level Spring Security by annotations  
+    <sec:global-method-security pre-post-annotations="enabled" />  -->
+    
+    <sec:http auto-config="true" use-expressions="true">
+
+		
+        
+         <!-- Page level Spring Security : Enable Primefaces -->
+        <sec:intercept-url pattern="/javax.faces.resource/**" access="permitAll"/>
+
+        <!-- Page level Spring Security : Intercept access to resources in /pages/secure/** -->
+        <sec:intercept-url pattern="/pages/secure/admin.xhtml" access="hasAnyRole('ROLE_ADMIN')" />
+        
+        <sec:intercept-url pattern="/pages/secure/exporter.xhtml" access="hasAnyRole('ROLE_ADMIN', 'ROLE_EXPORTER')" />
+        
+        <sec:intercept-url pattern="/pages/secure/importer_necessary_material.xhtml" access="hasAnyRole('ROLE_ADMIN', 'ROLE_IMPORTER')" />
+        <sec:intercept-url pattern="/pages/secure/importer.xhtml" access="hasAnyRole('ROLE_ADMIN', 'ROLE_IMPORTER')" />
+        
+        <sec:intercept-url pattern="/pages/secure/leader_registry.xhtml" access="hasAnyRole('ROLE_ADMIN,ROLE_LEADER')" />
+        <sec:intercept-url pattern="/pages/secure/leader_diagrams/**" access="hasAnyRole('ROLE_ADMIN,ROLE_LEADER')" />
+        
+        <sec:intercept-url pattern="/pages/secure/orders.xhtml" access="hasAnyRole('ROLE_ADMIN,ROLE_LEADER,ROLE_ORDERER')" />
+        <sec:intercept-url pattern="/pages/secure/partners.xhtml" access="hasAnyRole('ROLE_ADMIN,ROLE_LEADER,ROLE_ORDERER')" />
+        
+        <sec:intercept-url pattern="/pages/secure/profile.xhtml" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" />
+        
+                
+        <sec:intercept-url pattern="/pages/secure/materials.xhtml" access="hasAnyRole('ROLE_ADMIN,ROLE_IMPORTER,ROLE_EXPORTER,ROLE_WORKER,ROLE_LEADER')" />
+        <sec:intercept-url pattern="/pages/secure/recipes.xhtml" access="hasAnyRole('ROLE_ADMIN,ROLE_IMPORTER,ROLE_EXPORTER,ROLE_WORKER,ROLE_LEADER')" />
+        <sec:intercept-url pattern="/pages/secure/warehouses.xhtml" access="hasAnyRole('ROLE_ADMIN,ROLE_IMPORTER,ROLE_EXPORTER,ROLE_WORKER,ROLE_LEADER')" />
+        <sec:intercept-url pattern="/pages/secure/worker.xhtml" access="hasAnyRole('ROLE_ADMIN,ROLE_IMPORTER,ROLE_EXPORTER,ROLE_WORKER,ROLE_LEADER')" />
+        
+
+       <!-- Page level Spring Security : Enable Login Page -->
+		<sec:intercept-url pattern="/**" access="permitAll"/>
+  
+        <!-- Define login page for Spring Security -->      
+        <sec:form-login login-page="/pages/unsecure/login.xhtml" default-target-url="/pages/unsecure/index.xhtml"/>
+
+        <!-- Define logout properties for Spring Security -->
+        <sec:logout invalidate-session="true" delete-cookies="true" logout-success-url="/pages/unsecure/login.xhtml"></sec:logout>
+    </sec:http>
+   
+    <!-- Set customUserDetailsService class as the authentication Manager for Spring Security-->
+    <sec:authentication-manager alias="authenticationManager">
+        <sec:authentication-provider user-service-ref="customUserDetailsService">
+            <sec:password-encoder hash="plaintext"></sec:password-encoder>
+        </sec:authentication-provider>
+    </sec:authentication-manager>
+
+     <!-- Inject authentication Manager to our LoginBean -->
+    <beans:bean id="loginBean" name="loginBean" class="hu.unideb.webshop.login.LoginBean" scope="prototype">
+        <beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
+    </beans:bean>
+</beans:beans>

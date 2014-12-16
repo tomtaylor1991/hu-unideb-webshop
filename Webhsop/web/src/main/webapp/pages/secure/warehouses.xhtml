@@ -1,0 +1,192 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/masterLayout.xhtml">
+
+	<ui:define name="pageTitle">#{out.warehouses_title}</ui:define>
+	<ui:define name="header"> -> #{out.warehouses_title}</ui:define>
+
+	<ui:define name="head-extra">
+		<!-- custom css -->
+	</ui:define>
+
+	<ui:define name="content">
+
+		<h:form id="warehouseForm">
+			<p:growl id="msgs" showDetail="true" />
+			<p:dataTable var="currentWarehouse"
+				value="#{warehouseBean.warehouseModel}" selectionMode="single"
+				selection="#{warehouseController.selectedWarehouse}"
+				rowKey="#{currentWarehouse.id}" paginator="true" rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="5,10,15" id="warehouseTable" lazy="true"
+                                emptyMessage="#{out.empty_message}">
+				<p:ajax event="rowSelect"
+					listener="#{warehouseController.onRowSelect}"
+					update=":warehouseForm:msgs,:warehouseCommandsForm,:editWarehouseDialog" />
+				<p:ajax event="rowUnselect"
+					listener="#{warehouseController.onRowUnselect}"
+					update=":warehouseForm:msgs,:warehouseCommandsForm" />
+				<p:column headerText="#{out.warehouses_table_name}"
+					sortBy="#{currentWarehouse.name}"
+					filterBy="#{currentWarehouse.name}">
+					<h:outputText value="#{currentWarehouse.name}" />
+				</p:column>
+				<p:column headerText="#{out.warehouses_table_address}"
+					sortBy="#{currentWarehouse.address}"
+					filterBy="#{currentWarehouse.address}">
+					<h:outputText value="#{currentWarehouse.address}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+		<p:dialog id="editWarehouseDialog" header="#{out.warehouses_edit_header}"
+			widgetVar="dlg_edit" modal="true" resizable="false">
+			<h:form>
+				<p:messages id="messages1" for="msgs1" showDetail="true" autoUpdate="true"
+					closable="true" />
+				<div class="ui-grid ui-grid-responsive">
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-6">
+							<h:panelGrid columns="2" cellpadding="5">
+								<h:outputLabel for="name" value="#{out.warehouses_table_name}"
+									style="font-weight:bold" />
+								<p:inputText id="name" value="#{warehouseController.selectedWarehouse.name}" />
+								<h:outputLabel for="address"
+									value="#{out.warehouses_table_address}" style="font-weight:bold" />
+								<p:inputText id="address" value="#{warehouseController.selectedWarehouse.address}"/>
+							</h:panelGrid>
+							<h:panelGrid columns="2" cellpadding="5">
+								<p:commandButton value="#{out.save_changes}"
+									update=":warehouseForm:warehouseTable" icon="ui-icon-eject"
+									actionListener="#{warehouseController.updateWarehouse()}" />
+								<p:commandButton update=":selectedWarehouseForm" ajax="false"
+									validateClient="false" immediate="true"
+									action="#{warehouseController.unselectWarehouse()}"
+									icon="ui-icon-close" title="Cancel" value="#{out.cancel}"></p:commandButton>
+							</h:panelGrid>	
+						</div>
+					</div>
+				</div>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog id="createWarehouseDialog" header="#{out.warehouses_create_header}"
+			widgetVar="dlg_create" modal="true" resizable="false">
+			<h:form>
+				<p:messages id="messages2" for="msgs2" showDetail="true" autoUpdate="true"
+					closable="true" />
+				<div class="ui-grid ui-grid-responsive">
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-6">
+							<h:panelGrid columns="2" cellpadding="5">
+								<h:outputLabel for="name" value="#{out.warehouses_table_name}"
+									style="font-weight:bold" />
+								<p:inputText id="name" 
+									value="#{warehouseController.newWarehouseName}" />
+								<h:outputLabel for="address" value="#{out.warehouses_table_address}"
+									style="font-weight:bold" />
+								<p:inputText id="address" 
+									value="#{warehouseController.newWarehouseAddress}">
+								</p:inputText>
+							</h:panelGrid>
+							<h:panelGrid columns="2" cellpadding="5">
+								<p:commandButton value="#{out.save}"
+									update=":warehouseForm:warehouseTable" icon="ui-icon-eject"
+									actionListener="#{warehouseController.addWarehouse()}" />
+								<p:commandButton update=":selectedWarehouseForm" ajax="false"
+									validateClient="false" immediate="true"
+									action="#{warehouseController.unselectWarehouse()}"
+									icon="ui-icon-close" title="Cancel" value="#{out.cancel}"></p:commandButton>
+							</h:panelGrid>
+						</div>
+					</div>
+				</div>
+			</h:form>
+		</p:dialog>
+		<p:dialog header="#{out.warehouse}" widgetVar="whDialog" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="true">
+			<p:outputPanel id="whDialogList" style="text-align:center;">
+				<p:separator style="width:100%;height:10px" />
+				<h:outputText value="#{out.warehouses_selected}" />
+				<h:outputText value="#{warehouseController.selectedWarehouse.name}" />
+				<br />
+				<h:outputText value="#{out.warehouses_address}" />
+				<h:outputText value="#{warehouseController.selectedWarehouse.address}" />
+				<p:separator style="width:100%;height:10px" />
+				<p:dataTable var="registry" id="whTableList"
+					value="#{warehouseController.selectedWHRegistryList}"
+					scrollable="true" scrollHeight="200"
+                                        emptyMessage="#{out.empty_message}">
+					<p:ajax event="rowSelect" />
+					<p:column headerText="#{out.warehouses_table_materialname}">
+						<h:outputText value="#{registry.material.materialName}" />
+					</p:column>
+					<p:column headerText="#{out.materials_table_quantity}">
+						<h:outputText value="#{registry.quantity}" />
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</p:dialog>
+		<p:dialog header="#{out.warehouse}" widgetVar="whBeerDialog" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="true">
+			<p:outputPanel id="whDialogBeerList" style="text-align:center;">
+				<p:separator style="width:100%;height:10px" />
+				<h:outputText value="#{out.warehouses_selected}" />
+				<h:outputText value="#{warehouseController.selectedWarehouse.name}" />
+				<br />
+				<h:outputText value="#{out.warehouses_address}" />
+				<h:outputText value="#{warehouseController.selectedWarehouse.address}" />
+				<p:separator style="width:100%;height:10px" />
+				<p:dataTable var="registry" id="whBeerTableList"
+					value="#{warehouseController.selectedWHRegistryBeerList}"
+					scrollable="true" scrollHeight="200"
+                                        emptyMessage="#{out.empty_message}">
+					<p:ajax event="rowSelect" />
+					<p:column headerText="#{out.warehouses_beer_name}">
+						<h:outputText value="#{registry.beer.name}" />
+					</p:column>
+					<p:column headerText="#{out.materials_table_quantity}">
+						<h:outputText value="#{registry.quantity}" />
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</p:dialog>
+		<h:form id="warehouseCommandsForm">
+			<h:panelGrid columns="5" cellpadding="5"
+				headerText="#{out.warehouses_table_details}">
+				<p:commandButton
+					update=":warehouseForm:warehouseTable :warehouseForm:msgs"
+					action="#{warehouseController.removeWarehouse()}"
+					icon="ui-icon-trash" title="Delete"
+					value="#{out.warehouses_table_deleteButton}"
+					disabled="#{warehouseController.selectedWarehouse == null}">
+				</p:commandButton>
+				<p:commandButton icon="ui-icon-arrowrefresh-1-n"
+					value="#{out.warehouses_table_EditButton}" type="button"
+					onclick="PF('dlg_edit').show()"
+					disabled="#{warehouseController.selectedWarehouse == null}">
+				</p:commandButton>
+				<p:commandButton icon="ui-icon-arrowrefresh-1-n"
+					value="#{out.warehouses_newWarehouse_addButton}" type="button"
+					onclick="PF('dlg_create').show()">
+				</p:commandButton>
+				<p:commandButton icon="ui-icon-arrowrefresh-1-n"
+					actionListener="#{warehouseController.updateSelectedWHRegistry()}"
+					disabled="#{warehouseController.selectedWarehouse == null}"
+					value="#{out.warehouses_show_content_material}" update=":whDialogList"
+					onclick="PF('whDialog').show()">
+				</p:commandButton>
+				<p:commandButton icon="ui-icon-arrowrefresh-1-n"
+					actionListener="#{warehouseController.updateSelectedWHBeerRegistry()}"
+					disabled="#{warehouseController.selectedWarehouse == null}"
+					value="#{out.warehouses_show_content_beer}" update=":whDialogBeerList"
+					onclick="PF('whBeerDialog').show()">
+				</p:commandButton>
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,12 @@
+*~
+.classpath
+.project
+.settings/
+target
+target/*
+jdbc.properties
+pom.properties
+Application/Beerfactory/restart.cmd
+Application/Beerfactory/client-api/target/maven-archiver/pom.properties
+Application/Beerfactory/client-api/target/maven-archiver/pom.properties
+./metadata/*
