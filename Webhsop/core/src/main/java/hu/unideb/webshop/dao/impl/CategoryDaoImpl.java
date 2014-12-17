@@ -1,10 +1,16 @@
 package hu.unideb.webshop.dao.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import hu.unideb.webshop.dao.BaseConvertDao;
+import hu.unideb.webshop.dao.ImageInfoDao;
 import hu.unideb.webshop.dto.CategoryDTO;
 import hu.unideb.webshop.entity.Category;
 
 public class CategoryDaoImpl implements BaseConvertDao<Category, CategoryDTO> {
+
+	@Autowired
+	ImageInfoDao imageInfoDao;
 
 	@Override
 	public Category toEntity(CategoryDTO dto, Category entity) {
@@ -21,7 +27,9 @@ public class CategoryDaoImpl implements BaseConvertDao<Category, CategoryDTO> {
 			ret.setParent(toEntity(dto.getParent(), null));
 		}
 		ret.setName(dto.getName());
-		ret.setImage(dto.getImage());
+		if (dto.getImageInfoId() != null) {
+			ret.setImageInfoId(dto.getImageInfoId());
+		}
 		ret.setPriority(dto.getPriority());
 
 		return ret;
@@ -40,7 +48,13 @@ public class CategoryDaoImpl implements BaseConvertDao<Category, CategoryDTO> {
 			ret.setParent(toDto(entity.getParent()));
 		}
 		ret.setName(entity.getName());
-		ret.setImage(entity.getImage());
+		if (entity.getImageInfoId() != null) {
+			ret.setImageInfoId(entity.getImageInfoId());
+			ret.setImage(imageInfoDao.toDto(imageInfoDao.findOne(entity
+					.getImageInfoId())));
+
+		}
+
 		ret.setPriority(entity.getPriority());
 
 		return ret;

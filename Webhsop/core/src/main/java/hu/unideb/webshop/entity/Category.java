@@ -13,8 +13,8 @@ public class Category extends BaseEntity {
 
 	private String name;
 
-	private String image;
-
+	private Long imageInfoId;
+	
 	private int priority;
 
     @ManyToOne
@@ -27,14 +27,6 @@ public class Category extends BaseEntity {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
 	}
 
 	public int getPriority() {
@@ -51,6 +43,14 @@ public class Category extends BaseEntity {
 
 	public void setParent(Category parent) {
 		this.parent = parent;
+	}
+
+	public Long getImageInfoId() {
+		return imageInfoId;
+	}
+
+	public void setImageInfoId(Long imageInfoId) {
+		this.imageInfoId = imageInfoId;
 	}
 
 }

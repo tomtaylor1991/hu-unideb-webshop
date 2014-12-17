@@ -2,16 +2,16 @@ package hu.unideb.webshop.dto;
 
 import java.io.Serializable;
 
-public class ImageInfoDTO extends BaseDTO implements Serializable{
+public class ImageInfoDTO extends BaseDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
-	
+
 	private String fileName;
-	
-	private Long imageDataId = 0L;
-	
+
+	private Long imageDataId = 0L;	
+
 	private Long thumbnailDataId = 0L;
 
 	public Long getId() {
@@ -52,5 +52,5 @@ public class ImageInfoDTO extends BaseDTO implements Serializable{
 				+ ", imageDataId=" + imageDataId + ", thumbnailDataId="
 				+ thumbnailDataId + "]";
 	}
-	
+
 }

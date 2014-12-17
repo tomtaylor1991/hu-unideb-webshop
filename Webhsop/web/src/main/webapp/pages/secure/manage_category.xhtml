@@ -69,8 +69,11 @@
 				<p:ajax event="rowSelect" update=":categoryList:commandButtons" />
 
 				<p:column headerText="Image">
-					<p:graphicImage value="#{categoryManagerController.RESOURCES_SRC}/images/category/#{currentCategory.image}"
-						/>
+					<p:graphicImage value="#{imageBean.image}"
+						rendered="#{currentCategory.image!=null}">
+						<f:param name="id"
+							value="#{currentCategory.image.imageDataId}" />
+					</p:graphicImage>
 				</p:column>
 				<p:column headerText="Name" sortBy="#{currentCategory.name}"
 					filterBy="#{currentCategory.name}">

@@ -8,8 +8,10 @@ public class CategoryDTO extends BaseDTO implements Serializable{
 	private Long id;
 	private String name;
 
-	private String image;
+	private Long imageInfoId;
 
+	private ImageInfoDTO image; 
+	
 	private int priority;
 
 	private CategoryDTO parent;
@@ -22,11 +24,20 @@ public class CategoryDTO extends BaseDTO implements Serializable{
 		this.name = name;
 	}
 
-	public String getImage() {
+
+	public Long getImageInfoId() {
+		return imageInfoId;
+	}
+
+	public void setImageInfoId(Long imageInfoId) {
+		this.imageInfoId = imageInfoId;
+	}
+
+	public ImageInfoDTO getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
+	public void setImage(ImageInfoDTO image) {
 		this.image = image;
 	}
 
@@ -56,9 +67,13 @@ public class CategoryDTO extends BaseDTO implements Serializable{
 
 	@Override
 	public String toString() {
-		return "CategoryDTO [id=" + id + ", name=" + name + ", image=" + image
-				+ ", priority=" + priority + ", parent=" + parent + "]";
+		return "CategoryDTO [id=" + id + ", name=" + name + ", imageInfoId="
+				+ imageInfoId + ", image=" + image + ", priority=" + priority
+				+ ", parent=" + parent + "]";
 	}
+
+
+
 	
 	
 }

@@ -6,9 +6,8 @@ import hu.unideb.webshop.dto.ImageInfoDTO;
 import hu.unideb.webshop.service.ManageCategoryFacadeService;
 import hu.unideb.webshop.service.ManageImageFacadeService;
 
-import java.io.File;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
@@ -17,10 +16,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 
-import org.apache.commons.io.FileUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 @ViewScoped
@@ -39,7 +40,7 @@ public class CategoryManagerController implements Serializable {
 
 	@ManagedProperty(value = "#{manageCategoryFacadeService}")
 	private ManageCategoryFacadeService manageCategoryFacadeService;
-	
+
 	@ManagedProperty(value = "#{manageImageFacadeService}")
 	private ManageImageFacadeService manageImageFacadeService;
 
@@ -96,6 +97,7 @@ public class CategoryManagerController implements Serializable {
 
 	public void generateNewCategoryWithParent() {
 		if (selectedCategory != null) {
+			System.out.println(selectedCategory);
 			newCategory = new CategoryDTO();
 			newCategory.setParent(selectedCategory);
 		}
@@ -106,8 +108,10 @@ public class CategoryManagerController implements Serializable {
 			// kep feltoltese
 			if (uploadedFile != null) {
 				System.out.println("start saving " + uploadedFileName);
-					ImageInfoDTO img = manageImageFacadeService.saveImage(uploadedFile.getContents(), uploadedFileName);
-					System.out.println("New Image: " + img);
+				ImageInfoDTO img = manageImageFacadeService.saveImage(
+						uploadedFile.getContents(), uploadedFileName);
+				System.out.println("New Image: " + img);
+				newCategory.setImageInfoId(img.getId());
 			}
 			// ////
 			manageCategoryFacadeService.createCategory(newCategory);
