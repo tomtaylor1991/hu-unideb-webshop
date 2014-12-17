@@ -14,6 +14,49 @@
 
 	<ui:define name="content">
 		<p:growl id="msgs" showDetail="true" />
+
+		<p:dialog header="Create new Top level category" modal="true"
+			widgetVar="newTopLevelCategoryDialog" minHeight="300" minWidth="400">
+			<h:form id="newCategory">
+				<h:outputLabel for="parent" value="Parent: "
+					style="font-weight:bold" />
+				<h:outputLabel id="parent"
+					value="#{categoryManagerController.newCategory.parent!=null?categoryManagerController.newCategory.parent.name:'top level'}" />
+				<br />
+				<br />
+				<h:outputLabel for="name" value="Name" style="font-weight:bold" />
+				<br />
+				<p:inputText id="name"
+					value="#{categoryManagerController.newCategory.name}" />
+				<br />
+				<br />
+				<h:outputLabel for="priority" value="Priority"
+					style="font-weight:bold" />
+				<br />
+				<p:inputText id="priority"
+					value="#{categoryManagerController.newCategory.priority}" />
+				<br />
+				<br />
+
+				<h:outputLabel for="imageUpload" value="Image upload"
+					style="font-weight:bold" />
+				<br />
+				<p:fileUpload
+					fileUploadListener="#{categoryManagerController.handleFileUpload}"
+					mode="advanced" update="messages" auto="true" sizeLimit="100000"
+					allowTypes="/(\.|\/)(gif|jpe?g|png)$/" id="imageUpload" />
+
+				<p:growl id="messages" showDetail="true" />
+
+				<br />
+				<br />
+				<p:commandButton value="Save"
+					action="#{categoryManagerController.saveNewCategory()}"
+					update=":categoryList"
+					onclick="PF('newTopLevelCategoryDialog').close();" />
+			</h:form>
+		</p:dialog>
+
 		<h:form id="categoryList">
 			<p:dataTable id="categoryTable" var="currentCategory"
 				value="#{categoryManagerController.categoryModel}"
@@ -23,8 +66,12 @@
 				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 				rowsPerPageTemplate="5,10,15" lazy="true"
 				emptyMessage="#{out.empty_message}">
-				<p:ajax event="rowSelect"/>
+				<p:ajax event="rowSelect" update=":categoryList:commandButtons" />
 
+				<p:column headerText="Image">
+					<p:graphicImage value="#{categoryManagerController.RESOURCES_SRC}/images/category/#{currentCategory.image}"
+						/>
+				</p:column>
 				<p:column headerText="Name" sortBy="#{currentCategory.name}"
 					filterBy="#{currentCategory.name}">
 					<h:outputText value="#{currentCategory.name}" />
@@ -32,8 +79,24 @@
 				<p:column headerText="Priority" sortBy="#{currentCategory.priority}">
 					<h:outputText value="#{currentCategory.priority}" />
 				</p:column>
+				<p:column headerText="Parent"
+					sortBy="#{currentCategory.parent.name}"
+					filterBy="#{currentCategory.parent.name}">
+					<h:outputText
+						value='#{currentCategory.parent!=null?currentCategory.parent.name:" "}' />
+				</p:column>
 			</p:dataTable>
-			<p:commandButton value="test" action="#{categoryManagerController.test()}"/>
+			<p:panel id="commandButtons">
+				<p:commandButton value="Create new TOP level category"
+					action="#{categoryManagerController.generateNewTopCategory()}"
+					update=":newCategory"
+					onclick="PF('newTopLevelCategoryDialog').show();" />
+				<p:commandButton value="Create new SUB level category"
+					action="#{categoryManagerController.generateNewCategoryWithParent()}"
+					disabled="#{categoryManagerController.selectedCategory == null}"
+					update=":newCategory"
+					onclick="PF('newTopLevelCategoryDialog').show();" />
+			</p:panel>
 		</h:form>
 	</ui:define>
 </ui:composition>

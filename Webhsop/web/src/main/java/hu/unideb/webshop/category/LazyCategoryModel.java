@@ -46,13 +46,14 @@ public class LazyCategoryModel extends LazyDataModel<CategoryDTO>{
     @Override
     public List<CategoryDTO> load(int first, int pageSize, String sortField,
             SortOrder sortOrder, Map<String, Object> filters) {
-
+    	
         String filter = "";
         String filterColumnName = "";
         if (filters.keySet().size() > 0) {
             filter = (String) filters.values().toArray()[0];
             filterColumnName = filters.keySet().iterator().next();
         }
+        System.out.println(sortField + " " + filter + " " + filterColumnName);
         //set default sort field
         if (sortField == null) {
             sortField = "name";

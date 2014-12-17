@@ -68,7 +68,7 @@
 				<artifactId>maven-site-plugin</artifactId>
 				<version>3.3</version>
 				<configuration>
-				<siteDirectory>${basedir}/src/site/</siteDirectory>
+					<siteDirectory>${basedir}/src/site/</siteDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -178,6 +178,13 @@
 			<artifactId>spring-security-web</artifactId>
 			<version>${spring.security.version}</version>
 		</dependency>
+		<!-- Commons IO -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+
 	</dependencies>
 
 

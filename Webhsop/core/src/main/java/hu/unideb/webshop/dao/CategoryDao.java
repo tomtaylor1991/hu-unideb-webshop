@@ -15,6 +15,8 @@ public interface CategoryDao extends
 		BaseConvertDao<Category, CategoryDTO> {
 
 	Page<Category> findByNameStartsWith(String name, Pageable pageable);
+	
+	Page<Category> findByParentNameStartsWith(String parentName, Pageable pageable);
 
 	@Query(value = "SELECT count(*) FROM CATEGORY", nativeQuery = true)
     int countRowNum();

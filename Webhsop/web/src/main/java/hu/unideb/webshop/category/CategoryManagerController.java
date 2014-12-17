@@ -2,8 +2,13 @@ package hu.unideb.webshop.category;
 
 import hu.unideb.webshop.LocaleSwitcher;
 import hu.unideb.webshop.dto.CategoryDTO;
+import hu.unideb.webshop.dto.ImageInfoDTO;
 import hu.unideb.webshop.service.ManageCategoryFacadeService;
+import hu.unideb.webshop.service.ManageImageFacadeService;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
@@ -13,7 +18,10 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.io.FileUtils;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.UploadedFile;
 
 @ViewScoped
 @ManagedBean(name = "categoryManagerController")
@@ -21,11 +29,19 @@ public class CategoryManagerController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	public final String RESOURCES_SRC = "/home/tomtaylor/workspaces/szakdolgozat/webshop/Application/hu-unideb-webshop/uploads";
+
 	private LazyCategoryModel categoryModel;
 	private CategoryDTO selectedCategory;
+	private CategoryDTO newCategory;
+	private UploadedFile uploadedFile;
+	private String uploadedFileName;
 
 	@ManagedProperty(value = "#{manageCategoryFacadeService}")
 	private ManageCategoryFacadeService manageCategoryFacadeService;
+	
+	@ManagedProperty(value = "#{manageImageFacadeService}")
+	private ManageImageFacadeService manageImageFacadeService;
 
 	@PostConstruct
 	public void init() {
@@ -64,9 +80,77 @@ public class CategoryManagerController implements Serializable {
 						.getMessage("warehouses_selected")
 						+ selectedCategory.getName()));
 	}
-	
-	public void test(){
-		System.out.println(selectedCategory);
+
+	public CategoryDTO getNewCategory() {
+		return newCategory;
+	}
+
+	public void setNewCategory(CategoryDTO newCategory) {
+		this.newCategory = newCategory;
+	}
+
+	public void generateNewTopCategory() {
+		System.out.println("START generateNewTopCategory");
+		this.newCategory = new CategoryDTO();
+	}
+
+	public void generateNewCategoryWithParent() {
+		if (selectedCategory != null) {
+			newCategory = new CategoryDTO();
+			newCategory.setParent(selectedCategory);
+		}
+	}
+
+	public void saveNewCategory() {
+		if (newCategory != null) {
+			// kep feltoltese
+			if (uploadedFile != null) {
+				System.out.println("start saving " + uploadedFileName);
+					ImageInfoDTO img = manageImageFacadeService.saveImage(uploadedFile.getContents(), uploadedFileName);
+					System.out.println("New Image: " + img);
+			}
+			// ////
+			manageCategoryFacadeService.createCategory(newCategory);
+			// ////
+			newCategory = null;
+			this.uploadedFile = null;
+		}
+	}
+
+	public void handleFileUpload(FileUploadEvent event) {
+
+		// get uploaded file from the event
+		this.uploadedFile = (UploadedFile) event.getFile();
+		this.uploadedFileName = event.getFile().getFileName();
+	}
+
+	public UploadedFile getUploadedFile() {
+		return uploadedFile;
+	}
+
+	public void setUploadedFile(UploadedFile uploadedFile) {
+		this.uploadedFile = uploadedFile;
+	}
+
+	public String getUploadedFileName() {
+		return uploadedFileName;
+	}
+
+	public void setUploadedFileName(String uploadedFileName) {
+		this.uploadedFileName = uploadedFileName;
+	}
+
+	public String getRESOURCES_SRC() {
+		return RESOURCES_SRC;
+	}
+
+	public ManageImageFacadeService getManageImageFacadeService() {
+		return manageImageFacadeService;
+	}
+
+	public void setManageImageFacadeService(
+			ManageImageFacadeService manageImageFacadeService) {
+		this.manageImageFacadeService = manageImageFacadeService;
 	}
 
 }

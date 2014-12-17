@@ -21,10 +21,10 @@ import hu.unideb.webshop.service.CategoryService;
 @Service("categoryService")
 @Transactional(propagation = Propagation.REQUIRED)
 public class CategoryServiceImpl implements CategoryService {
-	
+
 	@Autowired
 	CategoryDao categoryDao;
-	
+
 	@Override
 	public void saveCategory(CategoryDTO category) {
 		categoryDao.save(categoryDao.toEntity(category, null));
@@ -46,31 +46,34 @@ public class CategoryServiceImpl implements CategoryService {
 			String sortField, int sortOrder, String filter,
 			String filterColumnName) {
 		Direction dir = sortOrder == 1 ? Sort.Direction.ASC
-                : Sort.Direction.DESC;
+				: Sort.Direction.DESC;
 
-        PageRequest pageRequest = new PageRequest(page, size, new Sort(
-                new Order(dir, sortField)));
-        List<CategoryDTO> ret = new ArrayList<CategoryDTO>(size);
-        Page<Category> entities;
-        if (filter.length() != 0 && filterColumnName.equals("name")) {
-            entities = categoryDao
-                    .findByNameStartsWith(filter, pageRequest);
-        } else {
-            entities = categoryDao.findAll(pageRequest);
-        }
+		PageRequest pageRequest = new PageRequest(page, size, new Sort(
+				new Order(dir, sortField)));
+		List<CategoryDTO> ret = new ArrayList<CategoryDTO>(size);
+		Page<Category> entities;
+		if (filter.length() != 0 && filterColumnName.equals("name")) {
+			entities = categoryDao.findByNameStartsWith(filter, pageRequest);
+		} else if (filter.length() != 0
+				&& filterColumnName.equals("parent.name")) {
+			entities = categoryDao.findByParentNameStartsWith(filter,
+					pageRequest);
+		} else {
+			entities = categoryDao.findAll(pageRequest);
+		}
 
-        if (entities != null && entities.getSize() > 0) {
-            List<Category> contents = entities.getContent();
-            for (Category recipe : contents) {
-                ret.add(categoryDao.toDto(recipe));
-            }
-        }
-        return ret;
+		if (entities != null && entities.getSize() > 0) {
+			List<Category> contents = entities.getContent();
+			for (Category recipe : contents) {
+				ret.add(categoryDao.toDto(recipe));
+			}
+		}
+		return ret;
 
 	}
 
 	@Override
-	public int getRowNumber() {	
+	public int getRowNumber() {
 		return categoryDao.countRowNum();
 	}
 
