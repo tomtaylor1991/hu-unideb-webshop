@@ -56,7 +56,51 @@
 					onclick="PF('newTopLevelCategoryDialog').close();" />
 			</h:form>
 		</p:dialog>
+		<p:dialog header="Update category" modal="true"
+			widgetVar="updateCategoryDialog" minHeight="300" minWidth="400">
+			<h:form id="updateCategory">
+				<h:outputLabel for="parent" value="Parent: "
+					style="font-weight:bold" />
+				<h:outputLabel id="parent"
+					value="#{categoryManagerController.selectedCategory.parent!=null?categoryManagerController.selectedCategory.parent.name:'top level'}" />
+				<p:autoComplete id="pname"
+					value="#{categoryManagerController.selectedParentCategory}"
+					completeMethod="#{categoryManagerController.completeText}" var="c"
+					itemLabel="#{c.name}" itemValue="#{c}" converter="categoryConverter"/>
+				<br />
+				<br />
+				<h:outputLabel for="name" value="Name" style="font-weight:bold" />
+				<br />
+				<p:inputText id="name"
+					value="#{categoryManagerController.selectedCategory.name}" />
+				<br />
+				<br />
+				<h:outputLabel for="priority" value="Priority"
+					style="font-weight:bold" />
+				<br />
+				<p:inputText id="priority"
+					value="#{categoryManagerController.selectedCategory.priority}" />
+				<br />
+				<br />
 
+				<h:outputLabel for="imageUpload" value="Image upload"
+					style="font-weight:bold" />
+				<br />
+				<p:fileUpload
+					fileUploadListener="#{categoryManagerController.handleFileUpload}"
+					mode="advanced" update="messages" auto="true" sizeLimit="100000"
+					allowTypes="/(\.|\/)(gif|jpe?g|png)$/" id="imageUpload" />
+
+				<p:growl id="messages" showDetail="true" />
+
+				<br />
+				<br />
+				<p:commandButton value="Save"
+					action="#{categoryManagerController.updateCategory()}"
+					update=":categoryList"
+					onclick="PF('updateCategoryDialog').close();" />
+			</h:form>
+		</p:dialog>
 		<h:form id="categoryList">
 			<p:dataTable id="categoryTable" var="currentCategory"
 				value="#{categoryManagerController.categoryModel}"
@@ -70,9 +114,10 @@
 
 				<p:column headerText="Image">
 					<p:graphicImage value="#{imageBean.image}"
+						style="height: 80px; width: auto;"
 						rendered="#{currentCategory.image!=null}">
 						<f:param name="id"
-							value="#{currentCategory.image.imageDataId}" />
+							value="#{currentCategory.image.thumbnailDataId}" />
 					</p:graphicImage>
 				</p:column>
 				<p:column headerText="Name" sortBy="#{currentCategory.name}"
@@ -99,6 +144,11 @@
 					disabled="#{categoryManagerController.selectedCategory == null}"
 					update=":newCategory"
 					onclick="PF('newTopLevelCategoryDialog').show();" />
+				<p:commandButton value="Update category"
+					disabled="#{categoryManagerController.selectedCategory == null}"
+					action="#{categoryManagerController.initUpdateCategory()}"
+					update=":updateCategory"
+					onclick="PF('updateCategoryDialog').show();" />
 			</p:panel>
 		</h:form>
 	</ui:define>

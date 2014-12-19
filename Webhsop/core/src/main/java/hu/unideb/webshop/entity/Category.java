@@ -53,4 +53,10 @@ public class Category extends BaseEntity {
 		this.imageInfoId = imageInfoId;
 	}
 
+	@Override
+	public String toString() {
+		return "Category [name=" + name + ", imageInfoId=" + imageInfoId
+				+ ", priority=" + priority + ", parent=" + parent + "]";
+	}
+
 }

@@ -26,7 +26,7 @@ public class ImageBean implements Serializable {
 	
 	public StreamedContent getImage() throws IOException {
 		FacesContext context = FacesContext.getCurrentInstance();
-		System.out.println("++++++ "+context.getExternalContext().getRequestParameterMap());
+		//System.out.println("++++++ "+context.getExternalContext().getRequestParameterMap());
 		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
 			// So, we're rendering the view. Return a stub StreamedContent so
 			// that it will generate right URL.

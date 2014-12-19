@@ -1,5 +1,7 @@
 package hu.unideb.webshop.dao;
 
+import java.util.List;
+
 import hu.unideb.webshop.dto.CategoryDTO;
 import hu.unideb.webshop.entity.Category;
 
@@ -20,5 +22,8 @@ public interface CategoryDao extends
 
 	@Query(value = "SELECT count(*) FROM CATEGORY", nativeQuery = true)
     int countRowNum();
+	
+	List<Category> findByNameStartsWithAndParentIsNull(String name);
 
+	Category findById(Long id);
 }

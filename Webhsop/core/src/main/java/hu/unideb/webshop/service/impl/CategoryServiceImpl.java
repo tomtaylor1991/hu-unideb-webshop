@@ -1,6 +1,7 @@
 package hu.unideb.webshop.service.impl;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,8 +65,8 @@ public class CategoryServiceImpl implements CategoryService {
 
 		if (entities != null && entities.getSize() > 0) {
 			List<Category> contents = entities.getContent();
-			for (Category recipe : contents) {
-				ret.add(categoryDao.toDto(recipe));
+			for (Category c : contents) {
+				ret.add(categoryDao.toDto(c));
 			}
 		}
 		return ret;
@@ -75,6 +76,26 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public int getRowNumber() {
 		return categoryDao.countRowNum();
+	}
+
+	@Override
+	public List<CategoryDTO> searchCategoryByName(String name) {
+		List<CategoryDTO> ret = new LinkedList<CategoryDTO>();
+		List<Category> entities = categoryDao
+				.findByNameStartsWithAndParentIsNull(name);
+		if (entities != null && entities.size() > 0) {
+			for (Category c : entities) {
+				ret.add(categoryDao.toDto(c));
+			}
+		}
+		return ret;
+	}
+
+	@Override
+	public CategoryDTO getCategory(Long id) {
+		Category entity = categoryDao.findById(id);
+		System.out.println(entity);
+		return categoryDao.toDto(entity);
 	}
 
 }

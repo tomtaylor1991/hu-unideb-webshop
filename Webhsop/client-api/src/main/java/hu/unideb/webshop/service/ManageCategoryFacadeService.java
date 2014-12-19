@@ -13,4 +13,8 @@ public interface ManageCategoryFacadeService {
 			int sortOrder, String filter, String filterColumnName);
 	
 	public int getRowNumber();
+	
+	List<CategoryDTO> searchCategoryByName(String name);
+	
+	CategoryDTO getCategory(Long id);
 }

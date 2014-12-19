@@ -47,4 +47,15 @@ public class ManageCategoryFacadeServiceImpl implements
 		return categoryService.getRowNumber();
 	}
 
+	@Override
+	public List<CategoryDTO> searchCategoryByName(String name) {
+		return categoryService.searchCategoryByName(name);
+	}
+
+	@Override
+	public CategoryDTO getCategory(Long id) {
+		System.out.println("--- " + id);
+		return categoryService.getCategory(id);
+	}
+
 }

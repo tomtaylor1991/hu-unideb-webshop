@@ -6,27 +6,28 @@ import hu.unideb.webshop.dto.ImageInfoDTO;
 import hu.unideb.webshop.service.ManageCategoryFacadeService;
 import hu.unideb.webshop.service.ManageImageFacadeService;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseId;
+import javax.faces.convert.Converter;
+import javax.faces.convert.FacesConverter;
 
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 @ViewScoped
 @ManagedBean(name = "categoryManagerController")
-public class CategoryManagerController implements Serializable {
+@FacesConverter("categoryConverter")
+public class CategoryManagerController implements Serializable, Converter {
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,9 +35,11 @@ public class CategoryManagerController implements Serializable {
 
 	private LazyCategoryModel categoryModel;
 	private CategoryDTO selectedCategory;
+	private CategoryDTO selectedParentCategory;
 	private CategoryDTO newCategory;
 	private UploadedFile uploadedFile;
 	private String uploadedFileName;
+	private List<CategoryDTO> completeTextResults;
 
 	@ManagedProperty(value = "#{manageCategoryFacadeService}")
 	private ManageCategoryFacadeService manageCategoryFacadeService;
@@ -110,7 +113,7 @@ public class CategoryManagerController implements Serializable {
 				System.out.println("start saving " + uploadedFileName);
 				ImageInfoDTO img = manageImageFacadeService.saveImage(
 						uploadedFile.getContents(), uploadedFileName);
-				System.out.println("New Image: " + img);
+				// System.out.println("New Image: " + img);
 				newCategory.setImageInfoId(img.getId());
 			}
 			// ////
@@ -121,11 +124,39 @@ public class CategoryManagerController implements Serializable {
 		}
 	}
 
+	public void updateCategory() {
+		if (selectedCategory != null) {
+			// kep feltoltese
+			if (uploadedFile != null) {
+				System.out.println("start saving " + uploadedFileName);
+				ImageInfoDTO img = manageImageFacadeService.saveImage(
+						uploadedFile.getContents(), uploadedFileName);
+				// System.out.println("New Image: " + img);
+				selectedCategory.setImageInfoId(img.getId());
+			}
+			// /////
+			if (selectedCategory.getId() != selectedParentCategory.getId()) {
+				selectedCategory.setParent(selectedParentCategory);
+			}
+			// ////
+			manageCategoryFacadeService.updateCategory(selectedCategory);
+			// ////
+			selectedCategory = null;
+			this.uploadedFile = null;
+		}
+	}
+
 	public void handleFileUpload(FileUploadEvent event) {
 
 		// get uploaded file from the event
 		this.uploadedFile = (UploadedFile) event.getFile();
 		this.uploadedFileName = event.getFile().getFileName();
+	}
+
+	public List<CategoryDTO> completeText(String query) {
+		completeTextResults = manageCategoryFacadeService
+				.searchCategoryByName(query);
+		return completeTextResults;
 	}
 
 	public UploadedFile getUploadedFile() {
@@ -155,6 +186,65 @@ public class CategoryManagerController implements Serializable {
 	public void setManageImageFacadeService(
 			ManageImageFacadeService manageImageFacadeService) {
 		this.manageImageFacadeService = manageImageFacadeService;
+	}
+
+	public CategoryDTO getSelectedParentCategory() {
+		return selectedParentCategory;
+	}
+
+	public void setSelectedParentCategory(CategoryDTO selectedParentCategory) {
+		this.selectedParentCategory = selectedParentCategory;
+	}
+
+	public void initUpdateCategory() {
+		if (selectedCategory != null) {
+			selectedParentCategory = selectedCategory.getParent();
+		}
+	}
+
+	@Override
+	public String getAsString(FacesContext arg0, UIComponent arg1, Object object) {
+		if (object != null) {
+			return String.valueOf(((CategoryDTO) object).getId());
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public Object getAsObject(FacesContext fc, UIComponent arg1, String value) {
+		System.out.println("start " + value);
+		Map<String, Object> viewMap = FacesContext.getCurrentInstance()
+				.getViewRoot().getViewMap();
+		CategoryManagerController viewScopedBean = (CategoryManagerController) viewMap
+				.get("categoryManagerController");
+		List<CategoryDTO> list = viewScopedBean.getCompleteTextResults();
+		if (value != null && value.trim().length() > 0) {
+			try {
+				Long idValue = Long.valueOf(value);
+				System.out.println("check start " + idValue);
+				for (CategoryDTO c : list) {
+					// System.out.println("check start " + c);
+					if (c.getId().equals(idValue)) {
+						// System.out.println(c);
+						return c;
+					}
+				}
+				return null;
+			} catch (NumberFormatException e) {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+
+	public List<CategoryDTO> getCompleteTextResults() {
+		return completeTextResults;
+	}
+
+	public void setCompleteTextResults(List<CategoryDTO> completeTextResults) {
+		this.completeTextResults = completeTextResults;
 	}
 
 }
