@@ -62,7 +62,7 @@ public class Product extends BaseEntity {
 		return isSpecial;
 	}
 
-	public void setSpecial(boolean isSpecial) {
+	public void setIsSpecial(boolean isSpecial) {
 		this.isSpecial = isSpecial;
 	}
 
@@ -78,7 +78,7 @@ public class Product extends BaseEntity {
 		return isHighlight;
 	}
 
-	public void setHighlight(boolean isHighlight) {
+	public void setIsHighlight(boolean isHighlight) {
 		this.isHighlight = isHighlight;
 	}
 

@@ -24,6 +24,7 @@ public interface CategoryDao extends
     int countRowNum();
 	
 	List<Category> findByNameStartsWithAndParentIsNull(String name);
+	List<Category> findByNameStartsWith(String name);
 
 	Category findById(Long id);
 }

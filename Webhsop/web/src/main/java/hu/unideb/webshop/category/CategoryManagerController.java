@@ -8,17 +8,13 @@ import hu.unideb.webshop.service.ManageImageFacadeService;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.FacesConverter;
 
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
@@ -26,12 +22,9 @@ import org.primefaces.model.UploadedFile;
 
 @ViewScoped
 @ManagedBean(name = "categoryManagerController")
-@FacesConverter("categoryConverter")
-public class CategoryManagerController implements Serializable, Converter {
+public class CategoryManagerController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	public final String RESOURCES_SRC = "/home/tomtaylor/workspaces/szakdolgozat/webshop/Application/hu-unideb-webshop/uploads";
 
 	private LazyCategoryModel categoryModel;
 	private CategoryDTO selectedCategory;
@@ -135,7 +128,10 @@ public class CategoryManagerController implements Serializable, Converter {
 				selectedCategory.setImageInfoId(img.getId());
 			}
 			// /////
-			if (selectedCategory.getId() != selectedParentCategory.getId()) {
+			if (selectedParentCategory == null) {
+				selectedCategory.setParent(null);
+			} else if (selectedCategory.getId() != selectedParentCategory
+					.getId()) {
 				selectedCategory.setParent(selectedParentCategory);
 			}
 			// ////
@@ -175,10 +171,6 @@ public class CategoryManagerController implements Serializable, Converter {
 		this.uploadedFileName = uploadedFileName;
 	}
 
-	public String getRESOURCES_SRC() {
-		return RESOURCES_SRC;
-	}
-
 	public ManageImageFacadeService getManageImageFacadeService() {
 		return manageImageFacadeService;
 	}
@@ -199,43 +191,6 @@ public class CategoryManagerController implements Serializable, Converter {
 	public void initUpdateCategory() {
 		if (selectedCategory != null) {
 			selectedParentCategory = selectedCategory.getParent();
-		}
-	}
-
-	@Override
-	public String getAsString(FacesContext arg0, UIComponent arg1, Object object) {
-		if (object != null) {
-			return String.valueOf(((CategoryDTO) object).getId());
-		} else {
-			return null;
-		}
-	}
-
-	@Override
-	public Object getAsObject(FacesContext fc, UIComponent arg1, String value) {
-		System.out.println("start " + value);
-		Map<String, Object> viewMap = FacesContext.getCurrentInstance()
-				.getViewRoot().getViewMap();
-		CategoryManagerController viewScopedBean = (CategoryManagerController) viewMap
-				.get("categoryManagerController");
-		List<CategoryDTO> list = viewScopedBean.getCompleteTextResults();
-		if (value != null && value.trim().length() > 0) {
-			try {
-				Long idValue = Long.valueOf(value);
-				System.out.println("check start " + idValue);
-				for (CategoryDTO c : list) {
-					// System.out.println("check start " + c);
-					if (c.getId().equals(idValue)) {
-						// System.out.println(c);
-						return c;
-					}
-				}
-				return null;
-			} catch (NumberFormatException e) {
-				return null;
-			}
-		} else {
-			return null;
 		}
 	}
 

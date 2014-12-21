@@ -21,9 +21,9 @@ public class ProductDaoImpl implements BaseConvertDao<Product, ProductDTO>{
         ret.setRate(dto.getRate());
         ret.setText(dto.getText());
         ret.setPrice(dto.getPrice());
-        ret.setSpecial(dto.getIsSpecial());
+        ret.setIsSpecial(dto.getIsSpecial());
         ret.setSpecialPrice(dto.getSpecialPrice());
-        ret.setHighlight(dto.getIsHighlight());
+        ret.setIsHighlight(dto.getIsHighlight());
         ret.setShortText(dto.getShortText());
         
         return ret;
@@ -41,9 +41,9 @@ public class ProductDaoImpl implements BaseConvertDao<Product, ProductDTO>{
         ret.setRate(entity.getRate());
         ret.setText(entity.getText());
         ret.setPrice(entity.getPrice());
-        ret.setSpecial(entity.getIsSpecial());
+        ret.setIsSpecial(entity.getIsSpecial());
         ret.setSpecialPrice(entity.getSpecialPrice());
-        ret.setHighlight(entity.getIsHighlight());
+        ret.setIsHighlight(entity.getIsHighlight());
         ret.setShortText(entity.getShortText());
 		return ret;
 	}

@@ -98,4 +98,17 @@ public class CategoryServiceImpl implements CategoryService {
 		return categoryDao.toDto(entity);
 	}
 
+	@Override
+	public List<CategoryDTO> searchAllCategoryByName(String name) {
+		List<CategoryDTO> ret = new LinkedList<CategoryDTO>();
+		List<Category> entities = categoryDao
+				.findByNameStartsWith(name);
+		if (entities != null && entities.size() > 0) {
+			for (Category c : entities) {
+				ret.add(categoryDao.toDto(c));
+			}
+		}
+		return ret;
+	}
+
 }

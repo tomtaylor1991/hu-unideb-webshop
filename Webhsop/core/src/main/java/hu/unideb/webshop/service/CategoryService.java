@@ -1,7 +1,6 @@
 package hu.unideb.webshop.service;
 
 import hu.unideb.webshop.dto.CategoryDTO;
-import hu.unideb.webshop.entity.Category;
 
 import java.util.List;
 
@@ -14,6 +13,7 @@ public interface CategoryService {
 	public int getRowNumber();
 	
 	List<CategoryDTO> searchCategoryByName(String name);
-	
+	List<CategoryDTO> searchAllCategoryByName(String name);
+
 	CategoryDTO getCategory(Long id);
 }

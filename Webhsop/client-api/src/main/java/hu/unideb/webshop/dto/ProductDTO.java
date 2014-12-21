@@ -42,7 +42,7 @@ public class ProductDTO extends BaseDTO implements Serializable{
 	public boolean getIsSpecial() {
 		return isSpecial;
 	}
-	public void setSpecial(boolean isSpecial) {
+	public void setIsSpecial(boolean isSpecial) {
 		this.isSpecial = isSpecial;
 	}
 	public double getSpecialPrice() {
@@ -54,7 +54,7 @@ public class ProductDTO extends BaseDTO implements Serializable{
 	public boolean getIsHighlight() {
 		return isHighlight;
 	}
-	public void setHighlight(boolean isHighlight) {
+	public void setIsHighlight(boolean isHighlight) {
 		this.isHighlight = isHighlight;
 	}
 	public String getShortText() {
