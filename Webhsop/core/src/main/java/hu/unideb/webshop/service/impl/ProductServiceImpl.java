@@ -50,6 +50,8 @@ public class ProductServiceImpl implements ProductService {
 		Page<Product> entities;
 		if (filter.length() != 0 && filterColumnName.equals("name")) {
 			entities = productDao.findByNameStartsWith(filter, pageRequest);
+		} else if (filter.length() != 0 && filterColumnName.equals("category.name")) {
+			entities = productDao.findByCategoryNameStartsWith(filter, pageRequest);
 		} else {
 			entities = productDao.findAll(pageRequest);
 		}

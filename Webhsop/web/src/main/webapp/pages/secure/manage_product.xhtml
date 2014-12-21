@@ -21,8 +21,16 @@
 					<h:outputLabel for="name" value="Name" style="font-weight:bold" />
 
 					<p:inputText id="name" value="#{productController.newProduct.name}" />
+					
+					<h:outputLabel for="category" value="Category"
+						style="font-weight:bold" />
 
-
+					<p:autoComplete id="category"
+						value="#{productController.selectedCategory}"
+						completeMethod="#{productController.completeText}" var="c"
+						itemLabel="#{c.name}" itemValue="#{c}"
+						converter="categoryConverterOfProductController" />
+						
 					<h:outputLabel for="price" value="Price" style="font-weight:bold" />
 
 					<p:inputText id="price"
@@ -86,11 +94,15 @@
 				rowsPerPageTemplate="5,10,15" lazy="true"
 				emptyMessage="#{out.empty_message}">
 				<p:ajax event="rowSelect" update=":productList:commandButtons" />
-				<p:column style="width:16px">
+				<p:column style="width:16px" value="Images">
 					<p:rowToggler />
 				</p:column>
 				<p:column headerText="ID" sortBy="#{currentproduct.id}">
 					<h:outputText value="#{currentproduct.id}" />
+				</p:column>
+				<p:column headerText="Category" sortBy="#{currentproduct.category.name}"
+					filterBy="#{currentproduct.category.name}">
+					<h:outputText value="#{currentproduct.category.name}" />
 				</p:column>
 				<p:column headerText="Name" sortBy="#{currentproduct.name}"
 					filterBy="#{currentproduct.name}">
@@ -102,7 +114,7 @@
 				<p:rowExpansion>
 					<p:panelGrid columns="2">
 						<f:facet name="header">
-							<h:outputText value="Images"/>
+							<h:outputText value="Images" />
 						</f:facet>
 
 					</p:panelGrid>

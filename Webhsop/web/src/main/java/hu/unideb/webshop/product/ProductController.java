@@ -1,9 +1,11 @@
 package hu.unideb.webshop.product;
 
+import hu.unideb.webshop.dto.CategoryDTO;
 import hu.unideb.webshop.dto.ProductDTO;
 import hu.unideb.webshop.service.ManageProductFacadeService;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -21,6 +23,8 @@ public class ProductController implements Serializable {
 	private ProductDTO selectedProduct;
 	private LazyProductModel productModel;
 	private ProductDTO newProduct;
+	private CategoryDTO selectedCategory;
+	private List<CategoryDTO> completeTextResults;
 
 	@PostConstruct
 	public void init() {
@@ -66,8 +70,34 @@ public class ProductController implements Serializable {
 
 	public void createProduct() {
 		if (newProduct != null) {
+			newProduct.setCategory(selectedCategory);
+			//System.out.println("SELECTED CATEGORY: " + selectedCategory);
 			manageProductFacadeService.saveProduct(newProduct);
 			newProduct = null;
+			selectedCategory = null;
 		}
 	}
+
+	public CategoryDTO getSelectedCategory() {
+		return selectedCategory;
+	}
+
+	public void setSelectedCategory(CategoryDTO selectedCategory) {
+		this.selectedCategory = selectedCategory;
+	}
+
+	public List<CategoryDTO> getCompleteTextResults() {
+		return completeTextResults;
+	}
+
+	public void setCompleteTextResults(List<CategoryDTO> completeTextResults) {
+		this.completeTextResults = completeTextResults;
+	}
+
+	public List<CategoryDTO> completeText(String query) {
+		completeTextResults = manageProductFacadeService
+				.searchCategoryByName(query);
+		return completeTextResults;
+	}
+
 }

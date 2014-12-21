@@ -14,6 +14,7 @@ public interface ProductDao extends PagingAndSortingRepository<Product, Long>,
 		BaseConvertDao<Product, ProductDTO> {
 	
 	Page<Product> findByNameStartsWith(String name, Pageable pageable);
+	Page<Product> findByCategoryNameStartsWith(String name, Pageable pageable);
 
 	@Query(value = "SELECT count(*) FROM PRODUCT", nativeQuery = true)
     int countRowNum();
