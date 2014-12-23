@@ -1,7 +1,9 @@
 package hu.unideb.webshop.product;
 
 import hu.unideb.webshop.dto.CategoryDTO;
+import hu.unideb.webshop.dto.ImageInfoDTO;
 import hu.unideb.webshop.dto.ProductDTO;
+import hu.unideb.webshop.service.ManageImageFacadeService;
 import hu.unideb.webshop.service.ManageProductFacadeService;
 
 import java.io.Serializable;
@@ -12,6 +14,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
+
 @ViewScoped
 @ManagedBean(name = "productController")
 public class ProductController implements Serializable {
@@ -20,15 +25,21 @@ public class ProductController implements Serializable {
 
 	@ManagedProperty(value = "#{manageProductFacadeService}")
 	private ManageProductFacadeService manageProductFacadeService;
+	@ManagedProperty(value = "#{manageImageFacadeService}")
+	private ManageImageFacadeService manageImageFacadeService;
+
 	private ProductDTO selectedProduct;
 	private LazyProductModel productModel;
 	private ProductDTO newProduct;
 	private CategoryDTO selectedCategory;
 	private List<CategoryDTO> completeTextResults;
+	private UploadedFile uploadedFile;
+	private String uploadedFileName;
 
 	@PostConstruct
 	public void init() {
-		productModel = new LazyProductModel(manageProductFacadeService);
+		productModel = new LazyProductModel(manageProductFacadeService,
+				manageImageFacadeService);
 	}
 
 	public ManageProductFacadeService getManageProductFacadeService() {
@@ -71,7 +82,7 @@ public class ProductController implements Serializable {
 	public void createProduct() {
 		if (newProduct != null) {
 			newProduct.setCategory(selectedCategory);
-			//System.out.println("SELECTED CATEGORY: " + selectedCategory);
+			// System.out.println("SELECTED CATEGORY: " + selectedCategory);
 			manageProductFacadeService.saveProduct(newProduct);
 			newProduct = null;
 			selectedCategory = null;
@@ -100,4 +111,45 @@ public class ProductController implements Serializable {
 		return completeTextResults;
 	}
 
+	public void handleFileUpload(FileUploadEvent event) {
+		// get uploaded file from the event
+		this.uploadedFile = (UploadedFile) event.getFile();
+		this.uploadedFileName = event.getFile().getFileName();
+	}
+
+	public UploadedFile getUploadedFile() {
+		return uploadedFile;
+	}
+
+	public void setUploadedFile(UploadedFile uploadedFile) {
+		this.uploadedFile = uploadedFile;
+	}
+
+	public String getUploadedFileName() {
+		return uploadedFileName;
+	}
+
+	public void setUploadedFileName(String uploadedFileName) {
+		this.uploadedFileName = uploadedFileName;
+	}
+
+	public ManageImageFacadeService getManageImageFacadeService() {
+		return manageImageFacadeService;
+	}
+
+	public void setManageImageFacadeService(
+			ManageImageFacadeService manageImageFacadeService) {
+		this.manageImageFacadeService = manageImageFacadeService;
+	}
+
+	public void saveImageToProduct() {
+		System.out.println(selectedProduct);
+		if (selectedProduct != null) {
+			ImageInfoDTO img = manageImageFacadeService.saveImage(
+					uploadedFile.getContents(), uploadedFileName);
+			img.setProductId(selectedProduct.getId());
+			manageImageFacadeService.updateImage(img);
+			System.out.println("Success image upload for product!");
+		}
+	}
 }

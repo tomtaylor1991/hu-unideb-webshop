@@ -1,6 +1,8 @@
 package hu.unideb.webshop.dto;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ProductDTO extends BaseDTO implements Serializable{
 
@@ -15,6 +17,7 @@ public class ProductDTO extends BaseDTO implements Serializable{
 	private boolean isHighlight;
 	private String shortText;
 	private CategoryDTO category;
+	List<ImageInfoDTO> images;
 	public String getName() {
 		return name;
 	}
@@ -74,6 +77,12 @@ public class ProductDTO extends BaseDTO implements Serializable{
 	}
 	public void setCategory(CategoryDTO category) {
 		this.category = category;
+	}
+	public List<ImageInfoDTO> getImages() {
+		return images;
+	}
+	public void setImages(List<ImageInfoDTO> images) {
+		this.images = images;
 	}
 	
 	

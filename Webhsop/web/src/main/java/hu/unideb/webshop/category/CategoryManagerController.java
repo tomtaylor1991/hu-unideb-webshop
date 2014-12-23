@@ -143,7 +143,6 @@ public class CategoryManagerController implements Serializable {
 	}
 
 	public void handleFileUpload(FileUploadEvent event) {
-
 		// get uploaded file from the event
 		this.uploadedFile = (UploadedFile) event.getFile();
 		this.uploadedFileName = event.getFile().getFileName();

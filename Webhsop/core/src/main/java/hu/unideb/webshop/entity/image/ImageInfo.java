@@ -21,6 +21,9 @@ public class ImageInfo extends BaseEntity{
 	@Column(name = "thumbnail_data_id")
 	private Long thumbnailDataId = 0L;
 
+	@Column(name = "product_id")
+	private Long productId;
+	
 	public String getFileName() {
 		return fileName;
 	}
@@ -44,5 +47,15 @@ public class ImageInfo extends BaseEntity{
 	public void setThumbnailDataId(Long thumbnailDataId) {
 		this.thumbnailDataId = thumbnailDataId;
 	}
+
+	public Long getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Long productId) {
+		this.productId = productId;
+	}
+
+
 
 }

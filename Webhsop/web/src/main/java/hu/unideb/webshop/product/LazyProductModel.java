@@ -1,8 +1,11 @@
 package hu.unideb.webshop.product;
 
+import hu.unideb.webshop.dto.ImageInfoDTO;
 import hu.unideb.webshop.dto.ProductDTO;
+import hu.unideb.webshop.service.ManageImageFacadeService;
 import hu.unideb.webshop.service.ManageProductFacadeService;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +17,9 @@ public class LazyProductModel extends LazyDataModel<ProductDTO> {
 	private static final long serialVersionUID = 1L;
 
 	private ManageProductFacadeService manageProductFacadeService = null;
+
+	private ManageImageFacadeService manageImageFacadeService = null;
+
 	private List<ProductDTO> visibleProductList;
 
 	@Override
@@ -59,7 +65,16 @@ public class LazyProductModel extends LazyDataModel<ProductDTO> {
 
 		int dataSize = manageProductFacadeService.getRowNumber();
 		this.setRowCount(dataSize);
-
+		// Set images to the products
+		for (ProductDTO product : visibleProductList) {
+			try {
+				product.setImages(manageImageFacadeService
+						.getProductImages(product));
+			} catch (NullPointerException e) {
+				product.setImages(new LinkedList<ImageInfoDTO>());
+			}
+		}
+		// /
 		return visibleProductList;
 	}
 
@@ -70,6 +85,13 @@ public class LazyProductModel extends LazyDataModel<ProductDTO> {
 	public void setManageProductFacadeService(
 			ManageProductFacadeService manageProductFacadeService) {
 		this.manageProductFacadeService = manageProductFacadeService;
+	}
+
+	public LazyProductModel(
+			ManageProductFacadeService manageProductFacadeService,
+			ManageImageFacadeService manageImageFacadeService) {
+		this.manageProductFacadeService = manageProductFacadeService;
+		this.manageImageFacadeService = manageImageFacadeService;
 	}
 
 	public List<ProductDTO> getVisibleProductList() {

@@ -3,12 +3,15 @@ package hu.unideb.webshop.service.impl;
 import hu.unideb.webshop.dao.ImageDataRepository;
 import hu.unideb.webshop.dao.ImageInfoDao;
 import hu.unideb.webshop.dto.ImageInfoDTO;
+import hu.unideb.webshop.dto.ProductDTO;
 import hu.unideb.webshop.entity.image.ImageData;
 import hu.unideb.webshop.entity.image.ImageInfo;
 import hu.unideb.webshop.entity.image.ImageUtils;
 import hu.unideb.webshop.service.ImageService;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,6 +57,37 @@ public class ImageServiceImpl implements ImageService {
 	@Override
 	public byte[] getImage(long imageDataId) {
 		return imageDataRepository.getOne(imageDataId).getData();
+	}
+
+	@Override
+	public void removeImage(ImageInfoDTO image) {
+		imageInfoDao.delete(imageInfoDao.toEntity(image, null));
+
+	}
+
+	@Override
+	public List<ImageInfoDTO> getProductImages(ProductDTO product) {
+		List<ImageInfo> entities = imageInfoDao
+				.findByProductId(product.getId());
+		List<ImageInfoDTO> ret = new LinkedList<ImageInfoDTO>();
+		if (entities != null && entities.size() > 0) {
+			for (ImageInfo i : entities) {
+				ret.add(imageInfoDao.toDto(i));
+			}
+		}
+		return ret;
+	}
+
+	@Override
+	public void removeAllOfProductImages(ProductDTO product) {
+		imageInfoDao.deleteByProductId(product.getId());
+
+	}
+
+	@Override
+	public void updateImage(ImageInfoDTO image) {
+		imageInfoDao.save(imageInfoDao.toEntity(image, null));
+
 	}
 
 }

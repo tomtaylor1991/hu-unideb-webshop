@@ -15,13 +15,14 @@
 	<ui:define name="content">
 		<p:growl id="msgs" showDetail="true" />
 		<p:dialog header="Create new product" modal="true"
-			widgetVar="newProductDialog" minHeight="300" minWidth="400">
+			widgetVar="newProductDialog" minHeight="300" minWidth="400"
+			maxHeight="650">
 			<h:form id="newProduct">
 				<p:panelGrid columns="2">
 					<h:outputLabel for="name" value="Name" style="font-weight:bold" />
 
 					<p:inputText id="name" value="#{productController.newProduct.name}" />
-					
+
 					<h:outputLabel for="category" value="Category"
 						style="font-weight:bold" />
 
@@ -30,7 +31,7 @@
 						completeMethod="#{productController.completeText}" var="c"
 						itemLabel="#{c.name}" itemValue="#{c}"
 						converter="categoryConverterOfProductController" />
-						
+
 					<h:outputLabel for="price" value="Price" style="font-weight:bold" />
 
 					<p:inputText id="price"
@@ -94,13 +95,14 @@
 				rowsPerPageTemplate="5,10,15" lazy="true"
 				emptyMessage="#{out.empty_message}">
 				<p:ajax event="rowSelect" update=":productList:commandButtons" />
-				<p:column style="width:16px" value="Images">
+				<p:column style="width:16px" headerText="Images">
 					<p:rowToggler />
 				</p:column>
 				<p:column headerText="ID" sortBy="#{currentproduct.id}">
 					<h:outputText value="#{currentproduct.id}" />
 				</p:column>
-				<p:column headerText="Category" sortBy="#{currentproduct.category.name}"
+				<p:column headerText="Category"
+					sortBy="#{currentproduct.category.name}"
 					filterBy="#{currentproduct.category.name}">
 					<h:outputText value="#{currentproduct.category.name}" />
 				</p:column>
@@ -111,13 +113,28 @@
 				<p:column headerText="Price" sortBy="#{currentproduct.price}">
 					<h:outputText value="#{currentproduct.price}" />
 				</p:column>
-				<p:rowExpansion>
-					<p:panelGrid columns="2">
+				<p:rowExpansion id="imageRow">
+					<p:fileUpload
+						fileUploadListener="#{productController.handleFileUpload}"
+						mode="advanced" auto="true" sizeLimit="100000"
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+					<p:commandButton value="Upload"
+						action="#{productController.saveImageToProduct()}" />
+					<p:dataGrid var="img" value="#{currentproduct.images}" columns="3"
+						layout="grid">
 						<f:facet name="header">
-							<h:outputText value="Images" />
+							<h:outputText value="( #{currentproduct.images.size()} )" />
 						</f:facet>
-
-					</p:panelGrid>
+						<p:panel>
+							<h:panelGrid columns="1" style="width:100%">
+								<p:graphicImage value="#{imageBean.image}"
+									style="height: auto; width: 200px;"
+									rendered="#{currentproduct.images!=null}">
+									<f:param name="id" value="#{img.thumbnailDataId}" />
+								</p:graphicImage>
+							</h:panelGrid>
+						</p:panel>
+					</p:dataGrid>
 				</p:rowExpansion>
 			</p:dataTable>
 			<p:panel id="commandButtons">

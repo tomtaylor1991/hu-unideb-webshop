@@ -1,9 +1,6 @@
 package hu.unideb.webshop.dao.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import hu.unideb.webshop.dao.BaseConvertDao;
-import hu.unideb.webshop.dao.ImageInfoDao;
 import hu.unideb.webshop.dto.ImageInfoDTO;
 import hu.unideb.webshop.entity.image.ImageInfo;
 
@@ -24,6 +21,7 @@ public class ImageInfoDaoImpl implements
 		ret.setFileName(dto.getFileName());
 		ret.setImageDataId(dto.getImageDataId());
 		ret.setThumbnailDataId(dto.getThumbnailDataId());
+		ret.setProductId(dto.getProductId());
 		return ret;
 	}
 
@@ -38,7 +36,7 @@ public class ImageInfoDaoImpl implements
 		ret.setFileName(entity.getFileName());
 		ret.setImageDataId(entity.getImageDataId());
 		ret.setThumbnailDataId(entity.getThumbnailDataId());
-
+		ret.setProductId(entity.getProductId());
 		return ret;
 	}
 

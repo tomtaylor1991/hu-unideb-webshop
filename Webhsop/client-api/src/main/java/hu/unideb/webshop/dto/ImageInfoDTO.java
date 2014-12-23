@@ -13,6 +13,8 @@ public class ImageInfoDTO extends BaseDTO implements Serializable {
 	private Long imageDataId = 0L;	
 
 	private Long thumbnailDataId = 0L;
+	
+	private Long productId;
 
 	public Long getId() {
 		return id;
@@ -51,6 +53,14 @@ public class ImageInfoDTO extends BaseDTO implements Serializable {
 		return "ImageInfoDTO [id=" + id + ", fileName=" + fileName
 				+ ", imageDataId=" + imageDataId + ", thumbnailDataId="
 				+ thumbnailDataId + "]";
+	}
+
+	public Long getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Long productId) {
+		this.productId = productId;
 	}
 
 }
