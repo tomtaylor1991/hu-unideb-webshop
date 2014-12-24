@@ -113,13 +113,19 @@
 				<p:column headerText="Price" sortBy="#{currentproduct.price}">
 					<h:outputText value="#{currentproduct.price}" />
 				</p:column>
+				<p:column headerText="Short Text">
+					<h:outputText value="#{currentproduct.shortText}" />
+				</p:column>
 				<p:rowExpansion id="imageRow">
-					<p:fileUpload
-						fileUploadListener="#{productController.handleFileUpload}"
-						mode="advanced" auto="true" sizeLimit="100000"
-						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
-					<p:commandButton value="Upload"
-						action="#{productController.saveImageToProduct()}" />
+					<p:panelGrid columns="2">
+						<p:fileUpload
+							fileUploadListener="#{productController.handleFileUpload}"
+							mode="advanced" auto="true" sizeLimit="100000"
+							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+						<p:commandButton value="Upload"
+							action="#{productController.saveImageToProduct(currentproduct)}"
+							update=":productList" />
+					</p:panelGrid>
 					<p:dataGrid var="img" value="#{currentproduct.images}" columns="3"
 						layout="grid">
 						<f:facet name="header">
@@ -132,6 +138,9 @@
 									rendered="#{currentproduct.images!=null}">
 									<f:param name="id" value="#{img.thumbnailDataId}" />
 								</p:graphicImage>
+								<p:commandButton value="delete"
+									action="#{productController.deleteProductImage(img)}"
+									update=":productList" />
 							</h:panelGrid>
 						</p:panel>
 					</p:dataGrid>

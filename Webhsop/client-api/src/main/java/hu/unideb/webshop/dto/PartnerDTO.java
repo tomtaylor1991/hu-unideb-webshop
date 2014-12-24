@@ -14,6 +14,8 @@ public class PartnerDTO extends BaseDTO implements Serializable {
 	
 	private String type;
 
+	private UserDTO user;
+	
 	public Long getId() {
 		return id;
 	}
@@ -44,6 +46,14 @@ public class PartnerDTO extends BaseDTO implements Serializable {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public UserDTO getUser() {
+		return user;
+	}
+
+	public void setUser(UserDTO user) {
+		this.user = user;
 	}
 
 }

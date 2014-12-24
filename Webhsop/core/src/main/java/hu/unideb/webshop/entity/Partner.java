@@ -9,18 +9,20 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "PARTNER")
 public class Partner extends BaseEntity {
-	
+
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
-	
+
 	/** The name. */
 	private String name;
-	
+
 	/** The address. */
 	private String address;
-	
+
 	/** The type. */
 	private String type;
+
+	private User user;
 
 	/**
 	 * Gets the name.
@@ -34,7 +36,8 @@ public class Partner extends BaseEntity {
 	/**
 	 * Sets the name.
 	 *
-	 * @param name the new name
+	 * @param name
+	 *            the new name
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -52,7 +55,8 @@ public class Partner extends BaseEntity {
 	/**
 	 * Sets the address.
 	 *
-	 * @param address the new address
+	 * @param address
+	 *            the new address
 	 */
 	public void setAddress(String address) {
 		this.address = address;
@@ -70,9 +74,19 @@ public class Partner extends BaseEntity {
 	/**
 	 * Sets the type.
 	 *
-	 * @param type the new type
+	 * @param type
+	 *            the new type
 	 */
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 }

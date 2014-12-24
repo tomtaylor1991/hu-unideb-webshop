@@ -142,12 +142,17 @@ public class ProductController implements Serializable {
 		this.manageImageFacadeService = manageImageFacadeService;
 	}
 
-	public void saveImageToProduct() {
-		System.out.println(selectedProduct);
-		if (selectedProduct != null) {
+	public void deleteProductImage(ImageInfoDTO img) {
+		if(img!=null){
+			manageImageFacadeService.removeImage(img);
+		}
+	}
+
+	public void saveImageToProduct(ProductDTO tmpProduct) {
+		if (tmpProduct != null) {
 			ImageInfoDTO img = manageImageFacadeService.saveImage(
 					uploadedFile.getContents(), uploadedFileName);
-			img.setProductId(selectedProduct.getId());
+			img.setProductId(tmpProduct.getId());
 			manageImageFacadeService.updateImage(img);
 			System.out.println("Success image upload for product!");
 		}
