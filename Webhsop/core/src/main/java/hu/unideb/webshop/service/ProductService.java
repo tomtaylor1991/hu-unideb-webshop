@@ -11,4 +11,6 @@ public interface ProductService {
 	List<ProductDTO> getProductList(int page, int size, String sortField,
 			int sortOrder, String filter, String filterColumnName);
 	public int getRowNumber();
+	public List<ProductDTO> searchProductByName(String name);
+
 }

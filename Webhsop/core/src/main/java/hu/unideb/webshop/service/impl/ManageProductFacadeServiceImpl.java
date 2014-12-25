@@ -19,7 +19,7 @@ public class ManageProductFacadeServiceImpl implements
 	ProductService productService;
 	@Autowired
 	CategoryService categoryService;
-	
+
 	@Override
 	public void saveProduct(ProductDTO product) {
 		productService.saveProduct(product);
@@ -52,6 +52,12 @@ public class ManageProductFacadeServiceImpl implements
 	@Override
 	public List<CategoryDTO> searchCategoryByName(String name) {
 		return categoryService.searchAllCategoryByName(name);
+	}
+
+	@Override
+	public List<ProductDTO> searchProductByName(String name) {
+
+		return productService.searchProductByName(name);
 	}
 
 }

@@ -6,6 +6,7 @@ import hu.unideb.webshop.entity.Product;
 import hu.unideb.webshop.service.ProductService;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +51,10 @@ public class ProductServiceImpl implements ProductService {
 		Page<Product> entities;
 		if (filter.length() != 0 && filterColumnName.equals("name")) {
 			entities = productDao.findByNameStartsWith(filter, pageRequest);
-		} else if (filter.length() != 0 && filterColumnName.equals("category.name")) {
-			entities = productDao.findByCategoryNameStartsWith(filter, pageRequest);
+		} else if (filter.length() != 0
+				&& filterColumnName.equals("category.name")) {
+			entities = productDao.findByCategoryNameStartsWith(filter,
+					pageRequest);
 		} else {
 			entities = productDao.findAll(pageRequest);
 		}
@@ -68,6 +71,18 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public int getRowNumber() {
 		return productDao.countRowNum();
+	}
+
+	@Override
+	public List<ProductDTO> searchProductByName(String name) {
+		List<ProductDTO> ret = new LinkedList<ProductDTO>();
+		List<Product> entities = productDao.findByNameStartsWith(name);
+		if (entities != null && entities.size() > 0) {
+			for (Product p : entities) {
+				ret.add(productDao.toDto(p));
+			}
+		}
+		return ret;
 	}
 
 }

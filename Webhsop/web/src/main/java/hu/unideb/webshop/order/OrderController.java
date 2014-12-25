@@ -3,9 +3,11 @@ package hu.unideb.webshop.order;
 import hu.unideb.webshop.LocaleSwitcher;
 import hu.unideb.webshop.dto.OrderDTO;
 import hu.unideb.webshop.dto.PartnerDTO;
+import hu.unideb.webshop.dto.ProductDTO;
 import hu.unideb.webshop.dto.RegistryDTO;
 import hu.unideb.webshop.service.ManageOrderFacadeService;
 import hu.unideb.webshop.service.ManagePartnerFacadeService;
+import hu.unideb.webshop.service.ManageProductFacadeService;
 import hu.unideb.webshop.service.ManageRegistryFacadeService;
 
 import java.io.Serializable;
@@ -41,15 +43,21 @@ public class OrderController implements Serializable {
 	@ManagedProperty(value = "#{managePartnerFacadeService}")
 	private ManagePartnerFacadeService managePartnerFacadeService;
 
+	@ManagedProperty(value = "#{manageProductFacadeService}")
+	private ManageProductFacadeService manageProductFacadeService;
+
 	private PartnerDTO selectedPartner;
 	private OrderDTO selectedOrder;
 	private String beerName;
 	private String newOrderName;
-	private int quantity;
+
 	private String selectedPartnerName = null;
 	private RegistryDTO newRegistry = new RegistryDTO();
-	private Set<RegistryDTO> addedBeers = new HashSet<RegistryDTO>();
+	private Set<RegistryDTO> addedProducts = new HashSet<RegistryDTO>();
 	private List<String> partnerNames;
+	private List<ProductDTO> completeTextResults;
+	private ProductDTO selectedProduct;
+	private int quantity;
 
 	@PostConstruct
 	public void init() {
@@ -59,12 +67,10 @@ public class OrderController implements Serializable {
 			partnerNames.add(p.getName());
 	}
 
-	public Set<RegistryDTO> getAddedBeers() {
-		return addedBeers;
-	}
-
-	public void setAddedBeers(Set<RegistryDTO> addedBeers) {
-		this.addedBeers = addedBeers;
+	public List<ProductDTO> completeText(String query) {
+		completeTextResults = manageProductFacadeService
+				.searchProductByName(query);
+		return completeTextResults;
 	}
 
 	public String getNewOrderName() {
@@ -99,7 +105,6 @@ public class OrderController implements Serializable {
 		this.beerName = beerName;
 	}
 
-
 	public ManageOrderFacadeService getManageOrderFacadeService() {
 		return manageOrderFacadeService;
 	}
@@ -126,20 +131,6 @@ public class OrderController implements Serializable {
 		this.manageRegistryFacadeService = manageRegistryFacadeService;
 	}
 
-	public List<String> completeText(String query) {
-		/*
-		List<String> results = new ArrayList<String>();
-		List<BeerDTO> beers = new ArrayList<BeerDTO>();
-		beers = manageBeerFacadeService.getBeerList(0, 10);
-		for (BeerDTO b : beers) {
-			if (b.getName().toLowerCase().contains(query.toLowerCase())) {
-				results.add(b.getName());
-			}
-		}
-		return results;*/
-		return null;
-	}
-
 	public List<String> completePartnerName(String query) {
 		List<String> results = new ArrayList<String>();
 		List<PartnerDTO> partners = new ArrayList<PartnerDTO>();
@@ -156,22 +147,22 @@ public class OrderController implements Serializable {
 		OrderDTO newOrder;
 		newOrder = new OrderDTO();
 
-		newOrder.setName(selectedPartnerName);
+		newOrder.setName(selectedPartner.getName());
 		newOrder.setDate(new Date());
 		newOrder.setStatus("NEW");
 		newOrder.setPartnerDTO(managePartnerFacadeService
 				.getPartnerByName(selectedPartnerName));
-
+		
 		manageOrderFacadeService.createOrder(newOrder);
-		for (RegistryDTO registry : addedBeers) {
+		for (RegistryDTO registry : addedProducts) {
 			registry.setOrder(newOrder);
 		}
 
-		manageRegistryFacadeService.saveRegistrys(new ArrayList<>(addedBeers));
+		manageRegistryFacadeService
+				.saveRegistrys(new ArrayList<>(addedProducts));
 
-		selectedPartnerName = null;
 		selectedPartner = null;
-		addedBeers.clear();
+		addedProducts.clear();
 		beerName = null;
 		quantity = 0;
 
@@ -183,65 +174,17 @@ public class OrderController implements Serializable {
 		selectedOrder = (OrderDTO) event.getObject();
 	}
 
-	public void addBeerToOrder() {
-		/*
-		if (beerName == null) {
-			beerName = "";
-			return;
+	public void addProductToOrder() {
+		if (selectedProduct != null) {
+			RegistryDTO registry = new RegistryDTO();
+			registry.setQuantity(quantity);
+			registry.setProduct(selectedProduct);
+			registry.setStatus("ORDERDATA");
+			addedProducts.add(registry);
+			// /
+			quantity = 0;
+			selectedProduct = null;
 		}
-		BeerDTO beer = manageBeerFacadeService.getBeetByName(beerName);
-		boolean fail = false;
-		if (beer == null) {
-			FacesContext.getCurrentInstance().addMessage(
-					"createmsgs",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR,
-							LocaleSwitcher.getMessage("error"),
-							String.format("%s %s!", beerName, LocaleSwitcher
-									.getMessage("orders_beer_not_exists"))));
-			fail = true;
-		}
-		if (quantity <= 0) {
-			FacesContext.getCurrentInstance().addMessage(
-					"createmsgs",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR,
-							LocaleSwitcher.getMessage("error"), LocaleSwitcher
-									.getMessage("order_quantity_error")));
-			fail = true;
-		}
-		if (fail)
-			return;
-
-		if (beer.getIsPremium() == true
-				&& selectedPartner.getType().equals("normal")) {
-			FacesContext.getCurrentInstance().addMessage(
-					"createmsgs",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR,
-							LocaleSwitcher.getMessage("error"), LocaleSwitcher
-									.getMessage("orders_premium_error")));
-			return;
-		}
-
-	//	newRegistry.setBeer(beer);
-		newRegistry.setQuantity(quantity);
-		newRegistry.setOriginalQuantity(quantity);
-		if (addedBeers == null) {
-			addedBeers = new HashSet<RegistryDTO>();
-		}
-		if (!addedBeers.contains(newRegistry)) {
-			addedBeers.add(newRegistry);
-			FacesContext.getCurrentInstance().addMessage(
-					"createmsgs",
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", String
-							.format("%s %s", beerName, LocaleSwitcher
-									.getMessage("order_added_info"))));
-		} else {
-			FacesContext.getCurrentInstance().addMessage("createmsgs",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
-							String.format("%s %s", beerName, LocaleSwitcher
-									.getMessage("order_inorder_info"))));
-		}
-		newRegistry = new RegistryDTO();
-		*/
 	}
 
 	public void onRowUnselect(UnselectEvent event) {
@@ -250,7 +193,7 @@ public class OrderController implements Serializable {
 
 	public void unselectOrder() {
 		selectedPartnerName = null;
-		addedBeers.clear();
+		addedProducts.clear();
 		beerName = null;
 		quantity = 0;
 		selectedOrder = null;
@@ -274,23 +217,14 @@ public class OrderController implements Serializable {
 
 	public void removeBeerFromOrder(RegistryDTO registry) {
 		/*
-		for (RegistryDTO reg : addedBeers) {
-			if (reg.getBeer() != null) {
-				if (reg.getBeer().getName()
-						.equals(registry.getBeer().getName())) {
-					addedBeers.remove(reg);
-					break;
-				}
-			}
-		}
-		FacesContext.getCurrentInstance()
-				.addMessage(
-						"createmsgs",
-						new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",
-								String.format("%s %s", registry.getBeer()
-										.getName(), LocaleSwitcher
-										.getMessage("orders_delete_info"))));
-										*/
+		 * for (RegistryDTO reg : addedBeers) { if (reg.getBeer() != null) { if
+		 * (reg.getBeer().getName() .equals(registry.getBeer().getName())) {
+		 * addedBeers.remove(reg); break; } } }
+		 * FacesContext.getCurrentInstance() .addMessage( "createmsgs", new
+		 * FacesMessage(FacesMessage.SEVERITY_INFO, "Info",
+		 * String.format("%s %s", registry.getBeer() .getName(), LocaleSwitcher
+		 * .getMessage("orders_delete_info"))));
+		 */
 	}
 
 	public ManagePartnerFacadeService getManagePartnerFacadeService() {
@@ -318,4 +252,40 @@ public class OrderController implements Serializable {
 		this.partnerNames = partnerNames;
 	}
 
+	public ManageProductFacadeService getManageProductFacadeService() {
+		return manageProductFacadeService;
+	}
+
+	public void setManageProductFacadeService(
+			ManageProductFacadeService manageProductFacadeService) {
+		this.manageProductFacadeService = manageProductFacadeService;
+	}
+
+	public List<ProductDTO> getCompleteTextResults() {
+		return completeTextResults;
+	}
+
+	public void setCompleteTextResults(List<ProductDTO> completeTextResults) {
+		this.completeTextResults = completeTextResults;
+	}
+
+	public Set<RegistryDTO> getAddedProducts() {
+		return addedProducts;
+	}
+
+	public void setAddedProducts(Set<RegistryDTO> addedProducts) {
+		this.addedProducts = addedProducts;
+	}
+
+	public ProductDTO getSelectedProduct() {
+		return selectedProduct;
+	}
+
+	public void setSelectedProduct(ProductDTO selectedProduct) {
+		this.selectedProduct = selectedProduct;
+	}
+
+	public List<RegistryDTO> findByOrder(OrderDTO order){
+		return manageRegistryFacadeService.findByOrder(order);
+	}
 }

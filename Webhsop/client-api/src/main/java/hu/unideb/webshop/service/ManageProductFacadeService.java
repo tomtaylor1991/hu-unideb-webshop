@@ -13,4 +13,5 @@ public interface ManageProductFacadeService {
 			int sortOrder, String filter, String filterColumnName);
 	public int getRowNumber();
 	List<CategoryDTO> searchCategoryByName(String name);
+	public List<ProductDTO> searchProductByName(String name);
 }

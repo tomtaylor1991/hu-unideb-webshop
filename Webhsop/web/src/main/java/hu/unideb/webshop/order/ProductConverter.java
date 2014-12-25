@@ -1,6 +1,6 @@
-package hu.unideb.webshop.category;
+package hu.unideb.webshop.order;
 
-import hu.unideb.webshop.dto.CategoryDTO;
+import hu.unideb.webshop.dto.ProductDTO;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,8 +11,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-@FacesConverter("categoryConverterOfCategoryManagerController")
-public class CategoryConverter implements Serializable, Converter {
+@FacesConverter("productConverterOfOrderController")
+public class ProductConverter implements Serializable, Converter {
 
 	private static final long serialVersionUID = 1L;
 
@@ -20,15 +20,15 @@ public class CategoryConverter implements Serializable, Converter {
 	public Object getAsObject(FacesContext arg0, UIComponent arg1, String value) {
 		Map<String, Object> viewMap = FacesContext.getCurrentInstance()
 				.getViewRoot().getViewMap();
-		CategoryManagerController viewScopedBean = (CategoryManagerController) viewMap
-				.get("categoryManagerController");
-		List<CategoryDTO> list = viewScopedBean.getCompleteTextResults();
+		OrderController viewScopedBean = (OrderController) viewMap
+				.get("orderController");
+		List<ProductDTO> list = viewScopedBean.getCompleteTextResults();
 		if (value != null && value.trim().length() > 0) {
 			try {
 				Long idValue = Long.valueOf(value);
-				for (CategoryDTO c : list) {
-					if (c.getId().equals(idValue)) {
-						return c;
+				for (ProductDTO p : list) {
+					if (p.getId().equals(idValue)) {
+						return p;
 					}
 				}
 				return null;
@@ -43,7 +43,7 @@ public class CategoryConverter implements Serializable, Converter {
 	@Override
 	public String getAsString(FacesContext arg0, UIComponent arg1, Object object) {
 		if (object != null) {
-			return String.valueOf(((CategoryDTO) object).getId());
+			return String.valueOf(((ProductDTO) object).getId());
 		} else {
 			return null;
 		}

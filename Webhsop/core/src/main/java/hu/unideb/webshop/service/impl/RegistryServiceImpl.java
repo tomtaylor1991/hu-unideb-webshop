@@ -12,6 +12,7 @@ import hu.unideb.webshop.entity.Registry;
 import hu.unideb.webshop.service.RegistryService;
 import hu.unideb.webshop.service.UserService;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,23 +24,23 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.REQUIRED)
 public class RegistryServiceImpl implements RegistryService {
 
-    @Autowired
-    RegistryDao registryDao;
+	@Autowired
+	RegistryDao registryDao;
 
-    @Autowired
-    WarehouseDao warehouseDao;
+	@Autowired
+	WarehouseDao warehouseDao;
 
+	@Autowired
+	OrderDao orderDao;
 
-    @Autowired
-    OrderDao orderDao;
-
-    @Autowired
-    UserService userService;
+	@Autowired
+	UserService userService;
 
 	@Override
 	public void saveRegistrys(List<RegistryDTO> registry) {
-		// TODO Auto-generated method stub
-		
+		for (RegistryDTO r : registry) {
+			registryDao.save(registryDao.toEntity(r, null));
+		}
 	}
 
 	@Override
@@ -48,17 +49,14 @@ public class RegistryServiceImpl implements RegistryService {
 		return null;
 	}
 
-
 	@Override
 	public void updateRegistry(RegistryDTO registry) {
-		// TODO Auto-generated method stub
-		
+		registryDao.save(registryDao.toEntity(registry, null));
 	}
 
 	@Override
 	public void deleteRegistry(RegistryDTO registry) {
-		// TODO Auto-generated method stub
-		
+		registryDao.delete(registryDao.toEntity(registry, null));
 	}
 
 	@Override
@@ -83,8 +81,14 @@ public class RegistryServiceImpl implements RegistryService {
 
 	@Override
 	public List<RegistryDTO> findByOrder(OrderDTO order) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Registry> entities = registryDao.findByOrderAndStatus(
+				orderDao.toEntity(order, null), "ORDERDATA");
+		List<RegistryDTO> ret = new LinkedList<RegistryDTO>();
+		for (Registry r : entities) {
+			ret.add(registryDao.toDto(r));
+		}
+		System.out.println(ret);
+		return ret;
 	}
 
 	@Override
@@ -107,13 +111,10 @@ public class RegistryServiceImpl implements RegistryService {
 		return false;
 	}
 
-
 	@Override
 	public List<RegistryDTO> findByStatusAndOrder(String status, OrderDTO order) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-  
 
 }

@@ -63,20 +63,8 @@ public class LazyOrderModel extends LazyDataModel<OrderDTO> {
                 / pageSize, pageSize, sortField, dir, filter, filterColumnName);
         int dataSize = manageOrderFacadeService.getRowNumber();
         this.setRowCount(dataSize);
-        isTransport();
 
         return visibleOrderList;
-    }
-
-    private void isTransport() {
-        for (OrderDTO order : visibleOrderList) {
-            if ("READYFORCREATE".equals(order.getStatus())) {
-                if (manageOrderFacadeService.isOrderReadyStatus(order)) {
-                    order.setStatus("READY");
-                    manageOrderFacadeService.updateOrder(order);
-                }
-            }
-        }
     }
 
     public ManageOrderFacadeService getmanageOrderFacadeService() {

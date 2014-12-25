@@ -43,8 +43,8 @@
 			header="#{out.orders_selectpartner}" widgetVar="dlg_select"
 			modal="true" resizable="false">
 			<h:form id="selectPartnerForm">
-				<p:messages id="mess" for="selectmsgs" showDetail="true" autoUpdate="true"
-					closable="true" />
+				<p:messages id="mess" for="selectmsgs" showDetail="true"
+					autoUpdate="true" closable="true" />
 				<p:selectOneListbox id="partnerList" style="margin: 0 auto"
 					scrollHeight="150" value="#{orderController.selectedPartnerName}"
 					var="p" filter="true" filterMatchMode="contains">
@@ -74,8 +74,8 @@
 
 			<h:form id="dialogForm">
 				<div class="ui-grid ui-grid-responsive ui-grid-row ui-grid-col-6">
-					<p:messages id="messages" for="createmsgs" showDetail="true" autoUpdate="true"
-						closable="true" />
+					<p:messages id="messages" for="createmsgs" showDetail="true"
+						autoUpdate="true" closable="true" />
 					<h:panelGroup>
 						<div style="text-align: center">
 							<p:outputLabel
@@ -84,23 +84,26 @@
 					</h:panelGroup>
 					<p:separator style="width:100%;height:10px" />
 					<h:panelGrid columns="2" cellpadding="5">
-						<p:outputLabel value="#{out.orders_beer_name}: " for="bname" />
-						<p:autoComplete id="bname" value="#{orderController.beerName}"
-							completeMethod="#{orderController.completeText}" />
+						<p:outputLabel value="Select a product " for="product" />
+						<p:autoComplete id="product"
+							value="#{orderController.selectedProduct}"
+							completeMethod="#{orderController.completeText}" var="c"
+							itemLabel="#{c.name}" itemValue="#{c}"
+							converter="productConverterOfOrderController" />
 						<p:outputLabel value="#{out.worker_order_quantity}: "
 							for="quantity" />
 						<p:inputText id="quantity" value="#{orderController.quantity}" />
 						<p:commandButton ajax="true"
-							action="#{orderController.addBeerToOrder()}"
+							action="#{orderController.addProductToOrder()}"
 							validateClient="true" update=":dialogForm" title="Add"
 							value="#{out.recipes_newRecipe_addButton}" />
 					</h:panelGrid>
 
-					<p:dataTable id="addedBeers" var="registry"
-						value="#{orderController.addedBeers}"
-                                                emptyMessage="#{out.empty_message}">
-						<p:column headerText="#{out.orders_beer}">
-							<h:outputText value="#{registry.beer.name}" />
+					<p:dataTable id="addedProducts" var="registry"
+						value="#{orderController.addedProducts}"
+						emptyMessage="#{out.empty_message}">
+						<p:column headerText="Name">
+							<h:outputText value="#{registry.product.name}" />
 						</p:column>
 						<p:column headerText="#{out.worker_order_quantity}">
 							<h:outputText value="#{registry.quantity}" />
@@ -109,13 +112,13 @@
 							<p:commandButton icon="ui-icon-trash" title="Delete"
 								style="align:center"
 								actionListener="#{orderController.removeBeerFromOrder(registry)}"
-								update="addedBeers" ajax="true" />
+								update="addedProducts" ajax="true" />
 						</p:column>
 					</p:dataTable>
 
 					<h:panelGrid columns="2" cellpadding="5">
 						<p:commandButton value="#{out.orders_create_dialog_create}"
-							update=":orderForm:orderTable,addedBeers" icon="ui-icon-eject"
+							update=":orderForm:orderTable,addedProducts" icon="ui-icon-eject"
 							actionListener="#{orderController.createOrder()}" />
 						<p:commandButton update=":orderForm" ajax="false"
 							validateClient="false" immediate="true"
@@ -129,14 +132,12 @@
 		</p:dialog>
 
 		<h:form id="orderForm">
-			<!--  <p:growl id="msgs" showDetail="true"
-				rendered="#{dlg_create.visible == false}" /> -->
 			<p:dataTable id="orderTable" var="currentOrder"
 				value="#{orderBean.orderModel}" rowKey="#{currentOrder.id}"
 				paginator="true" rows="10"
 				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 				rowsPerPageTemplate="5,10,15" lazy="true"
-                                emptyMessage="#{out.empty_message}">
+				emptyMessage="#{out.empty_message}">
 				<p:ajax event="rowSelect" listener="#{orderController.onRowSelect}"
 					update=":orderCommandsForm,:viewOrderDetailsDialog" />
 				<p:ajax event="rowUnselect"
@@ -155,16 +156,16 @@
 				</p:column>
 				<p:column headerText="#{out.orders_form_status}"
 					sortBy="#{currentOrder.status}" filterBy="#{currentOrder.status}">
-					<h:outputText value="#{leaderController.getOrderStatus(currentOrder.status)}" />
+					<h:outputText
+						value="#{leaderController.getOrderStatus(currentOrder.status)}" />
 				</p:column>
 
 				<p:rowExpansion>
 					<p:dataTable
-						value="#{orderController.manageRegistryFacadeService.findByOrder(currentOrder)}"
-						var="registry"
-                                                emptyMessage="#{out.empty_message}">
-						<p:column headerText="#{out.orders_details_beer_name}">
-							<h:outputText value="#{registry.beer.name}" />
+						value="#{orderController.findByOrder(currentOrder)}"
+						var="registry" emptyMessage="#{out.empty_message}">
+						<p:column headerText="Product name">
+							<h:outputText value="#{registry.product.name}" />
 						</p:column>
 						<p:column headerText="#{out.worker_order_quantity}">
 							<h:outputText value="#{registry.quantity}" />
@@ -177,12 +178,6 @@
 
 		<h:form id="orderCommandsForm">
 			<h:panelGrid columns="4" cellpadding="5">
-				<!-- 				<p:commandButton icon="ui-icon-arrowrefresh-1-n" -->
-				<!-- 					value="#{out.orders_buttons_details}" -->
-				<!-- 					title="#{out.orders_buttons_details}" type="button" -->
-				<!-- 					onclick="PF('dlg_edit').show()" -->
-				<!-- 					disabled="#{orderController.selectedOrder == null}"> -->
-				<!-- 				</p:commandButton> -->
 				<p:commandButton icon="ui-icon-arrowrefresh-1-n"
 					title="#{out.orders_buttons_create}"
 					value="#{out.orders_buttons_create}" type="button"

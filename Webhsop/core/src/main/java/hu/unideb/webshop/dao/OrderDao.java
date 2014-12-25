@@ -21,6 +21,9 @@ public interface OrderDao extends PagingAndSortingRepository<Order, Long>,
 	@Query(value = "SELECT count(*) FROM ORDERS", nativeQuery = true)
 	int countById();
 	
+	@Query(value = "SELECT count(*) FROM ORDERS", nativeQuery = true)
+    int countRowNum();
+	
 	List<Order> findByStatus(String status);
 	List<Order> findByPartnerId(Long partnerId);
 	

@@ -28,7 +28,9 @@ public class PartnerDaoImpl implements BaseConvertDao<Partner, PartnerDTO> {
 		ret.setName(entity.getName());
 		ret.setAddress(entity.getAddress());
 		ret.setType(entity.getType());
-		ret.setUser(userDao.toDto(entity.getUser()));
+		if (entity.getUser() != null) {
+			ret.setUser(userDao.toDto(entity.getUser()));
+		}
 		return ret;
 	}
 
@@ -50,7 +52,9 @@ public class PartnerDaoImpl implements BaseConvertDao<Partner, PartnerDTO> {
 		ret.setName(dto.getName());
 		ret.setAddress(dto.getAddress());
 		ret.setType(dto.getType());
-		ret.setUser(userDao.toEntity(dto.getUser(), null));
+		if (dto.getUser() != null) {
+			ret.setUser(userDao.toEntity(dto.getUser(), null));
+		}
 		return ret;
 	}
 
