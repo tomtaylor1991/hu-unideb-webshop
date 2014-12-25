@@ -1,10 +1,14 @@
 package hu.unideb.webshop.service.impl;
 
 import hu.unideb.webshop.dao.OrderDao;
+import hu.unideb.webshop.dao.ProductDao;
 import hu.unideb.webshop.dao.RegistryDao;
 import hu.unideb.webshop.dao.WarehouseDao;
+import hu.unideb.webshop.dto.LeaderTestInfoDTO;
+import hu.unideb.webshop.dto.LeaderTestInfoDTO.Need;
 import hu.unideb.webshop.dto.MaterialDTO;
 import hu.unideb.webshop.dto.OrderDTO;
+import hu.unideb.webshop.dto.ProductDTO;
 import hu.unideb.webshop.dto.RegistryDTO;
 import hu.unideb.webshop.dto.WarehouseDTO;
 import hu.unideb.webshop.entity.Product;
@@ -32,6 +36,9 @@ public class RegistryServiceImpl implements RegistryService {
 
 	@Autowired
 	OrderDao orderDao;
+
+	@Autowired
+	ProductDao productDao;
 
 	@Autowired
 	UserService userService;
@@ -117,4 +124,67 @@ public class RegistryServiceImpl implements RegistryService {
 		return null;
 	}
 
+	@Override
+	public LeaderTestInfoDTO getOrderData(OrderDTO order) {
+		LeaderTestInfoDTO info = new LeaderTestInfoDTO();
+		info.setOrder(order);
+		List<Registry> orderData = registryDao.findByOrderAndStatus(
+				orderDao.toEntity(order, null), "ORDERDATA");
+		List<Need> needs = new LinkedList<LeaderTestInfoDTO.Need>();
+		for (Registry r : orderData) {
+			Need need = new Need();
+			need.setProduct(productDao.toDto(r.getProduct()));
+			need.setOriginalQuantity(r.getOriginalQuantity());
+			need.setNeed(r.getQuantity());
+			need.setReadyQuantity(r.getOriginalQuantity()-r.getQuantity());
+			Integer inWhValue = registryDao.countByProductIdAndStatus(
+					order.getId(), "FREE");
+			need.setInWHQuantity(inWhValue == null ? 0 : inWhValue);
+
+			needs.add(need);
+		}
+		info.setNeed(needs);
+		return info;
+	}
+
+	@Override
+	public void createProductNeedForOrder(ProductDTO product, OrderDTO order,
+			int quantity) {
+		Registry registry = new Registry();
+		registry.setProduct(productDao.toEntity(product, null));
+		registry.setQuantity(quantity);
+		registry.setStatus("NEED");
+		registry.setOrder(orderDao.toEntity(order, null));
+		registryDao.save(registry);
+	}
+
+	@Override
+	public int keepProductForOrder(ProductDTO product, OrderDTO order,
+			int quantity) {
+		List<Registry> freeProducts = registryDao.findByOrderAndStatus(null,
+				"FREE");
+		int originalQuantity = quantity;
+		for (Registry currentRegistry : freeProducts) {
+			quantity -= currentRegistry.getQuantity();
+			if (quantity >= 0) {
+				currentRegistry.setOrder(orderDao.toEntity(order, null));
+				currentRegistry.setStatus("READY");
+				registryDao.save(currentRegistry);
+			} else {
+				Registry newRegistry = new Registry();
+				newRegistry.setProduct(currentRegistry.getProduct());
+				newRegistry.setQuantity(0 - quantity);
+				newRegistry.setStatus("FREE");
+				registryDao.save(newRegistry);
+				// /
+				currentRegistry.setOrder(orderDao.toEntity(order, null));
+				currentRegistry.setStatus("READY");
+				currentRegistry.setQuantity(currentRegistry.getQuantity()
+						+ quantity);
+				registryDao.save(currentRegistry);
+				break;
+			}
+		}
+		return originalQuantity - quantity;
+	}
 }

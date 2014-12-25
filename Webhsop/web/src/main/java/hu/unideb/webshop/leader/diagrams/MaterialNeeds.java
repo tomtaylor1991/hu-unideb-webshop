@@ -103,7 +103,7 @@ public class MaterialNeeds implements Serializable {
     }
 
     public void calculateMaterialNeeds() {
-
+    	/*
         Map<String, Integer> inWarehouses = new HashMap<String, Integer>();
         Map<String, Integer> needForOrders = new HashMap<String, Integer>();
 
@@ -125,6 +125,7 @@ public class MaterialNeeds implements Serializable {
                             need.getNeedQuantity());
                 }
             }
+            
         }
 
         for (Map.Entry<String, Integer> entry : needForOrders.entrySet()) {
@@ -135,6 +136,7 @@ public class MaterialNeeds implements Serializable {
             materialInWh.add(new MaterialNeed(entry.getKey(), inWarehouses
                     .get(entry.getKey())));
         }
+        */
     }
 
     public List<MaterialNeed> getMaterialNeeds() {

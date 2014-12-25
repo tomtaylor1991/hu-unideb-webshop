@@ -1,172 +1,89 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:c="http://java.sun.com/jsp/jstl/core"
-                xmlns:p="http://primefaces.org/ui"
-                template="/templates/masterLayout.xhtml">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/masterLayout.xhtml">
 
-    <ui:define name="pageTitle">#{out.index_title}</ui:define>
+	<ui:define name="pageTitle">#{out.index_title}</ui:define>
 
-    <ui:define name="head-extra">
-        <!-- custom css -->
-    </ui:define>
+	<ui:define name="head-extra">
+		<!-- custom css -->
+	</ui:define>
 
-    <ui:define name="content">
-        <h:form id="orderForm">
-            <p:growl id="msgs" showDetail="true" />
-            <p:dataTable id="orderTable" var="currentOrder"
-                         value="#{leaderBean.lazyOrderModel}" selectionMode="single"
-                         selection="#{leaderController.selectedOrder}"
-                         rowKey="#{currentOrder.id}" paginator="true" rows="10"
-                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                         rowsPerPageTemplate="5,10,15" lazy="true"
-                         emptyMessage="#{out.empty_message}">
-                <p:ajax event="rowSelect" listener="#{leaderController.onRowSelect}"
-                        update=":orderForm:msgs,:orderCommandsForm,:viewButton" />
-                <p:ajax event="rowUnselect"
-                        update=":orderForm:msgs,:orderCommandsForm,:viewButton" />
+	<ui:define name="content">
 
-                <p:column headerText="#{out.orders_form_name}"
-                          sortBy="#{currentOrder.name}" filterBy="#{currentOrder.name}">
-                    <h:outputText value="#{currentOrder.name}" />
-                </p:column>
-                <p:column headerText="#{out.orders_form_date}"
-                          sortBy="#{currentOrder.date}">
-                    <h:outputText value="#{currentOrder.date}" />
-                </p:column>
-                <p:column headerText="#{out.orders_form_status}"
-                          sortBy="#{currentOrder.status}" filterBy="#{currentOrder.status}">
-                    <h:outputText
-                        value="#{leaderController.getOrderStatus(currentOrder.status)}" />
-                </p:column>
-            </p:dataTable>
-        </h:form>
-        <h:panelGrid id="viewButton">
-            <p:commandButton ajax="true" icon="ui-icon-eject"
-                             rendered="#{leaderController.selectedOrder != null}"
-                             oncomplete="PF('orderDialog').show()" title="View" value="View"></p:commandButton>
-        </h:panelGrid>
-        <p:dialog header="#{out.leader_order}" widgetVar="orderDialog" modal="true"
-                  showEffect="fade" hideEffect="fade" resizable="true"
-                  style="min-width: 800px;min-height:600px;">
-            <h:form id="orderCommandsForm">
-                <h:form id="orderInfoBox"
-                        rendered="#{leaderController.selectedOrder != null}" columns="3"
-                        cellpadding="5">
-                    <h:panelGrid columns="4" cellpadding="5">
-                        <!-- 
-                        <p:commandButton ajax="true" icon="ui-icon-eject"
-                                rendered="#{leaderController.isHaveBeerSuccess and !leaderController.isReadyAndTransport}"
-                                update=":orderCommandsForm :orderForm"
-                                action="#{leaderController.keepBeer()}"
-                                title="Keep beer to the order" value="Keep beer to the order"></p:commandButton>
-                        -->
-                        <p:commandButton ajax="true" icon="ui-icon-eject"
-                                         rendered='#{!leaderController.isMaterialFull  and !leaderController.isReadyAndTransport and !(leaderController.selectedOrder.status.equals("NEEDMATERIAL"))}'
-                                         update=":orderCommandsForm :orderForm"
-                                         action="#{leaderController.setNeedMaterial()}"
-                                         title="#{out.leader_need_material}" value="#{out.leader_need_material}"></p:commandButton>
-                        <p:commandButton ajax="true" icon="ui-icon-eject"
-                                         rendered='#{leaderController.isMaterialFull  and !leaderController.isReadyAndTransport and !(leaderController.selectedOrder.status.equals("READYFORCREATE"))}'
-                                         update=":orderCommandsForm :orderForm"
-                                         action="#{leaderController.readyForCreate()}"
-                                         title="#{out.leader_ready_for_create}" value="#{out.leader_ready_for_create}"></p:commandButton>
-                        <p:commandButton ajax="true" icon="ui-icon-eject"
-                                         rendered='#{leaderController.selectedOrder.status.equals("READY")}'
-                                         update=":orderCommandsForm :orderForm"
-                                         action="#{leaderController.transport()}"
-                                         value="#{out.leader_transport}" title="#{out.leader_transport}"></p:commandButton>
-                    </h:panelGrid>
-                    <p:separator style="width:100%;height:10px" />
-                    <h:panelGrid columns="2" cellpadding="5">
+		<p:dialog header="Order" widgetVar="orderDialog" modal="true"
+			height="600" width="800">
+			<h:form id="orderView">
+				<h:outputText value="Order" />
+				<p:dataTable var="data" value="#{leaderController.info.need}">
+					<p:column headerText="Product">
+						<h:outputText value="#{data.product.name}" />
+					</p:column>
+					<p:column headerText="Product">
+						<h:outputText value="#{data.product.name}" />
+					</p:column>
+					<p:column headerText="Need quantity">
+						<h:outputText value="#{data.originalQuantity}" />
+					</p:column>
+					<p:column headerText="Need">
+						<h:outputText value="#{data.need}" />
+					</p:column>
+					<p:column headerText="Ready">
+						<h:outputText value="#{data.readyQuantity}" />
+					</p:column>
+					<p:column headerText="IN WH">
+						<h:outputText value="#{data.inWHQuantity}" />
+					</p:column>
+				</p:dataTable>
+				<br />
+				<p:panelGrid columns="2">
+					<h:outputText value="Partner name:" />
+					<h:outputText style="color:red;"
+						value="#{leaderController.selectedOrder.partnerDTO.name}" />
+					<h:outputText value="Status:" />
+					<h:outputText style="color:red;"
+						value="#{leaderController.selectedOrder.status}" />
+				</p:panelGrid>
+				<br />
+				<p:panelGrid columns="4">
+					<p:commandButton value="Transport" />
+					<p:commandButton value="Need import" />
+					<p:commandButton value="Keep product from wh" />
+					<p:commandButton value="Remove order" />
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+		<h:form id="orderForm">
+			<p:growl id="msgs" showDetail="true" />
+			<p:dataTable id="orderTable" var="currentOrder"
+				value="#{leaderBean.lazyOrderModel}" selectionMode="single"
+				selection="#{leaderController.selectedOrder}"
+				rowKey="#{currentOrder.id}" paginator="true" rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="5,10,15" lazy="true"
+				emptyMessage="#{out.empty_message}">
+				<p:ajax event="rowSelect" />
 
-                        <h:panelGrid style="min-width:400px;">
-                            <b><h:outputText value="#{out.leader_customer_detail}: " /></b>
-                            <h:outputText
-                                value="#{out.leader_name}: #{leaderController.selectedOrder.name}" />
-                            <h:outputText
-                                value="#{out.leader_order_date}: #{leaderController.selectedOrder.date}"></h:outputText>
-                            <h:outputText
-                                value="#{out.leader_order_status}: #{leaderController.getOrderStatus(leaderController.selectedOrder.status)}" />
-                        </h:panelGrid>
-                        <p:dataTable var="o" value="#{leaderController.originalOrderList}"
-                                     style="width:300px;" emptyMessage="#{out.empty_message}"
-                                     rowStyleClass="#{o.isReady ? 'ok' : 'not_ok'}">
-                            <f:facet name="header">
-                                <p:outputLabel value="#{out.leader_ordered_beer}"/>
-                            </f:facet>
-                            <p:column headerText="#{out.leader_beer_name}">
-                                <h:outputText value="#{o.name}" />
-                            </p:column>
+				<p:column headerText="#{out.orders_form_name}"
+					sortBy="#{currentOrder.name}" filterBy="#{currentOrder.name}">
+					<h:outputText value="#{currentOrder.name}" />
+				</p:column>
+				<p:column headerText="#{out.orders_form_date}"
+					sortBy="#{currentOrder.date}">
+					<h:outputText value="#{currentOrder.date}" />
+				</p:column>
+				<p:column headerText="#{out.orders_form_status}"
+					sortBy="#{currentOrder.status}" filterBy="#{currentOrder.status}">
+					<h:outputText value="#{currentOrder.status}" />
+				</p:column>
+			</p:dataTable>
+			<p:commandButton value="SHOW"
+				action="#{leaderController.initSelectedOrder()}"
+				onclick="PF('orderDialog').show()" update=":orderView" />
+		</h:form>
 
-                            <p:column headerText="#{out.leader_need_quantity}">
-                                <h:outputText value="#{o.needQuantity}" />
-                            </p:column>
-                            <!-- 
-                            <p:column headerText="Left Quantity">
-                                    <h:outputText value="#{o.inWhQuantity}" />
-                            </p:column>
-                             
-                            <p:column headerText="READY">
-                                    <h:outputText value="#{o.isReady}" />
-                            </p:column>
-                            -->
-                        </p:dataTable>
-                        <p:dataTable var="r" value="#{leaderController.freeBeers}"
-                                     style="width:300px;"
-                                     rendered="#{leaderController.isHaveBeerSuccess  and !leaderController.isReadyAndTransport}}"
-                                     emptyMessage="#{out.empty_message}">
-                            <f:facet name="header">
-                                <p:outputLabel value="#{out.leader_free_beer}"/> 
-                            </f:facet>
-                            <p:column headerText="#{out.leader_beer_name}">
-                                <h:outputText value="#{r.beer.beer.name}" />
-                            </p:column>
-
-                            <p:column headerText="#{out.leader_free_quantity}">
-                                <h:outputText value="#{r.quantity}" />
-                            </p:column>
-                        </p:dataTable>
-                        <p:dataTable var="n" value="#{leaderController.isServe.needed}"
-                                     style="width:300px;"
-                                     rendered="#{!leaderController.isReadyAndTransport}"
-                                     emptyMessage="#{out.empty_message}">
-                            <f:facet name="header">
-                                <p:outputLabel value="#{out.leader_need_material}"/>
-                            </f:facet>
-                            <p:column headerText="#{out.leader_material_name}">
-                                <h:outputText value="#{n.material.materialName}" />
-                            </p:column>
-
-                            <p:column headerText="#{out.leader_need_quantity}">
-                                <h:outputText value="#{n.needQuantity}" />
-                            </p:column>
-
-                            <p:column headerText="#{out.leader_in_the_wh}">
-                                <h:outputText value="#{n.inWhQuantity}" />
-                            </p:column>
-                        </p:dataTable>
-                        <p:dataTable var="n"
-                                     value="#{leaderController.isServe.allMaterial}"
-                                     style="width:300px;"
-                                     rendered="#{!leaderController.isReadyAndTransport}"
-                                     emptyMessage="#{out.empty_message}">
-                            <f:facet name="header">
-                                <p:outputLabel value="#{out.leader_full_material_list}"/>F
-                            </f:facet>
-                            <p:column headerText="#{out.leader_material_name}">
-                                <h:outputText value="#{n.material.materialName}" />
-                            </p:column>
-
-                            <p:column headerText="#{out.leader_need_quantity}">
-                                <h:outputText value="#{n.needQuantity}" />
-                            </p:column>
-                        </p:dataTable>
-
-                    </h:panelGrid>
-                </h:form>
-            </h:form>
-        </p:dialog>
-    </ui:define>
+	</ui:define>
 </ui:composition>

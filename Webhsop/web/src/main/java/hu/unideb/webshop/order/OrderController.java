@@ -178,6 +178,7 @@ public class OrderController implements Serializable {
 		if (selectedProduct != null) {
 			RegistryDTO registry = new RegistryDTO();
 			registry.setQuantity(quantity);
+			registry.setOriginalQuantity(quantity);
 			registry.setProduct(selectedProduct);
 			registry.setStatus("ORDERDATA");
 			addedProducts.add(registry);

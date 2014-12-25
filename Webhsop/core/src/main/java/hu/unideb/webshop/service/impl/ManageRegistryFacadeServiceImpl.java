@@ -5,6 +5,7 @@ import hu.unideb.webshop.dao.RegistryDao;
 import hu.unideb.webshop.dto.LeaderTestInfoDTO;
 import hu.unideb.webshop.dto.MaterialDTO;
 import hu.unideb.webshop.dto.OrderDTO;
+import hu.unideb.webshop.dto.ProductDTO;
 import hu.unideb.webshop.dto.RegistryDTO;
 import hu.unideb.webshop.dto.WarehouseDTO;
 import hu.unideb.webshop.service.ComponentService;
@@ -82,7 +83,7 @@ public class ManageRegistryFacadeServiceImpl implements
 
     @Override
     public LeaderTestInfoDTO isOrderCanBeServe(OrderDTO order) {
-		return null;
+		return registryService.getOrderData(order);
     }
 
     @Override
@@ -103,5 +104,17 @@ public class ManageRegistryFacadeServiceImpl implements
 
         return registryService.findByStatusAndOrder(status, order);
     }
+
+	@Override
+	public void createProductNeedForOrder(ProductDTO product, OrderDTO order,
+			int quantity) {
+		registryService.createProductNeedForOrder(product, order, quantity);
+	}
+
+	@Override
+	public int keepProductForOrder(ProductDTO product, OrderDTO order,
+			int quantity) {
+		return registryService.keepProductForOrder(product, order, quantity);
+	}
 
 }

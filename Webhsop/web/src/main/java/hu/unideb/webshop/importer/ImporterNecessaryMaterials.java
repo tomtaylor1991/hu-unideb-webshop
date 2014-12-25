@@ -160,7 +160,7 @@ public class ImporterNecessaryMaterials implements Serializable {
 
 	@PostConstruct
 	public void init() {
-
+/*
 		Map<String, Integer> inWarehouses = new HashMap<String, Integer>();
 		Map<String, Integer> needForOrders = new HashMap<String, Integer>();
 
@@ -191,7 +191,7 @@ public class ImporterNecessaryMaterials implements Serializable {
 						.getValue() - inWarehouses.get(entry.getKey())));
 			}
 		}
-
+*/
 	}
 
 	@SuppressWarnings("deprecation")

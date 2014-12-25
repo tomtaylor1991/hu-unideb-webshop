@@ -157,7 +157,7 @@
 				<p:column headerText="#{out.orders_form_status}"
 					sortBy="#{currentOrder.status}" filterBy="#{currentOrder.status}">
 					<h:outputText
-						value="#{leaderController.getOrderStatus(currentOrder.status)}" />
+						value="#{currentOrder.status}" />
 				</p:column>
 
 				<p:rowExpansion>
