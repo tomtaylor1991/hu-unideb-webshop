@@ -18,6 +18,6 @@ public interface RegistryDao extends
 	List<Registry> findByOrderAndStatus(Order order, String status);
 
 	@Query(value = "SELECT sum(r.quantity) FROM REGISTRY r where product_id = ?1 and status=?2", nativeQuery = true)
-	Integer countByProductIdAndStatus(Long orderId, String status);
+	Integer countByProductIdAndStatus(Long product_id, String status);
 
 }

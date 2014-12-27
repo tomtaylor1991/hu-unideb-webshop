@@ -1,126 +1,66 @@
 package hu.unideb.webshop.dto;
 
+import hu.unideb.webshop.dto.LeaderTestInfoDTO.Need;
+
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * The Class of OrderDTO, which extends the BaseDTO.
- * It contains the id, the name, the date, the status of the Order, 
- * the DTO of the Partner who requested the Order, and their
- * setter and getter methods.
- */
 public class OrderDTO extends BaseDTO implements Serializable {
 
-	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** 
-	 * The id of the Order. 
-	 */
 	private Long id;
-	
-	/** 
-	 * The name of the Order. 
-	 */
+
 	private String name;
-	
-	/** 
-	 * The date of the Order. 
-	 */
+
+	private LeaderTestInfoDTO info;
+
 	private Date date;
-	
-	/** 
-	 * The status of the Order. 
-	 */
+
+	private boolean importReady = false;
+
 	private String status;
-	
-	/**
-	 *  The DTO of the partner, who requested the Order.
-	 */
+
 	private PartnerDTO partnerDTO;
 
-	/**
-	 * Instantiates a new order dto.
-	 */
+	private double income;
+
 	public OrderDTO() {
 
 	}
 
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
 	public Long getId() {
 		return id;
 	}
 
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	/**
-	 * Gets the name.
-	 *
-	 * @return the name
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * Sets the name.
-	 *
-	 * @param name the new name
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * Gets the date.
-	 *
-	 * @return the date
-	 */
 	public Date getDate() {
 		return date;
 	}
 
-	/**
-	 * Sets the date.
-	 *
-	 * @param date the new date
-	 */
 	public void setDate(Date date) {
 		this.date = date;
 	}
 
-	/**
-	 * Gets the status.
-	 *
-	 * @return the status
-	 */
 	public String getStatus() {
 		return status;
 	}
 
-	/**
-	 * Sets the status.
-	 *
-	 * @param status the new status
-	 */
 	public void setStatus(String status) {
 		this.status = status;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -132,9 +72,6 @@ public class OrderDTO extends BaseDTO implements Serializable {
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -178,22 +115,51 @@ public class OrderDTO extends BaseDTO implements Serializable {
 		return true;
 	}
 
-	/**
-	 * Gets the partner DTO.
-	 *
-	 * @return the partner DTO
-	 */
 	public PartnerDTO getPartnerDTO() {
 		return partnerDTO;
 	}
 
-	/**
-	 * Sets the partner DTO.
-	 *
-	 * @param partnerDTO the new partner DTO
-	 */
 	public void setPartnerDTO(PartnerDTO partnerDTO) {
 		this.partnerDTO = partnerDTO;
+	}
+
+	public LeaderTestInfoDTO getInfo() {
+		return info;
+	}
+
+	public void setInfo(LeaderTestInfoDTO info) {
+		this.info = info;
+		// calculate income 
+		for (Need need : info.getNeed()) {
+			income += need.getProduct().getPrice()
+					* need.getRegistry().getOriginalQuantity();
+		}
+		// calculate ready?
+		if (status.equals("NEEDPRODUCT") || status.equals("NEW") && info != null) {
+			for (Need need : info.getNeed()) {
+				if (need.getNeed() > need.getInWHQuantity()) {
+					setImportReady(false);
+					return;
+				}
+			}
+			setImportReady(true);
+		}
+	}
+
+	public boolean getImportReady() {
+		return importReady;
+	}
+
+	public void setImportReady(boolean importReady) {
+		this.importReady = importReady;
+	}
+
+	public double getIncome() {
+		return income;
+	}
+
+	public void setIncome(double income) {
+		this.income = income;
 	}
 
 }

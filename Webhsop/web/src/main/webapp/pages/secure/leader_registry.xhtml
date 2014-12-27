@@ -22,9 +22,6 @@
 					<p:column headerText="Product">
 						<h:outputText value="#{data.product.name}" />
 					</p:column>
-					<p:column headerText="Product">
-						<h:outputText value="#{data.product.name}" />
-					</p:column>
 					<p:column headerText="Need quantity">
 						<h:outputText value="#{data.originalQuantity}" />
 					</p:column>
@@ -36,6 +33,11 @@
 					</p:column>
 					<p:column headerText="IN WH">
 						<h:outputText value="#{data.inWHQuantity}" />
+					</p:column>
+					<p:column headerText="Keep Product">
+						<p:commandButton disabled="#{data.inWHQuantity==0 || data.need==0}" value="Keep"
+							action="#{leaderController.keepProduct(data, data.need)}"
+							update=":orderView" />
 					</p:column>
 				</p:dataTable>
 				<br />
@@ -50,7 +52,7 @@
 				<br />
 				<p:panelGrid columns="4">
 					<p:commandButton value="Transport" />
-					<p:commandButton value="Need import"
+					<p:commandButton value="Need import" 
 						action="#{leaderController.needProduct()}"
 						update=":orderForm :orderView" />
 					<p:commandButton value="Keep product from wh" />
@@ -66,7 +68,8 @@
 				rowKey="#{currentOrder.id}" paginator="true" rows="10"
 				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 				rowsPerPageTemplate="5,10,15" lazy="true"
-				emptyMessage="#{out.empty_message}">
+				emptyMessage="#{out.empty_message}"
+				rowStyleClass="#{currentOrder.importReady?'ok':'notok'}">
 				<p:ajax event="rowSelect" />
 
 				<p:column headerText="#{out.orders_form_name}"
@@ -77,9 +80,13 @@
 					sortBy="#{currentOrder.date}">
 					<h:outputText value="#{currentOrder.date}" />
 				</p:column>
+				<p:column headerText="Expected income">
+					<h:outputText value="#{currentOrder.income}" />
+				</p:column>
 				<p:column headerText="#{out.orders_form_status}"
 					sortBy="#{currentOrder.status}" filterBy="#{currentOrder.status}">
 					<h:outputText value="#{currentOrder.status}" />
+					<h:outputText rendered="#{currentOrder.importReady}" value=" - OK" />
 				</p:column>
 			</p:dataTable>
 			<p:commandButton value="SHOW"

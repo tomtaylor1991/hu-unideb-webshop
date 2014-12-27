@@ -139,11 +139,11 @@ public class RegistryServiceImpl implements RegistryService {
 			Need need = new Need();
 			need.setProduct(productDao.toDto(r.getProduct()));
 			need.setOriginalQuantity(r.getOriginalQuantity());
-			need.setNeed(r.getQuantity());
-			need.setReadyQuantity(r.getOriginalQuantity()-r.getQuantity());
+			need.setNeed(r.getQuantity() >= 0 ? r.getQuantity() : 0);
+			need.setReadyQuantity(r.getOriginalQuantity() - r.getQuantity());
 			need.setRegistry(registryDao.toDto(r));
-			Integer inWhValue = registryDao.countByProductIdAndStatus(
-					order.getId(), "FREE");
+			Integer inWhValue = registryDao.countByProductIdAndStatus(need
+					.getProduct().getId(), "FREE");
 			need.setInWHQuantity(inWhValue == null ? 0 : inWhValue);
 
 			needs.add(need);

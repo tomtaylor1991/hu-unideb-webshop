@@ -14,32 +14,61 @@
 
 	<ui:define name="content">
 		<h:form id="needList">
-			<p:dataTable var="need"
+			<p:dataTable var="need" id="needTable"
+				rendered="#{importerNecessaryProducts.importList.size()>0}"
 				value="#{importerNecessaryProducts.importList}">
-				<p:column headerText="ID">
-					<h:outputText value="#{need.product.id}" />
-				</p:column>
 				<p:column headerText="Product">
 					<h:outputText value="#{need.product.name}" />
 				</p:column>
-				<p:column headerText="Quantity">
+				<p:column headerText="Need Quantity">
 					<p:inputText id="quantity" value="#{need.need}">
 						<p:ajax event="keyup" />
 					</p:inputText>
 				</p:column>
-				<p:column headerText="Remove">
+				<p:column headerText="Ready Quantity" style="display:none;">
+				</p:column>
+				<p:column headerText="Ready Date" style="display:none;">
+				</p:column>
+				<p:column headerText="Sign" style="display:none;">
+				</p:column>
+				<p:column headerText="Remove" exportable="false">
 					<p:commandButton value="Remove"
 						action="#{importerNecessaryProducts.removeFromImportList(need)}"
 						update=":needList" />
 				</p:column>
 			</p:dataTable>
+			<h:commandLink id="csv">
+				<p:graphicImage name="/images/csv.png"
+					style="width:40px;height:40px;" />
+				<p:dataExporter type="csv" target="needTable"
+					fileName="Needed products" />
+			</h:commandLink>
+			<h:commandLink id="pdf">
+				<p:graphicImage name="/images/pdf.png"
+					style="width:40px;height:40px;" />
+				<p:dataExporter type="pdf" target="needTable"
+					fileName="Needed products" />
+			</h:commandLink>
+			<h:commandLink id="xml">
+				<p:graphicImage name="/images/xml.png"
+					style="width:40px;height:40px;" />
+				<p:dataExporter type="xml" target="needTable"
+					fileName="Needed products" />
+			</h:commandLink>
+			<h:commandLink id="xls">
+				<p:graphicImage name="/images/xls.png"
+					style="width:40px;height:40px;" />
+				<p:dataExporter type="xls" target="needTable"
+					fileName="Needed products" />
+			</h:commandLink>
 		</h:form>
+		<br />
 		<p:dataTable var="need"
 			value="#{importerNecessaryProducts.needListOfProducts}">
 			<p:column headerText="Product">
 				<h:outputText value="#{need.product.name}" />
 			</p:column>
-			<p:column headerText="Quantity">
+			<p:column headerText="Need Quantity">
 				<h:outputText value="#{need.need}" />
 			</p:column>
 			<p:column headerText="Add to import list">
@@ -50,7 +79,32 @@
 				</h:form>
 			</p:column>
 		</p:dataTable>
-
+		<h:form id="newNeed">
+			<p:panelGrid columns="3">
+				<p:column>
+					<h:outputText value="Search Product" />
+					<p:autoComplete id="product"
+						value="#{importerNecessaryProducts.newNeed.product}"
+						completeMethod="#{importerNecessaryProducts.completeText}" var="c"
+						itemLabel="#{c.name}" itemValue="#{c}"
+						converter="productConverterOfImporterNecessaryProducts" />
+				</p:column>
+				<p:column>
+					<h:outputText value="Quantity" />
+					<p:inputText id="quantity"
+						value="#{importerNecessaryProducts.newNeed.need}">
+						<p:ajax event="keyup" />
+					</p:inputText>
+				</p:column>
+				<p:column>
+					<h:form>
+						<p:commandButton value="ADD"
+							action="#{importerNecessaryProducts.addToImportList(importerNecessaryProducts.newNeed)}"
+							update=":needList" />
+					</h:form>
+				</p:column>
+			</p:panelGrid>
+		</h:form>
 	</ui:define>
 
 </ui:composition>

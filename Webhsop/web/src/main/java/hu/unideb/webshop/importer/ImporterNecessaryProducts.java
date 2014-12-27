@@ -5,6 +5,7 @@ import hu.unideb.webshop.dto.OrderDTO;
 import hu.unideb.webshop.dto.ProductDTO;
 import hu.unideb.webshop.dto.RegistryDTO;
 import hu.unideb.webshop.service.ManageOrderFacadeService;
+import hu.unideb.webshop.service.ManageProductFacadeService;
 import hu.unideb.webshop.service.ManageRegistryFacadeService;
 
 import java.io.Serializable;
@@ -31,9 +32,15 @@ public class ImporterNecessaryProducts implements Serializable {
 
 	@ManagedProperty(value = "#{manageOrderFacadeService}")
 	private ManageOrderFacadeService manageOrderFacadeService;
+	
+	@ManagedProperty(value = "#{manageProductFacadeService}")
+	private ManageProductFacadeService manageProductFacadeService;
 
 	private List<Need> needListOfProducts;
 	private Set<Need> importList;
+	private Need newNeed = new Need();
+	private ProductDTO selectedProduct;
+	private List<ProductDTO> completeTextResults;
 
 	public ManageRegistryFacadeService getManageRegistryFacadeService() {
 		return manageRegistryFacadeService;
@@ -85,6 +92,7 @@ public class ImporterNecessaryProducts implements Serializable {
 			need.setNeed(data.get(currentProduct));
 			needListOfProducts.add(need);
 		}
+		newNeed = new Need();
 	}
 
 	public List<Need> getNeedListOfProducts() {
@@ -97,7 +105,7 @@ public class ImporterNecessaryProducts implements Serializable {
 		n.setProduct(need.getProduct());
 		importList.add(n);
 	}
-	
+
 	public void removeFromImportList(Need need) {
 		importList.remove(need);
 	}
@@ -114,5 +122,42 @@ public class ImporterNecessaryProducts implements Serializable {
 		this.importList = importList;
 	}
 
+	public Need getNewNeed() {
+		return newNeed;
+	}
 
+	public void setNewNeed(Need newNeed) {
+		this.newNeed = newNeed;
+	}
+
+	public ProductDTO getSelectedProduct() {
+		return selectedProduct;
+	}
+
+	public void setSelectedProduct(ProductDTO selectedProduct) {
+		this.selectedProduct = selectedProduct;
+	}
+	public List<ProductDTO> completeText(String query) {
+		completeTextResults = manageProductFacadeService
+				.searchProductByName(query);
+		return completeTextResults;
+	}
+
+	public List<ProductDTO> getCompleteTextResults() {
+		return completeTextResults;
+	}
+
+	public void setCompleteTextResults(List<ProductDTO> completeTextResults) {
+		this.completeTextResults = completeTextResults;
+	}
+
+	public ManageProductFacadeService getManageProductFacadeService() {
+		return manageProductFacadeService;
+	}
+
+	public void setManageProductFacadeService(
+			ManageProductFacadeService manageProductFacadeService) {
+		this.manageProductFacadeService = manageProductFacadeService;
+	}
+	
 }

@@ -88,8 +88,8 @@ public class LeaderController implements Serializable {
 
 	public void initSelectedOrder() {
 		if (selectedOrder != null) {
-			info = manageRegistryFacadeService.isOrderCanBeServe(selectedOrder);
-			System.out.println(info);
+			info = selectedOrder.getInfo();
+			//System.out.println(info);
 		}
 	}
 

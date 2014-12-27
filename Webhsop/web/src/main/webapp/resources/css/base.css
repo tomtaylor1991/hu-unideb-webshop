@@ -109,6 +109,7 @@ body {
 
 .ok {
 	color: green;
+	background: #81BEF7  !important ;
 }
 
 .header_logo {
