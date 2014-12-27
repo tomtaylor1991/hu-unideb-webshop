@@ -114,9 +114,6 @@
 									<p:menuitem value="Registry"
 										outcome="/pages/secure/leader_registry.xhtml" />
 									<p:separator />
-									<p:menuitem value="#{out.need_material_diagram}"
-										outcome="/pages/secure/leader_diagrams/material_needs.xhtml" />
-
 									<p:menuitem value="#{out.income_diagram}"
 										outcome="/pages/secure/leader_diagrams/income.xhtml" />
 									<p:menuitem value="#{out.warehouse_diagram}"
@@ -135,7 +132,7 @@
 									<p:menuitem value="#{out.upload_materials}"
 										outcome="/pages/secure/importer.xhtml" />
 									<p:menuitem value="#{out.necessary_materials}"
-										outcome="/pages/secure/importer_necessary_materials.xhtml" />
+										outcome="/pages/secure/importer_necessary_products.xhtml" />
 								</p:submenu>
 							</sec:authorize>
 							<sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_EXPORTER">

@@ -20,7 +20,7 @@ public class RegistryStatus implements Serializable{
 		statuses = new ArrayList<String>();
 		statuses.add("NEW");
 		statuses.add("DONE");
-		statuses.add("NEEDMATERIAL");
+		statuses.add("NEEDPRODUCT");
 		statuses.add("READYFORCREATE");
 		statuses.add("READY");
 		statuses.add("TRANSPORT");

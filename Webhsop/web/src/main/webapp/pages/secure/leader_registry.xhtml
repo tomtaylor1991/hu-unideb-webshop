@@ -50,7 +50,9 @@
 				<br />
 				<p:panelGrid columns="4">
 					<p:commandButton value="Transport" />
-					<p:commandButton value="Need import" />
+					<p:commandButton value="Need import"
+						action="#{leaderController.needProduct()}"
+						update=":orderForm :orderView" />
 					<p:commandButton value="Keep product from wh" />
 					<p:commandButton value="Remove order" />
 				</p:panelGrid>

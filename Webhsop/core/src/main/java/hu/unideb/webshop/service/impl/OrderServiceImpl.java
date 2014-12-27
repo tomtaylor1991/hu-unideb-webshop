@@ -11,6 +11,7 @@ import hu.unideb.webshop.service.OrderService;
 import hu.unideb.webshop.service.UserService;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,8 +94,12 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public List<OrderDTO> getOrdersByStatus(String status) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Order> entities = orderDao.findByStatus(status);
+		List<OrderDTO> ret = new LinkedList<OrderDTO>();
+			for (Order o : entities) {
+				ret.add(orderDao.toDto(o));
+			}
+		return ret;
 	}
 
 	@Override

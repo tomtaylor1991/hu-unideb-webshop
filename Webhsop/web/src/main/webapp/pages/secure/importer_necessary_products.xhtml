@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/masterLayout.xhtml">
+
+	<ui:define name="pageTitle">#{out.partners_title}</ui:define>
+	<ui:define name="header"> -> #{out.importers_title}</ui:define>
+
+	<ui:define name="head-extra">
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form id="needList">
+			<p:dataTable var="need"
+				value="#{importerNecessaryProducts.importList}">
+				<p:column headerText="ID">
+					<h:outputText value="#{need.product.id}" />
+				</p:column>
+				<p:column headerText="Product">
+					<h:outputText value="#{need.product.name}" />
+				</p:column>
+				<p:column headerText="Quantity">
+					<p:inputText id="quantity" value="#{need.need}">
+						<p:ajax event="keyup" />
+					</p:inputText>
+				</p:column>
+				<p:column headerText="Remove">
+					<p:commandButton value="Remove"
+						action="#{importerNecessaryProducts.removeFromImportList(need)}"
+						update=":needList" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<p:dataTable var="need"
+			value="#{importerNecessaryProducts.needListOfProducts}">
+			<p:column headerText="Product">
+				<h:outputText value="#{need.product.name}" />
+			</p:column>
+			<p:column headerText="Quantity">
+				<h:outputText value="#{need.need}" />
+			</p:column>
+			<p:column headerText="Add to import list">
+				<h:form>
+					<p:commandButton value="ADD"
+						action="#{importerNecessaryProducts.addToImportList(need)}"
+						update=":needList" />
+				</h:form>
+			</p:column>
+		</p:dataTable>
+
+	</ui:define>
+
+</ui:composition>

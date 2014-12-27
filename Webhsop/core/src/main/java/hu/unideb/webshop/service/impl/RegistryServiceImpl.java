@@ -94,7 +94,6 @@ public class RegistryServiceImpl implements RegistryService {
 		for (Registry r : entities) {
 			ret.add(registryDao.toDto(r));
 		}
-		System.out.println(ret);
 		return ret;
 	}
 
@@ -120,8 +119,13 @@ public class RegistryServiceImpl implements RegistryService {
 
 	@Override
 	public List<RegistryDTO> findByStatusAndOrder(String status, OrderDTO order) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Registry> entities = registryDao.findByOrderAndStatus(
+				orderDao.toEntity(order, null), status);
+		List<RegistryDTO> ret = new LinkedList<RegistryDTO>();
+		for (Registry r : entities) {
+			ret.add(registryDao.toDto(r));
+		}
+		return ret;
 	}
 
 	@Override
@@ -137,6 +141,7 @@ public class RegistryServiceImpl implements RegistryService {
 			need.setOriginalQuantity(r.getOriginalQuantity());
 			need.setNeed(r.getQuantity());
 			need.setReadyQuantity(r.getOriginalQuantity()-r.getQuantity());
+			need.setRegistry(registryDao.toDto(r));
 			Integer inWhValue = registryDao.countByProductIdAndStatus(
 					order.getId(), "FREE");
 			need.setInWHQuantity(inWhValue == null ? 0 : inWhValue);

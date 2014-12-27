@@ -67,16 +67,22 @@ public class LeaderController implements Serializable {
 	public void needProduct() {
 		if (selectedOrder != null) {
 			for (Need need : info.getNeed()) {
-
+				manageRegistryFacadeService.createProductNeedForOrder(
+						need.getProduct(), selectedOrder, need.getNeed());
 			}
 		}
+		selectedOrder.setStatus("NEEDPRODUCT");
+		manageOrderFacadeService.updateOrder(selectedOrder);
 	}
 
-	public void keepProduct(ProductDTO product, Need need) {
+	public void keepProduct(Need need, int quantity) {
 		if (selectedOrder != null) {
-			int quantity = manageRegistryFacadeService.keepProductForOrder(
-					product, selectedOrder, need.getNeed());
-			//TODO
+			int readyQuantity = manageRegistryFacadeService
+					.keepProductForOrder(need.getProduct(), selectedOrder,
+							quantity);
+			RegistryDTO registry = need.getRegistry();
+			registry.setQuantity(registry.getQuantity() - readyQuantity);
+			manageRegistryFacadeService.updateRegistry(registry);
 		}
 	}
 
