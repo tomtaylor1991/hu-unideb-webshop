@@ -118,7 +118,7 @@
 							style="font-weight:bold" />
 						<p:inputText id="quantity" value="#{importerController.quantity}" />
 						<br />
-						<p:commandButton update=":TableList selectedMaterialName quantity"
+						<p:commandButton update=" selectedMaterialName quantity"
 							action="#{importerController.addRegistryToList()}"
 							icon="ui-icon-close" value="#{out.importer_addtolist}" />
 					</h:panelGrid>
@@ -128,25 +128,36 @@
 			<br />
 			<p:separator />
 			<br />
-			<p:dataTable var="c" id="TableList"
-				value="#{importerController.registryList}"
-				emptyMessage="#{out.empty_message}">
-				<p:ajax event="rowSelect" />
-				<p:column headerText="#{out.importer_materialname}">
-					<h:outputText value="#{c.material.materialName}" />
-				</p:column>
-				<p:column headerText="#{out.importer_quantity}">
-					<h:outputText value="#{c.quantity}" />
-				</p:column>
-				<p:column style="width:32px;text-align: center">
-					<p:commandButton update="TableList"
-						action="#{importerController.removeRegistryFromList()}"
-						icon="ui-icon-close" title="Select">
-						<f:setPropertyActionListener value="#{c}"
-							target="#{importerController.deletedElement}" />
-					</p:commandButton>
-				</p:column>
-			</p:dataTable>
+			<h:form id="productList">
+				<p:dataTable id="productTable" var="currentproduct"
+					value="#{importerController.productModel}"
+					rowKey="#{currentproduct.id}" selectionMode="single"
+					selection="#{importerController.selectedProduct}" paginator="true"
+					rows="10"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+					rowsPerPageTemplate="5,10,15" lazy="true"
+					emptyMessage="#{out.empty_message}">
+					<p:ajax event="rowSelect" update="" />
+					<p:column headerText="ID" sortBy="#{currentproduct.id}">
+						<h:outputText value="#{currentproduct.id}" />
+					</p:column>
+					<p:column headerText="Category"
+						sortBy="#{currentproduct.category.name}"
+						filterBy="#{currentproduct.category.name}">
+						<h:outputText value="#{currentproduct.category.name}" />
+					</p:column>
+					<p:column headerText="Name" sortBy="#{currentproduct.name}"
+						filterBy="#{currentproduct.name}">
+						<h:outputText value="#{currentproduct.name}" />
+					</p:column>
+					<p:column headerText="Price" sortBy="#{currentproduct.price}">
+						<h:outputText value="#{currentproduct.price}" />
+					</p:column>
+					<p:column headerText="Short Text">
+						<h:outputText value="#{currentproduct.shortText}" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
 			<p:separator style="width:100%;height:10px" />
 			<h:form>
 				<h:outputText value="#{out.importer_selectwh}"
@@ -166,7 +177,7 @@
 				</p:dataTable>
 			</h:form>
 			<p:separator style="width:100%;height:10px" />
-			<p:commandButton id="submit" update="TableList"
+			<p:commandButton id="submit" update=""
 				disabled="#{importerController.selectedWH==null}"
 				action="#{importerController.saveToDB()}" icon="ui-icon-close"
 				value="#{out.importer_load}" />
