@@ -9,6 +9,40 @@ public class LeaderTestInfoDTO implements Serializable {
 
 	OrderDTO order;
 	List<Need> need;
+	private double income;
+	private boolean importReady = false;
+	private boolean readyForTransport = true;
+
+	public void calculate() {
+		// calculate income
+		for (Need n : need) {
+			income += n.getProduct().getPrice()
+					* n.getRegistry().getOriginalQuantity();
+			// transport check
+			if (!order.getStatus().equals("TRANSPORT")
+					&& !order.getStatus().equals("READY")) {
+				if (n.getNeed() > 0) {
+					setReadyForTransport(false);
+				}
+			}
+		}
+		// calculate isTransport
+		if (!order.getStatus().equals("TRANSPORT")
+				&& !order.getStatus().equals("READY") && readyForTransport) {
+			order.setStatus("READY FOR TRANSPORT");
+		}
+		// calculate ready?
+		if (order.getStatus().equals("NEEDPRODUCT")
+				|| order.getStatus().equals("NEW") && need != null) {
+			for (Need n : need) {
+				if (n.getNeed() > n.getInWHQuantity()) {
+					setImportReady(false);
+					return;
+				}
+			}
+			setImportReady(true);
+		}
+	}
 
 	public static class Need implements Serializable {
 		private static final long serialVersionUID = 1L;
@@ -119,9 +153,34 @@ public class LeaderTestInfoDTO implements Serializable {
 		this.need = need;
 	}
 
+	public double getIncome() {
+		return income;
+	}
+
+	public void setIncome(double income) {
+		this.income = income;
+	}
+
+	public boolean getImportReady() {
+		return importReady;
+	}
+
+	public void setImportReady(boolean importReady) {
+		this.importReady = importReady;
+	}
+
 	@Override
 	public String toString() {
-		return "LeaderTestInfoDTO [order=" + order + ", need=" + need + "]";
+		return "LeaderTestInfoDTO [order=" + order + ", need=" + need
+				+ ", income=" + income + ", importReady=" + importReady + "]";
+	}
+
+	public boolean getReadyForTransport() {
+		return readyForTransport;
+	}
+
+	public void setReadyForTransport(boolean readyForTransport) {
+		this.readyForTransport = readyForTransport;
 	}
 
 }

@@ -1,7 +1,5 @@
 package hu.unideb.webshop.dto;
 
-import hu.unideb.webshop.dto.LeaderTestInfoDTO.Need;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,13 +15,9 @@ public class OrderDTO extends BaseDTO implements Serializable {
 
 	private Date date;
 
-	private boolean importReady = false;
-
 	private String status;
 
 	private PartnerDTO partnerDTO;
-
-	private double income;
 
 	public OrderDTO() {
 
@@ -129,37 +123,6 @@ public class OrderDTO extends BaseDTO implements Serializable {
 
 	public void setInfo(LeaderTestInfoDTO info) {
 		this.info = info;
-		// calculate income 
-		for (Need need : info.getNeed()) {
-			income += need.getProduct().getPrice()
-					* need.getRegistry().getOriginalQuantity();
-		}
-		// calculate ready?
-		if (status.equals("NEEDPRODUCT") || status.equals("NEW") && info != null) {
-			for (Need need : info.getNeed()) {
-				if (need.getNeed() > need.getInWHQuantity()) {
-					setImportReady(false);
-					return;
-				}
-			}
-			setImportReady(true);
-		}
-	}
-
-	public boolean getImportReady() {
-		return importReady;
-	}
-
-	public void setImportReady(boolean importReady) {
-		this.importReady = importReady;
-	}
-
-	public double getIncome() {
-		return income;
-	}
-
-	public void setIncome(double income) {
-		this.income = income;
 	}
 
 }

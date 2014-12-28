@@ -10,11 +10,14 @@ import hu.unideb.webshop.dto.ProductDTO;
 import hu.unideb.webshop.service.CategoryService;
 import hu.unideb.webshop.service.ManageProductFacadeService;
 import hu.unideb.webshop.service.ProductService;
+import hu.unideb.webshop.service.RegistryService;
 
 @Service("manageProductFacadeService")
 public class ManageProductFacadeServiceImpl implements
 		ManageProductFacadeService {
 
+	@Autowired
+	RegistryService registryService;
 	@Autowired
 	ProductService productService;
 	@Autowired
@@ -58,6 +61,12 @@ public class ManageProductFacadeServiceImpl implements
 	public List<ProductDTO> searchProductByName(String name) {
 
 		return productService.searchProductByName(name);
+	}
+
+	@Override
+	public int countFreeProductNumber(ProductDTO product) {
+	
+		return registryService.countFreeProductNumber(product);
 	}
 
 }

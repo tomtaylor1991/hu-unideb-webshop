@@ -14,4 +14,5 @@ public interface ManageProductFacadeService {
 	public int getRowNumber();
 	List<CategoryDTO> searchCategoryByName(String name);
 	public List<ProductDTO> searchProductByName(String name);
+	int countFreeProductNumber(ProductDTO product);
 }

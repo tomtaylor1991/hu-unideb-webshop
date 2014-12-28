@@ -32,7 +32,7 @@ public class ImporterNecessaryProducts implements Serializable {
 
 	@ManagedProperty(value = "#{manageOrderFacadeService}")
 	private ManageOrderFacadeService manageOrderFacadeService;
-	
+
 	@ManagedProperty(value = "#{manageProductFacadeService}")
 	private ManageProductFacadeService manageProductFacadeService;
 
@@ -71,12 +71,15 @@ public class ImporterNecessaryProducts implements Serializable {
 		List<RegistryDTO> needs = new LinkedList<RegistryDTO>();
 		for (OrderDTO currentOrder : listOfNeededOrders) {
 			needs.addAll(manageRegistryFacadeService.findByStatusAndOrder(
-					"NEED", currentOrder));
+					"ORDERDATA", currentOrder));
 		}
 		needListOfProducts = new LinkedList<Need>();
 		importList = new HashSet<Need>();
 		Map<ProductDTO, Integer> data = new HashMap<ProductDTO, Integer>();
 		for (RegistryDTO currentRegistry : needs) {
+			if (currentRegistry.getQuantity() < 0) {
+				continue;
+			}
 			if (data.keySet().contains(currentRegistry.getProduct())) {
 				data.put(currentRegistry.getProduct(),
 						data.get(currentRegistry.getProduct())
@@ -87,9 +90,18 @@ public class ImporterNecessaryProducts implements Serializable {
 			}
 		}
 		for (ProductDTO currentProduct : data.keySet()) {
+			int freeNumber = manageProductFacadeService
+					.countFreeProductNumber(currentProduct);
+			// System.out.println("Free: " + currentProduct + " - " +
+			// freeNumber);
 			Need need = new Need();
 			need.setProduct(currentProduct);
-			need.setNeed(data.get(currentProduct));
+			need.setOriginalQuantity(data.get(currentProduct));
+			need.setNeed(data.get(currentProduct) - freeNumber);
+			if (need.getNeed() <= 0) {
+				continue;
+			}
+			need.setInWHQuantity(freeNumber);
 			needListOfProducts.add(need);
 		}
 		newNeed = new Need();
@@ -137,6 +149,7 @@ public class ImporterNecessaryProducts implements Serializable {
 	public void setSelectedProduct(ProductDTO selectedProduct) {
 		this.selectedProduct = selectedProduct;
 	}
+
 	public List<ProductDTO> completeText(String query) {
 		completeTextResults = manageProductFacadeService
 				.searchProductByName(query);
@@ -159,5 +172,5 @@ public class ImporterNecessaryProducts implements Serializable {
 			ManageProductFacadeService manageProductFacadeService) {
 		this.manageProductFacadeService = manageProductFacadeService;
 	}
-	
+
 }

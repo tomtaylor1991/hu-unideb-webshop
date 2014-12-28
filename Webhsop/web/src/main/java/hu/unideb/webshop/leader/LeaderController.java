@@ -3,7 +3,6 @@ package hu.unideb.webshop.leader;
 import hu.unideb.webshop.dto.LeaderTestInfoDTO;
 import hu.unideb.webshop.dto.LeaderTestInfoDTO.Need;
 import hu.unideb.webshop.dto.OrderDTO;
-import hu.unideb.webshop.dto.ProductDTO;
 import hu.unideb.webshop.dto.RegistryDTO;
 import hu.unideb.webshop.service.ManageOrderFacadeService;
 import hu.unideb.webshop.service.ManageRegistryFacadeService;
@@ -65,12 +64,11 @@ public class LeaderController implements Serializable {
 	}
 
 	public void needProduct() {
-		if (selectedOrder != null) {
-			for (Need need : info.getNeed()) {
-				manageRegistryFacadeService.createProductNeedForOrder(
-						need.getProduct(), selectedOrder, need.getNeed());
-			}
-		}
+		/*
+		 * if (selectedOrder != null) { for (Need need : info.getNeed()) {
+		 * manageRegistryFacadeService.createProductNeedForOrder(
+		 * need.getProduct(), selectedOrder, need.getNeed()); } }
+		 */
 		selectedOrder.setStatus("NEEDPRODUCT");
 		manageOrderFacadeService.updateOrder(selectedOrder);
 	}
@@ -81,7 +79,14 @@ public class LeaderController implements Serializable {
 					.keepProductForOrder(need.getProduct(), selectedOrder,
 							quantity);
 			RegistryDTO registry = need.getRegistry();
-			registry.setQuantity(registry.getQuantity() - readyQuantity);
+			int q = registry.getQuantity() - readyQuantity;
+			// System.out.println("ready quantity: " + readyQuantity);
+			registry.setQuantity(q < 0 ? 0 : q);
+			// /
+			need.setNeed(need.getNeed() - readyQuantity);
+			need.setInWHQuantity(need.getInWHQuantity() - readyQuantity);
+			need.setReadyQuantity(need.getReadyQuantity() + readyQuantity);
+			//
 			manageRegistryFacadeService.updateRegistry(registry);
 		}
 	}
@@ -89,7 +94,7 @@ public class LeaderController implements Serializable {
 	public void initSelectedOrder() {
 		if (selectedOrder != null) {
 			info = selectedOrder.getInfo();
-			//System.out.println(info);
+			// System.out.println(info);
 		}
 	}
 

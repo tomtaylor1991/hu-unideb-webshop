@@ -21,6 +21,8 @@ public interface RegistryService {
 	void updateRegistry(RegistryDTO registry);
 
     void deleteRegistry(RegistryDTO registry);
+    
+    public int countFreeProductNumber(ProductDTO product);
 
 	List<RegistryDTO> findByMaterial(MaterialDTO material);
 

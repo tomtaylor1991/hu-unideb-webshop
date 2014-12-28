@@ -149,6 +149,7 @@ public class RegistryServiceImpl implements RegistryService {
 			needs.add(need);
 		}
 		info.setNeed(needs);
+		info.calculate();
 		return info;
 	}
 
@@ -168,13 +169,14 @@ public class RegistryServiceImpl implements RegistryService {
 			int quantity) {
 		List<Registry> freeProducts = registryDao.findByOrderAndStatus(null,
 				"FREE");
-		int originalQuantity = quantity;
+		int counter = 0;
 		for (Registry currentRegistry : freeProducts) {
 			quantity -= currentRegistry.getQuantity();
 			if (quantity >= 0) {
 				currentRegistry.setOrder(orderDao.toEntity(order, null));
 				currentRegistry.setStatus("READY");
 				registryDao.save(currentRegistry);
+				counter+=currentRegistry.getQuantity();
 			} else {
 				Registry newRegistry = new Registry();
 				newRegistry.setProduct(currentRegistry.getProduct());
@@ -187,9 +189,17 @@ public class RegistryServiceImpl implements RegistryService {
 				currentRegistry.setQuantity(currentRegistry.getQuantity()
 						+ quantity);
 				registryDao.save(currentRegistry);
+				counter+=currentRegistry.getQuantity();
 				break;
 			}
 		}
-		return originalQuantity - quantity;
+		return counter;
+	}
+
+	@Override
+	public int countFreeProductNumber(ProductDTO product) {
+		Integer ret = registryDao.countByProductIdAndStatus(product.getId(),
+				"FREE");
+		return ret != null ? ret : 0;
 	}
 }

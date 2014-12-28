@@ -69,7 +69,12 @@
 				<h:outputText value="#{need.product.name}" />
 			</p:column>
 			<p:column headerText="Need Quantity">
-				<h:outputText value="#{need.need}" />
+				<h:outputText value="#{need.need}"
+					style="font-weight:bold;color:red;" />
+				<h:outputText value=" / #{need.originalQuantity}" />
+			</p:column>
+			<p:column headerText="In WH Quantity">
+				<h:outputText value="#{need.inWHQuantity}" />
 			</p:column>
 			<p:column headerText="Add to import list">
 				<h:form>
