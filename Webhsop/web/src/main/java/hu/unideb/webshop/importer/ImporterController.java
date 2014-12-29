@@ -1,6 +1,5 @@
 package hu.unideb.webshop.importer;
 
-import hu.unideb.webshop.dto.MaterialDTO;
 import hu.unideb.webshop.dto.ProductDTO;
 import hu.unideb.webshop.dto.RegistryDTO;
 import hu.unideb.webshop.dto.WarehouseDTO;
@@ -32,7 +31,6 @@ public class ImporterController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private MaterialDTO selectedMaterial;
 	private ProductDTO selectedProduct;
 	private int quantity;
 	private Set<RegistryDTO> registryList;
@@ -47,6 +45,7 @@ public class ImporterController implements Serializable {
 	}
 
 	public void addRegistryToList() {
+		System.out.println(selectedProduct);
 		if (selectedProduct != null) {
 			RegistryDTO registy = new RegistryDTO();
 			registy.setQuantity(quantity);
@@ -67,17 +66,9 @@ public class ImporterController implements Serializable {
 		}
 	}
 
-	public void removeRegistryFromList() {
-		registryList.remove(deletedElement);
+	public void removeRegistryFromList(RegistryDTO registry) {
+		registryList.remove(registry);
 		deletedElement = null;
-	}
-
-	public MaterialDTO getSelectedMaterial() {
-		return selectedMaterial;
-	}
-
-	public void setSelectedMaterial(MaterialDTO selectedMaterial) {
-		this.selectedMaterial = selectedMaterial;
 	}
 
 	public int getQuantity() {

@@ -167,8 +167,10 @@ public class RegistryServiceImpl implements RegistryService {
 	@Override
 	public int keepProductForOrder(ProductDTO product, OrderDTO order,
 			int quantity) {
-		List<Registry> freeProducts = registryDao.findByOrderAndStatus(null,
-				"FREE");
+		List<Registry> freeProducts = registryDao
+				.findByOrderAndProductAndStatus(null,
+						productDao.toEntity(product, null), "FREE");
+		System.out.println("kell: " + quantity);
 		int counter = 0;
 		for (Registry currentRegistry : freeProducts) {
 			quantity -= currentRegistry.getQuantity();
@@ -176,11 +178,12 @@ public class RegistryServiceImpl implements RegistryService {
 				currentRegistry.setOrder(orderDao.toEntity(order, null));
 				currentRegistry.setStatus("READY");
 				registryDao.save(currentRegistry);
-				counter+=currentRegistry.getQuantity();
+				counter += currentRegistry.getQuantity();
 			} else {
 				Registry newRegistry = new Registry();
 				newRegistry.setProduct(currentRegistry.getProduct());
 				newRegistry.setQuantity(0 - quantity);
+				System.out.println("marad: " + newRegistry.getQuantity());
 				newRegistry.setStatus("FREE");
 				registryDao.save(newRegistry);
 				// /
@@ -188,8 +191,9 @@ public class RegistryServiceImpl implements RegistryService {
 				currentRegistry.setStatus("READY");
 				currentRegistry.setQuantity(currentRegistry.getQuantity()
 						+ quantity);
+				System.out.println("kesz: " + currentRegistry.getQuantity());
 				registryDao.save(currentRegistry);
-				counter+=currentRegistry.getQuantity();
+				counter += currentRegistry.getQuantity();
 				break;
 			}
 		}

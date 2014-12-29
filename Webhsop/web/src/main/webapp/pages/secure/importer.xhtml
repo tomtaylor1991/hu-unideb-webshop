@@ -69,64 +69,9 @@
 				</p:dataTable>
 			</h:form>
 		</h:form>
-
-		<p:dialog header="#{out.importer_select_material}"
-			widgetVar="materialDialog" modal="true" showEffect="fade"
-			hideEffect="fade" resizable="true">
-			<p:outputPanel id="materialDetail" style="text-align:center;">
-				<p:dataTable var="material" id="materialTableList"
-					value="#{recipeController.allMaterial}" scrollable="true"
-					scrollHeight="200" emptyMessage="#{out.empty_message}">
-					<p:ajax event="rowSelect" />
-					<p:column headerText="#{out.importer_materialname}">
-						<h:outputText value="#{material.materialName}" />
-					</p:column>
-					<p:column headerText="#{out.importer_materialcost}">
-						<h:outputText value="#{material.cost}" />
-					</p:column>
-					<p:column style="width:32px;text-align: center">
-						<p:commandButton update="@([id$=selectedMaterialName])"
-							oncomplete="PF('materialDialog').hide()" icon="ui-icon-plusthick"
-							title="Select">
-							<f:setPropertyActionListener value="#{material}"
-								target="#{importerController.selectedMaterial}" />
-						</p:commandButton>
-					</p:column>
-				</p:dataTable>
-			</p:outputPanel>
-		</p:dialog>
-		<h:messages></h:messages>
 		<p:panel header="#{out.importer_header}" style="top:0px;"
 			id="mainPanel">
-
-			<h:form>
-				<div class="ui-grid ui-grid-responsive ui-grid-row ui-grid-col-6">
-					<h:panelGrid columns="3" style="width:100%" cellpadding="5">
-						<h:outputLabel for="selectedMaterialName"
-							value="#{out.importer_selected_material}"
-							style="font-weight:bold" />
-
-						<h:outputText
-							value="#{importerController.selectedMaterial.materialName}"
-							id="selectedMaterialName" style="font-weight:bold" />
-
-						<p:commandButton oncomplete="PF('materialDialog').show()"
-							icon="ui-icon-search" title="Select material"
-							value="#{out.importer_select_material}" />
-
-						<h:outputLabel for="quantity" value="#{out.importer_quantity}"
-							style="font-weight:bold" />
-						<p:inputText id="quantity" value="#{importerController.quantity}" />
-						<br />
-						<p:commandButton update=" selectedMaterialName quantity"
-							action="#{importerController.addRegistryToList()}"
-							icon="ui-icon-close" value="#{out.importer_addtolist}" />
-					</h:panelGrid>
-				</div>
-			</h:form>
-
-			<br />
-			<p:separator />
+			<h:outputText value="Select a product: " />
 			<br />
 			<h:form id="productList">
 				<p:dataTable id="productTable" var="currentproduct"
@@ -153,11 +98,37 @@
 					<p:column headerText="Price" sortBy="#{currentproduct.price}">
 						<h:outputText value="#{currentproduct.price}" />
 					</p:column>
-					<p:column headerText="Short Text">
-						<h:outputText value="#{currentproduct.shortText}" />
-					</p:column>
 				</p:dataTable>
 			</h:form>
+			<h:form id="inputData">
+				<div class="ui-grid ui-grid-responsive ui-grid-row ui-grid-col-6">
+					<h:panelGrid columns="2" style="width:100%" cellpadding="5">
+						<h:outputLabel for="quantity" value="#{out.importer_quantity}:"
+							style="font-weight:bold" />
+						<p:inputText id="quantity" value="#{importerController.quantity}" />
+						<p:commandButton update=":inputData :registryTable"
+							action="#{importerController.addRegistryToList()}"
+							icon="ui-icon-close" value="#{out.importer_addtolist}" />
+					</h:panelGrid>
+				</div>
+			</h:form>
+			<br />
+			<p:separator />
+			<br />
+			<p:dataTable id="registryTable" var="registry"
+				value="#{importerController.registryList}">
+				<p:column headerText="Product name">
+					<h:outputText value="#{registry.product.name}" />
+				</p:column>
+				<p:column headerText="Quantity">
+					<h:outputText value="#{registry.quantity}" />
+				</p:column>
+				<p:column headerText="Remove?">
+					<p:commandButton value="Remove"
+						action="#{importerController.removeRegistryFromList(registry)}"
+						update=":registryTable" />
+				</p:column>
+			</p:dataTable>
 			<p:separator style="width:100%;height:10px" />
 			<h:form>
 				<h:outputText value="#{out.importer_selectwh}"
@@ -177,7 +148,7 @@
 				</p:dataTable>
 			</h:form>
 			<p:separator style="width:100%;height:10px" />
-			<p:commandButton id="submit" update=""
+			<p:commandButton id="submit" update=":inputData :registryTable"
 				disabled="#{importerController.selectedWH==null}"
 				action="#{importerController.saveToDB()}" icon="ui-icon-close"
 				value="#{out.importer_load}" />
