@@ -13,6 +13,9 @@ public interface ManageOrderFacadeService {
 
 	List<OrderDTO> getOrderList(int page, int size, String sortField,
 			int sortOrder, String filter, String filterColumnName);
+	
+	List<OrderDTO> getOrderList(int page, int size, String sortField,
+			int sortOrder, String filter, String filterColumnName, List<String> includedStatuses);	
 
 	void createOrder(OrderDTO order);
 

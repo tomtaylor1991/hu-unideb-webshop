@@ -84,5 +84,12 @@ public class ManageOrderFacadeServiceImpl implements ManageOrderFacadeService {
 		}
 		return ret;
 	}
+
+	@Override
+	public List<OrderDTO> getOrderList(int page, int size, String sortField,
+			int sortOrder, String filter, String filterColumnName,
+			List<String> includedStatuses) {
+		return orderService.getOrderList(page, size, sortField, sortOrder, filter, filterColumnName, includedStatuses);
+	}
 	
 }

@@ -1,30 +1,30 @@
 package hu.unideb.webshop.exporter;
 
-import hu.unideb.webshop.LocaleSwitcher;
-import hu.unideb.webshop.dto.IncomeDTO;
 import hu.unideb.webshop.dto.OrderDTO;
-import hu.unideb.webshop.dto.RegistryDTO;
+import hu.unideb.webshop.order.LazyOrderModel;
 import hu.unideb.webshop.service.ManageIncomeFacadeService;
 import hu.unideb.webshop.service.ManageOrderFacadeService;
 import hu.unideb.webshop.service.ManageRegistryFacadeService;
 
 import java.io.Serializable;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 @ViewScoped
 @ManagedBean(name = "exporterController")
 public class ExporterController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private List<OrderDTO> visibleOrders;
+	private LazyOrderModel orderModel;
 	private OrderDTO selectedOrder;
+	private Set<OrderDTO> exportList = new LinkedHashSet<OrderDTO>();
 
 	@ManagedProperty(value = "#{manageOrderFacadeService}")
 	private ManageOrderFacadeService manageOrderFacadeService;
@@ -34,14 +34,6 @@ public class ExporterController implements Serializable {
 
 	@ManagedProperty(value = "#{manageIncomeFacadeService}")
 	private ManageIncomeFacadeService manageIncomeFacadeService;
-
-	public List<OrderDTO> getVisibleOrders() {
-		return visibleOrders;
-	}
-
-	public void setVisibleOrders(List<OrderDTO> visibleOrders) {
-		this.visibleOrders = visibleOrders;
-	}
 
 	public ManageOrderFacadeService getManageOrderFacadeService() {
 		return manageOrderFacadeService;
@@ -71,42 +63,30 @@ public class ExporterController implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		visibleOrders = manageOrderFacadeService.getOrdersByStatus("TRANSPORT");
+		orderModel = new LazyOrderModel(manageOrderFacadeService,
+				manageRegistryFacadeService, true);
+		List<String> includedStatuses = new LinkedList<String>();
+		includedStatuses.add("TRANSPORT");
+		includedStatuses.add("DURINGTRANSPORT");
+		orderModel.setIncludedStatuses(includedStatuses);
+	}
+
+	public void addOrderToExportList(OrderDTO order) {
+		if (order.getStatus().equals("TRANSPORT")) {
+			exportList.add(order);
+		}
+	}
+
+	public void saveExport() {
+		for (OrderDTO order : exportList) {
+			order.setStatus("DURINGTRANSPORT");
+			manageOrderFacadeService.updateOrder(order);
+		}
+
 	}
 
 	public void transport() {
-		/*
-		FacesContext.getCurrentInstance().addMessage(
-				null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", String
-						.format("%s %s",
-								LocaleSwitcher.getMessage("exporter_done"),
-								selectedOrder.getName())));
-		selectedOrder.setStatus("DONE");
-		visibleOrders.remove(selectedOrder);
-		manageOrderFacadeService.updateOrder(selectedOrder);
-
-		// az orderhez tartozó registryk törlése, mivel már nincs rájuk
-		// szükség
-
-		for (RegistryDTO r : manageRegistryFacadeService.findByStatusAndOrder(
-				"READY", selectedOrder)) {
-			// if (r.getMaterial() != null) {
-			int sum = 0;
-			if (r.getBeer() != null) {
-				sum += r.getBeer().getPrice() * r.getQuantity();
-			
-				IncomeDTO income = new IncomeDTO();
-				income.setPrice(sum);
-				income.setOrderId(new Long(1));
-				income.setComment(r.getBeer().getName() + "," + r.getQuantity());
-				manageIncomeFacadeService.createIncome(income);
-		
-			}
-			manageRegistryFacadeService.deleteRegistry(r);
-			// }
-		}
-*/
+		System.out.println(orderModel.getVisibleOrderList());
 	}
 
 	public ManageIncomeFacadeService getManageIncomeFacadeService() {
@@ -116,6 +96,22 @@ public class ExporterController implements Serializable {
 	public void setManageIncomeFacadeService(
 			ManageIncomeFacadeService manageIncomeFacadeService) {
 		this.manageIncomeFacadeService = manageIncomeFacadeService;
+	}
+
+	public LazyOrderModel getOrderModel() {
+		return orderModel;
+	}
+
+	public void setOrderModel(LazyOrderModel orderModel) {
+		this.orderModel = orderModel;
+	}
+
+	public Set<OrderDTO> getExportList() {
+		return exportList;
+	}
+
+	public void setExportList(Set<OrderDTO> exportList) {
+		this.exportList = exportList;
 	}
 
 }

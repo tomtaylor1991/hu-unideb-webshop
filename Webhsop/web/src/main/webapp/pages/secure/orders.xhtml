@@ -147,7 +147,7 @@
 					<p:rowToggler />
 				</p:column>
 				<p:column headerText="#{out.orders_form_name}"
-					sortBy="#{currentOrder.name}" filterBy="#{currentOrder.name}">
+					sortBy="#{currentOrder.name}">
 					<h:outputText value="#{currentOrder.name}" />
 				</p:column>
 				<p:column headerText="#{out.orders_form_date}"
@@ -155,7 +155,7 @@
 					<h:outputText value="#{currentOrder.date}" />
 				</p:column>
 				<p:column headerText="#{out.orders_form_status}"
-					sortBy="#{currentOrder.status}" filterBy="#{currentOrder.status}">
+					sortBy="#{currentOrder.status}">
 					<h:outputText
 						value="#{currentOrder.status}" />
 				</p:column>
@@ -168,7 +168,7 @@
 							<h:outputText value="#{registry.product.name}" />
 						</p:column>
 						<p:column headerText="#{out.worker_order_quantity}">
-							<h:outputText value="#{registry.quantity}" />
+							<h:outputText value="#{registry.originalQuantity}" />
 						</p:column>
 					</p:dataTable>
 				</p:rowExpansion>

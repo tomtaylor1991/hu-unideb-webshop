@@ -56,8 +56,18 @@
 				</p:panelGrid>
 				<br />
 				<p:panelGrid columns="4">
-					<p:commandButton value="Transport" />
+					<p:commandButton value="Transport"
+						disabled='#{!leaderController.info.readyForTransport || 
+						"TRANSPORT".equals(leaderController.selectedOrder.status) || 
+						"READY".equals(leaderController.selectedOrder.status) || 
+						"DURINGTRANSPORT".equals(leaderController.selectedOrder.status) 
+						}'
+						action="#{leaderController.transportOrder()}"
+						update=":orderForm :orderView" />
 					<p:commandButton value="Need import"
+						disabled='#{leaderController.info.importReady ||leaderController.info.readyForTransport || 
+						"NEEDPRODUCT".equals(leaderController.selectedOrder.status) 
+						}'
 						action="#{leaderController.needProduct()}"
 						update=":orderForm :orderView" />
 					<!-- 

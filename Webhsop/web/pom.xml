@@ -163,6 +163,11 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.primefaces.extensions</groupId>
+			<artifactId>primefaces-extensions</artifactId>
+		</dependency>
 	</dependencies>
 
 

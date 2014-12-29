@@ -88,6 +88,14 @@ public class LeaderController implements Serializable {
 			need.setReadyQuantity(need.getReadyQuantity() + readyQuantity);
 			//
 			manageRegistryFacadeService.updateRegistry(registry);
+			selectedOrder.getInfo().calculate();
+		}
+	}
+
+	public void transportOrder() {
+		if (selectedOrder != null) {
+			selectedOrder.setStatus("TRANSPORT");
+			manageOrderFacadeService.updateOrder(selectedOrder);
 		}
 	}
 

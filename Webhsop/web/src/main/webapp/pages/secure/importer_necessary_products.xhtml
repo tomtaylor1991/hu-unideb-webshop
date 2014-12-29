@@ -91,7 +91,8 @@
 					<p:autoComplete id="product"
 						value="#{importerNecessaryProducts.newNeed.product}"
 						completeMethod="#{importerNecessaryProducts.completeText}" var="c"
-						itemLabel="#{c.name}" itemValue="#{c}"
+						itemLabel='#{c.name}'
+						itemValue="#{c}"
 						converter="productConverterOfImporterNecessaryProducts" />
 				</p:column>
 				<p:column>

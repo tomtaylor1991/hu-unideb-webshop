@@ -28,6 +28,7 @@ public class LeaderTestInfoDTO implements Serializable {
 		}
 		// calculate isTransport
 		if (!order.getStatus().equals("TRANSPORT")
+				&& !order.getStatus().equals("DURINGTRANSPORT")
 				&& !order.getStatus().equals("READY") && readyForTransport) {
 			order.setStatus("READY FOR TRANSPORT");
 		}

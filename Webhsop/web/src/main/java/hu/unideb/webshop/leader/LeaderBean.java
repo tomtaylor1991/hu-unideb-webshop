@@ -5,6 +5,8 @@ import hu.unideb.webshop.service.ManageOrderFacadeService;
 import hu.unideb.webshop.service.ManageRegistryFacadeService;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;

@@ -18,6 +18,11 @@ public interface OrderDao extends PagingAndSortingRepository<Order, Long>,
 	Page<Order> findByStatusStartsWith(String status, Pageable pageable);
 	Page<Order> findByNameStartsWith(String name, Pageable pageable);
 	
+	Page<Order> findByNameStartsWithAndStatusIn(String name, List<String> statuses, Pageable pageable);
+	Page<Order> findByStatusStartsWithAndStatusIn(String status, List<String> statuses, Pageable pageable);
+	Page<Order> findByStatusIn(List<String> statuses, Pageable pageable);
+
+
 	@Query(value = "SELECT count(*) FROM ORDERS", nativeQuery = true)
 	int countById();
 	

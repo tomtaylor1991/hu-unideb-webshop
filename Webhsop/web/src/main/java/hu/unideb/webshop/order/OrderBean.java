@@ -23,6 +23,7 @@ public class OrderBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		orderModel = new LazyOrderModel(manageOrderFacadeService);
+		orderModel.setOnlyStatus("status", "NEW");
 	}
 
 	public LazyOrderModel getOrderModel() {

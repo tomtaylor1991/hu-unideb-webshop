@@ -1,7 +1,6 @@
 package hu.unideb.webshop.order;
 
 import hu.unideb.webshop.dto.OrderDTO;
-import hu.unideb.webshop.dto.RegistryDTO;
 import hu.unideb.webshop.service.ManageOrderFacadeService;
 import hu.unideb.webshop.service.ManageRegistryFacadeService;
 
@@ -19,6 +18,9 @@ public class LazyOrderModel extends LazyDataModel<OrderDTO> {
 	private ManageRegistryFacadeService manageRegistryFacadeService = null;
 	private List<OrderDTO> visibleOrderList;
 	private boolean isNeedRegistryInfo = false;
+	private String onlyStatusColumn = "";
+	private String onlyStatusFilter = "";
+	private List<String> includedStatuses;
 
 	public LazyOrderModel() {
 
@@ -59,10 +61,7 @@ public class LazyOrderModel extends LazyDataModel<OrderDTO> {
 	@Override
 	public List<OrderDTO> load(int first, int pageSize, String sortField,
 			SortOrder sortOrder, Map<String, Object> filters) {
-		/*
-		 * System.out.println("Recipe lazy" + first + " " + pageSize + " " +
-		 * sortField + " " + sortOrder + " " + filters);
-		 */
+		
 		String filter = "";
 		String filterColumnName = "";
 		if (filters.keySet().size() > 0) {
@@ -72,9 +71,21 @@ public class LazyOrderModel extends LazyDataModel<OrderDTO> {
 		if (sortField == null) {
 			sortField = "status";
 		}
+		if (!onlyStatusColumn.equals("") && !onlyStatusFilter.equals("")) {
+			filter = onlyStatusFilter;
+			filterColumnName = onlyStatusColumn;
+		}
 		int dir = sortOrder.equals(SortOrder.ASCENDING) ? 1 : 2;
-		visibleOrderList = manageOrderFacadeService.getOrderList(first
-				/ pageSize, pageSize, sortField, dir, filter, filterColumnName);
+		
+		if (includedStatuses == null) {
+			visibleOrderList = manageOrderFacadeService.getOrderList(first
+					/ pageSize, pageSize, sortField, dir, filter,
+					filterColumnName);
+		} else {
+			visibleOrderList = manageOrderFacadeService.getOrderList(first
+					/ pageSize, pageSize, sortField, dir, filter,
+					filterColumnName, includedStatuses);
+		}
 		int dataSize = manageOrderFacadeService.getRowNumber();
 		this.setRowCount(dataSize);
 
@@ -130,4 +141,16 @@ public class LazyOrderModel extends LazyDataModel<OrderDTO> {
 		this.isNeedRegistryInfo = isNeedRegistryInfo;
 	}
 
+	public void setOnlyStatus(String column, String filter) {
+		this.onlyStatusColumn = column;
+		this.onlyStatusFilter = filter;
+	}
+
+	public List<String> getIncludedStatuses() {
+		return includedStatuses;
+	}
+
+	public void setIncludedStatuses(List<String> includedStatuses) {
+		this.includedStatuses = includedStatuses;
+	}
 }

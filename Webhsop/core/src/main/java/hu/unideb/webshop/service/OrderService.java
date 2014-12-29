@@ -34,6 +34,9 @@ public interface OrderService {
 	 */
 	List<OrderDTO> getOrderList(int page, int size, String sortField,
 			int sortOrder, String filter, String filterColumnName);
+	
+	List<OrderDTO> getOrderList(int page, int size, String sortField,
+			int sortOrder, String filter, String filterColumnName, List<String> includedStatuses);	
 
 	/**
 	 * Creates the order.

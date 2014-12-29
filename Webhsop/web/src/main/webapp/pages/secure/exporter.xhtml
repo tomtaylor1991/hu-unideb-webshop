@@ -1,56 +1,129 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:c="http://java.sun.com/jsp/jstl/core"
-                xmlns:p="http://primefaces.org/ui"
-                template="/templates/masterLayout.xhtml">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/templates/masterLayout.xhtml">
 
-    <ui:define name="pageTitle">#{out.exporter_title}</ui:define>
-    <ui:define name="header"> -> #{out.exporter_title}</ui:define>
+	<ui:define name="pageTitle">#{out.exporter_title}</ui:define>
+	<ui:define name="header"> -> #{out.exporter_title}</ui:define>
 
-    <ui:define name="head-extra">
-        <!-- custom css -->
-    </ui:define>
+	<ui:define name="head-extra">
+		<!-- custom css -->
+	</ui:define>
 
-    <ui:define name="content">
-        <h:form id="orderForm">
-            <p:growl id="msgs" showDetail="true" />
-            <p:dataTable id="orderTable" var="currentOrder"
-                         value="#{exporterController.visibleOrders}" selectionMode="single"
-                         selection="#{exporterController.selectedOrder}"
-                         rowKey="#{currentOrder.id}" paginator="true" rows="10"
-                         emptyMessage="#{out.empty_message}"
-                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                         rowsPerPageTemplate="5,10,15" lazy="true">
-                <p:ajax event="rowSelect"
-                        update=":orderForm:msgs,:orderCommandsForm" />
-                <p:ajax event="rowUnselect"
-                        update=":orderForm:msgs,:orderCommandsForm" />
+	<ui:define name="content">
+		<h:form id="exportLists">
+			<p:dataTable var="currentOrder" id="needTable"
+				value="#{exporterController.exportList}">
+				<p:column style="width:3%" exportable="false">
+					<p:rowToggler />
+				</p:column>
+				<p:column headerText="#{out.orders_form_name}"
+					sortBy="#{currentOrder.name}" filterBy="#{currentOrder.name}">
+					<h:outputText value="#{currentOrder.name}" />
+				</p:column>
+				<p:column headerText="#{out.orders_form_date}"
+					sortBy="#{currentOrder.date}">
+					<h:outputText value="#{currentOrder.date}" />
+				</p:column>
+				<p:column headerText="Expected income">
+					<h:outputText value="#{currentOrder.info.income}" />
+				</p:column>
+				<p:column headerText="Address">
+					<h:outputText value="#{currentOrder.partnerDTO.address}" />
+				</p:column>
+				<p:column headerText="#{out.orders_form_status}"
+					sortBy="#{currentOrder.status}" filterBy="#{currentOrder.status}">
+					<h:outputText value="#{currentOrder.status}" />
+					<h:outputText rendered="#{currentOrder.info.importReady}"
+						value=" - OK" />
+				</p:column>
+				<p:rowExpansion>
+					<p:dataTable value="#{currentOrder.info.need}" var="need"
+						emptyMessage="#{out.empty_message}">
+						<p:column headerText="Product name">
+							<h:outputText value="#{need.product.name}" />
+						</p:column>
+						<p:column headerText="#{out.worker_order_quantity}">
+							<h:outputText value="#{need.originalQuantity}" />
+						</p:column>
+					</p:dataTable>
+				</p:rowExpansion>
+			</p:dataTable>
+			<h:commandLink id="pdf">
+				<p:graphicImage name="/images/pdf.png"
+					style="width:40px;height:40px;" />
+				<h:outputText value="PRINT" />
+				<pe:exporter type="pdf" target="needTable"
+					fileName="Needed products" />
+			</h:commandLink>
+			<p:commandButton value="EXPORT"
+				action="#{exporterController.saveExport()}"
+				update=":orderForm :exportLists" />
+		</h:form>
+		<br />
+		<h:form id="orderForm">
+			<p:growl id="msgs" showDetail="true" />
+			<p:dataTable id="orderTable" var="currentOrder"
+				value="#{exporterController.orderModel}" selectionMode="single"
+				selection="#{exporterController.selectedOrder}"
+				rowKey="#{currentOrder.id}" paginator="true" rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="5,10,15" lazy="true"
+				emptyMessage="#{out.empty_message}">
+				<p:ajax event="rowSelect" />
+				<p:column style="width:3%">
+					<p:rowToggler />
+				</p:column>
+				<p:column headerText="#{out.orders_form_name}"
+					sortBy="#{currentOrder.name}" filterBy="#{currentOrder.name}">
+					<h:outputText value="#{currentOrder.name}" />
+				</p:column>
+				<p:column headerText="#{out.orders_form_date}"
+					sortBy="#{currentOrder.date}">
+					<h:outputText value="#{currentOrder.date}" />
+				</p:column>
+				<p:column headerText="Expected income">
+					<h:outputText value="#{currentOrder.info.income}" />
+				</p:column>
+				<p:column headerText="#{out.orders_form_status}"
+					sortBy="#{currentOrder.status}" filterBy="#{currentOrder.status}">
+					<h:outputText value="#{currentOrder.status}" />
+					<h:outputText rendered="#{currentOrder.info.importReady}"
+						value=" - OK" />
+				</p:column>
+				<p:column headerText="ADD">
+					<p:commandButton
+						rendered='#{"TRANSPORT".equals(currentOrder.getStatus())}'
+						value="ADD to export list" update=":exportLists"
+						action="#{exporterController.addOrderToExportList(currentOrder)}" />
+				</p:column>
+				<p:column headerText="READY">
+					<p:commandButton
+						rendered='#{"DURINGTRANSPORT".equals(currentOrder.getStatus())}'
+						value="EXPORT READY" update=":exportLists"
+						action="#{exporterController.addOrderToExportList(currentOrder)}" />
+				</p:column>
+				<p:rowExpansion>
+					<p:dataTable value="#{currentOrder.info.need}" var="need"
+						emptyMessage="#{out.empty_message}">
+						<p:column headerText="Product name">
+							<h:outputText value="#{need.product.name}" />
+						</p:column>
+						<p:column headerText="#{out.worker_order_quantity}">
+							<h:outputText value="#{need.originalQuantity}" />
+						</p:column>
+					</p:dataTable>
+				</p:rowExpansion>
+			</p:dataTable>
+		</h:form>
+		<h:form id="orderCommandsForm">
+			<h:panelGrid columns="4" cellpadding="5">
 
-                <p:column headerText="#{out.exporter_order_name}"
-                          sortBy="#{currentOrder.name}" filterBy="#{currentOrder.name}">
-                    <h:outputText value="#{currentOrder.name}" />
-                </p:column>
-                <p:column headerText="#{out.exporter_order_date}"
-                          sortBy="#{currentOrder.date}" filterBy="#{currentOrder.date}">
-                    <h:outputText value="#{currentOrder.date}" />
-                </p:column>
-                <p:column headerText="#{out.exporter_partner_address}"
-                          sortBy="#{currentOrder.partnerDTO.address}" 
-                          filterBy="#{currentOrder.partnerDTO.address}">
-                    <h:outputText value="#{currentOrder.partnerDTO.address}" />
-                </p:column>
-            </p:dataTable>
-        </h:form>
-        <h:form id="orderCommandsForm">
-            <h:panelGrid columns="4" cellpadding="5">
-                <p:commandButton ajax="true" icon="ui-icon-eject" disabled="#{exporterController.selectedOrder == null}"
-                                 action="#{exporterController.transport()}" title="#{out.exporter_transport}"
-                                 update=":orderForm,:orderCommandsForm"
-                                 value="#{out.exporter_transport}">
-                </p:commandButton>
-            </h:panelGrid>
-        </h:form>
-    </ui:define>
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
 </ui:composition>

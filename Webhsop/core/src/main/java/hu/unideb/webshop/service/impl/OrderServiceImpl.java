@@ -127,4 +127,34 @@ public class OrderServiceImpl implements OrderService {
 		return 0;
 	}
 
+	@Override
+	public List<OrderDTO> getOrderList(int page, int size, String sortField,
+			int sortOrder, String filter, String filterColumnName,
+			List<String> includedStatuses) {
+		Direction dir = sortOrder == 1 ? Sort.Direction.ASC
+				: Sort.Direction.DESC;
+
+		PageRequest pageRequest = new PageRequest(page, size, new Sort(
+				new org.springframework.data.domain.Sort.Order(dir, sortField)));
+
+		List<OrderDTO> ret = new ArrayList<OrderDTO>(size);
+		Page<Order> entities;
+		if (filter.length() != 0 && filterColumnName.equals("name")) {
+			entities = orderDao.findByNameStartsWithAndStatusIn(filter, includedStatuses, pageRequest);
+		} else if (filter.length() != 0 && filterColumnName.equals("status")) {
+			entities = orderDao.findByStatusStartsWithAndStatusIn(filter, includedStatuses, pageRequest);
+		} else {
+			entities = orderDao.findByStatusIn(includedStatuses, pageRequest);
+		}
+		//System.out.println(entities);
+		//System.out.println(includedStatuses);
+		if (entities != null && entities.getSize() > 0) {
+			List<Order> contents = entities.getContent();
+			for (Order c : contents) {
+				ret.add(orderDao.toDto(c));
+			}
+		}
+		return ret;
+	}
+
 }
