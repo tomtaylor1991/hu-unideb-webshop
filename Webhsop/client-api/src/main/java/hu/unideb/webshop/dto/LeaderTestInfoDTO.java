@@ -9,7 +9,7 @@ public class LeaderTestInfoDTO implements Serializable {
 
 	OrderDTO order;
 	List<Need> need;
-	private double income;
+	private int income;
 	private boolean importReady = false;
 	private boolean readyForTransport = true;
 
@@ -154,11 +154,11 @@ public class LeaderTestInfoDTO implements Serializable {
 		this.need = need;
 	}
 
-	public double getIncome() {
+	public int getIncome() {
 		return income;
 	}
 
-	public void setIncome(double income) {
+	public void setIncome(int income) {
 		this.income = income;
 	}
 

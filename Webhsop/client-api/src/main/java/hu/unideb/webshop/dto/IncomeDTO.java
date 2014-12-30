@@ -9,6 +9,8 @@ public class IncomeDTO extends BaseDTO implements Serializable {
 	private int price;
 	private String comment;
 	private Long orderId;
+	private String type;
+
 
 	public int getPrice() {
 		return price;
@@ -46,6 +48,14 @@ public class IncomeDTO extends BaseDTO implements Serializable {
 	public String toString() {
 		return "IncomeDTO [id=" + id + ", price=" + price + ", comment="
 				+ comment + ", orderId=" + orderId + "]";
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }

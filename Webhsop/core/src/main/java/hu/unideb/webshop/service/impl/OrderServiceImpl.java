@@ -96,9 +96,9 @@ public class OrderServiceImpl implements OrderService {
 	public List<OrderDTO> getOrdersByStatus(String status) {
 		List<Order> entities = orderDao.findByStatus(status);
 		List<OrderDTO> ret = new LinkedList<OrderDTO>();
-			for (Order o : entities) {
-				ret.add(orderDao.toDto(o));
-			}
+		for (Order o : entities) {
+			ret.add(orderDao.toDto(o));
+		}
 		return ret;
 	}
 
@@ -140,14 +140,25 @@ public class OrderServiceImpl implements OrderService {
 		List<OrderDTO> ret = new ArrayList<OrderDTO>(size);
 		Page<Order> entities;
 		if (filter.length() != 0 && filterColumnName.equals("name")) {
-			entities = orderDao.findByNameStartsWithAndStatusIn(filter, includedStatuses, pageRequest);
+			entities = orderDao.findByNameStartsWithAndStatusIn(filter,
+					includedStatuses, pageRequest);
 		} else if (filter.length() != 0 && filterColumnName.equals("status")) {
-			entities = orderDao.findByStatusStartsWithAndStatusIn(filter, includedStatuses, pageRequest);
+			entities = orderDao.findByStatusStartsWithAndStatusIn(filter,
+					includedStatuses, pageRequest);
+		} else if (filter.length() != 0 && filterColumnName.equals("id")) {
+			try {
+				Long id = new Long(filter);
+				entities = orderDao.findByStatusInAndIdIs(includedStatuses, id,
+						pageRequest);
+			} catch (NumberFormatException e) {
+				entities = orderDao.findByStatusIn(includedStatuses,
+						pageRequest);
+			}
 		} else {
 			entities = orderDao.findByStatusIn(includedStatuses, pageRequest);
 		}
-		//System.out.println(entities);
-		//System.out.println(includedStatuses);
+		// System.out.println(entities);
+		// System.out.println(includedStatuses);
 		if (entities != null && entities.getSize() > 0) {
 			List<Order> contents = entities.getContent();
 			for (Order c : contents) {

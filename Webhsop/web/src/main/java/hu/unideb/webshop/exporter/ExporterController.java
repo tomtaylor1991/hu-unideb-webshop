@@ -1,6 +1,8 @@
 package hu.unideb.webshop.exporter;
 
+import hu.unideb.webshop.dto.IncomeDTO;
 import hu.unideb.webshop.dto.OrderDTO;
+import hu.unideb.webshop.dto.RegistryDTO;
 import hu.unideb.webshop.order.LazyOrderModel;
 import hu.unideb.webshop.service.ManageIncomeFacadeService;
 import hu.unideb.webshop.service.ManageOrderFacadeService;
@@ -83,6 +85,24 @@ public class ExporterController implements Serializable {
 			manageOrderFacadeService.updateOrder(order);
 		}
 
+	}
+
+	public void exportReady(OrderDTO order) {
+		List<RegistryDTO> removalRegistrys = manageRegistryFacadeService
+				.findByStatusAndOrder("READY", order);
+		for (RegistryDTO registry : removalRegistrys) {
+			manageRegistryFacadeService.deleteRegistry(registry);
+		}
+		///
+		order.setStatus("READY");
+		manageOrderFacadeService.updateOrder(order);
+		///
+		IncomeDTO income = new IncomeDTO();
+		income.setOrderId(order.getId());
+		income.setType("IN");
+		income.setPrice(order.getInfo().getIncome());
+		manageIncomeFacadeService.createIncome(income);
+		///
 	}
 
 	public void transport() {

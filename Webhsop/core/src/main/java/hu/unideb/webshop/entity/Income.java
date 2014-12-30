@@ -19,6 +19,8 @@ public class Income extends BaseEntity {
 	/** The comment. */
 	private String comment;
 	
+	private String type;
+	
 	/** The order id. */
 	private Long orderId;
 
@@ -74,6 +76,14 @@ public class Income extends BaseEntity {
 	 */
 	public void setOrderId(Long orderId) {
 		this.orderId = orderId;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }

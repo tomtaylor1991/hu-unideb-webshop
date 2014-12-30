@@ -21,6 +21,9 @@
 				<p:column style="width:3%" exportable="false">
 					<p:rowToggler />
 				</p:column>
+				<p:column headerText="ID">
+					<h:outputText value="#{currentOrder.id}" />
+				</p:column>
 				<p:column headerText="#{out.orders_form_name}"
 					sortBy="#{currentOrder.name}" filterBy="#{currentOrder.name}">
 					<h:outputText value="#{currentOrder.name}" />
@@ -78,6 +81,10 @@
 				<p:column style="width:3%">
 					<p:rowToggler />
 				</p:column>
+				<p:column headerText="ID" sortBy="#{currentOrder.id}"
+					filterBy="#{currentOrder.id}">
+					<h:outputText value="#{currentOrder.id}" />
+				</p:column>
 				<p:column headerText="#{out.orders_form_name}"
 					sortBy="#{currentOrder.name}" filterBy="#{currentOrder.name}">
 					<h:outputText value="#{currentOrder.name}" />
@@ -104,8 +111,8 @@
 				<p:column headerText="READY">
 					<p:commandButton
 						rendered='#{"DURINGTRANSPORT".equals(currentOrder.getStatus())}'
-						value="EXPORT READY" update=":exportLists"
-						action="#{exporterController.addOrderToExportList(currentOrder)}" />
+						value="EXPORT READY" update=":exportLists :orderForm"
+						action="#{exporterController.exportReady(currentOrder)}" />
 				</p:column>
 				<p:rowExpansion>
 					<p:dataTable value="#{currentOrder.info.need}" var="need"
