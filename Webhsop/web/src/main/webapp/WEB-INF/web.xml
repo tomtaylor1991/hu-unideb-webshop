@@ -56,7 +56,7 @@
 	</filter-mapping>
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
-		<param-value>humanity</param-value>
+		<param-value>afterwork</param-value>
 	</context-param>
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>

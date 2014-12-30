@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile">
+
+<f:view locale="#{localeSwitcher.locale}"
+	renderKitId="PRIMEFACES_MOBILE">
+
+	<h:head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1.0, user-scalable=no" />
+		<h:outputScript library="primefaces" name="jquery/jquery.js" />
+
+		<h:outputStylesheet name="css/base.css" />
+
+		<title><ui:insert name="pageTitle"></ui:insert></title>
+		<ui:insert name="head-extra" />
+	</h:head>
+
+
+	<h:body>
+
+		<pm:page id="first">
+			<pm:header title="Page 1"></pm:header>
+
+			<pm:content>
+				<h:form>
+					<p:commandButton value="Ajax Action"
+						action="#{navigationView.gotoSecond}" />
+					<p:button outcome="pm:second" value="Go Button" />
+					<p:link outcome="pm:second" value="Go Link" />
+					<p:button outcome="/index" value="Same Domain" />
+					<p:button href="http://www.primefaces.org" value="External Domain" />
+				</h:form>
+			</pm:content>
+		</pm:page>
+
+		<pm:page id="second">
+			<pm:header title="Page 2"></pm:header>
+
+			<pm:content>
+				<p>Page 2 content.</p>
+				<p:button outcome="pm:first" value="Go Back" />
+			</pm:content>
+		</pm:page>
+
+		<ui:insert name="content" />
+
+	</h:body>
+
+</f:view>
+</html>
