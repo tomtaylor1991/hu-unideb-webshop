@@ -52,7 +52,7 @@
 										<sec:authorize ifAnyGranted="ROLE_ADMIN, ROLE_USER">
 											<h:outputLabel for="user" value="#{out.hi}, " />
 											<h:link id="user" value="#{request.userPrincipal.name}"
-												outcome="/pages/secure/profile.xhtml" />
+												outcome="/pages/secure/admin/profile.xhtml" />
 										</sec:authorize>
 										<p:commandLink action="#{localeSwitcher.changeLocal('hu')}"
 											onclick=" location.reload()" style="margin-left: 30px;">
@@ -85,9 +85,9 @@
 									<p:menuitem value="#{out.recipes}"
 										actionListener="#{menuView.showRecipes}" />
 									<p:menuitem value="manage category"
-										outcome="/pages/secure/manage_category.xhtml" />
+										outcome="/pages/secure/admin/manage_category.xhtml" />
 									<p:menuitem value="manage product"
-										outcome="/pages/secure/manage_product.xhtml" />
+										outcome="/pages/secure/admin/manage_product.xhtml" />
 									<p:menuitem value="#{out.materials}"
 										actionListener="#{menuView.showMaterials}" />
 									<p:menuitem value="#{out.warehouses}"
@@ -112,38 +112,38 @@
 
 								<p:submenu label="#{out.leader}" icon="ui-icon-document">
 									<p:menuitem value="Registry"
-										outcome="/pages/secure/leader_registry.xhtml" />
+										outcome="/pages/secure/admin/leader_registry.xhtml" />
 									<p:separator />
 									<p:menuitem value="#{out.income_diagram}"
-										outcome="/pages/secure/leader_diagrams/income.xhtml" />
+										outcome="/pages/secure/admin/leader_diagrams/income.xhtml" />
 									<p:menuitem value="#{out.warehouse_diagram}"
-										outcome="/pages/secure/leader_diagrams/warehouse.xhtml" />
+										outcome="/pages/secure/admin/leader_diagrams/warehouse.xhtml" />
 									<p:menuitem value="#{out.order_by_partner_diagram}"
-										outcome="/pages/secure/leader_diagrams/partner_income.xhtml" />
+										outcome="/pages/secure/admin/leader_diagrams/partner_income.xhtml" />
 									<p:menuitem value="#{out.order_by_daily_income_diagram}"
-										outcome="/pages/secure/leader_diagrams/dailyIncome.xhtml" />
+										outcome="/pages/secure/admin/leader_diagrams/dailyIncome.xhtml" />
 									<p:menuitem value="#{out.order_by_status_diagram}"
-										outcome="/pages/secure/leader_diagrams/status.xhtml" />
+										outcome="/pages/secure/admin/leader_diagrams/status.xhtml" />
 								</p:submenu>
 							</sec:authorize>
 							<sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_IMPORTER">
 
 								<p:submenu label="#{out.importers}" icon="ui-icon-document">
 									<p:menuitem value="#{out.upload_materials}"
-										outcome="/pages/secure/importer.xhtml" />
+										outcome="/pages/secure/admin/importer.xhtml" />
 									<p:menuitem value="#{out.necessary_materials}"
-										outcome="/pages/secure/importer_necessary_products.xhtml" />
+										outcome="/pages/secure/admin/importer_necessary_products.xhtml" />
 								</p:submenu>
 							</sec:authorize>
 							<sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_EXPORTER">
 
 								<p:menuitem value="#{out.exporter_title}"
-									url="/pages/secure/exporter.xhtml" />
+									url="/pages/secure/admin/exporter.xhtml" />
 							</sec:authorize>
 							<sec:authorize ifAnyGranted="ROLE_ADMIN">
 
 								<p:menuitem value="#{out.admin_title}"
-									url="/pages/secure/admin.xhtml" icon="ui-icon-unlocked" />
+									url="/pages/secure/admin/admin.xhtml" icon="ui-icon-unlocked" />
 							</sec:authorize>
 							<sec:authorize ifAnyGranted="ROLE_USER">
 								<p:menuitem value="#{out.logout}"

@@ -29,29 +29,6 @@
 
 	<h:body>
 
-		<pm:page id="first">
-			<pm:header title="Page 1"></pm:header>
-
-			<pm:content>
-				<h:form>
-					<p:commandButton value="Ajax Action"
-						action="#{navigationView.gotoSecond}" />
-					<p:button outcome="pm:second" value="Go Button" />
-					<p:link outcome="pm:second" value="Go Link" />
-					<p:button outcome="/index" value="Same Domain" />
-					<p:button href="http://www.primefaces.org" value="External Domain" />
-				</h:form>
-			</pm:content>
-		</pm:page>
-
-		<pm:page id="second">
-			<pm:header title="Page 2"></pm:header>
-
-			<pm:content>
-				<p>Page 2 content.</p>
-				<p:button outcome="pm:first" value="Go Back" />
-			</pm:content>
-		</pm:page>
 
 		<ui:insert name="content" />
 
