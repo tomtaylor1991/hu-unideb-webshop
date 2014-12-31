@@ -120,7 +120,7 @@
 
 		<dependency>
 			<groupId>org.primefaces</groupId>
-			<artifactId>primefaces</artifactId>
+			<artifactId>primefaces</artifactId>			
 		</dependency>
 		<!--Spring security -->
 		<dependency>

@@ -7,11 +7,9 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:sec="http://www.springframework.org/security/tags"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:pm="http://primefaces.org/mobile">
+	xmlns:p="http://primefaces.org/ui">
 
-<f:view locale="#{localeSwitcher.locale}"
-	renderKitId="PRIMEFACES_MOBILE">
+<f:view locale="#{localeSwitcher.locale}">
 
 	<h:head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -29,9 +27,9 @@
 
 	<h:body>
 
-
-		<ui:insert name="content" />
-
+		<div style="width: 100%;">
+			<ui:insert name="content" />
+		</div>
 	</h:body>
 
 </f:view>

@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import hu.unideb.webshop.dao.CategoryDao;
+import hu.unideb.webshop.dao.ProductDao;
 import hu.unideb.webshop.dto.CategoryDTO;
 import hu.unideb.webshop.entity.Category;
 import hu.unideb.webshop.service.CategoryService;
@@ -25,6 +26,9 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
 	CategoryDao categoryDao;
+
+	@Autowired
+	ProductDao productDao;
 
 	@Override
 	public void saveCategory(CategoryDTO category) {
@@ -101,8 +105,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public List<CategoryDTO> searchAllCategoryByName(String name) {
 		List<CategoryDTO> ret = new LinkedList<CategoryDTO>();
-		List<Category> entities = categoryDao
-				.findByNameStartsWith(name);
+		List<Category> entities = categoryDao.findByNameStartsWith(name);
 		if (entities != null && entities.size() > 0) {
 			for (Category c : entities) {
 				ret.add(categoryDao.toDto(c));
@@ -111,4 +114,35 @@ public class CategoryServiceImpl implements CategoryService {
 		return ret;
 	}
 
+	@Override
+	public List<CategoryDTO> getAllCategory() {
+		List<CategoryDTO> ret = new LinkedList<CategoryDTO>();
+		Iterable<Category> entities = categoryDao.findAll();
+		for (Category c : entities) {
+			ret.add(categoryDao.toDto(c));
+		}
+		return ret;
+	}
+
+	@Override
+	public List<CategoryDTO> searchCategoryByParent(CategoryDTO parent) {
+		List<CategoryDTO> ret = new LinkedList<CategoryDTO>();
+		Iterable<Category> entities;
+		if (parent == null) {
+			entities = categoryDao.findByParent(null);
+		} else {
+			entities = categoryDao.findByParent(categoryDao
+					.toEntity(parent, null));
+		}
+		for (Category c : entities) {
+			CategoryDTO category = categoryDao.toDto(c);
+			Integer childNumber = categoryDao.countChildNumber(category.getId());
+			category.setChildNumber(childNumber != null ? childNumber : 0);
+			Integer productNumber = productDao
+					.countCategoryProductNumber(category.getId());
+			category.setProductNumber(productNumber != null ? productNumber : 0);
+			ret.add(category);
+		}
+		return ret;
+	}
 }

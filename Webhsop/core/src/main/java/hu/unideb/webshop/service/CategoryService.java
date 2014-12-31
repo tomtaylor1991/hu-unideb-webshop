@@ -12,7 +12,10 @@ public interface CategoryService {
 			int sortOrder, String filter, String filterColumnName);
 	public int getRowNumber();
 	
+	public List<CategoryDTO> getAllCategory();
+	
 	List<CategoryDTO> searchCategoryByName(String name);
+	List<CategoryDTO> searchCategoryByParent(CategoryDTO parent);
 	List<CategoryDTO> searchAllCategoryByName(String name);
 
 	CategoryDTO getCategory(Long id);

@@ -13,6 +13,33 @@
 	</ui:define>
 
 	<ui:define name="content">
-<h1>teszt</h1>
+		<h1>teszt</h1>
+		<h:form id="form">
+
+			<p:dataGrid id="category" var="category"
+				value="#{categoryProductController.visibleCategory}" columns="3"
+				layout="grid" rows="12" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="6,12,16">
+				<f:facet name="header">
+		            Category
+		        </f:facet>
+				<p:panel header="#{category.name}" style="text-align:center">
+					<h:panelGrid columns="1" style="width:100%">
+						<p:graphicImage value="#{imageBean.image}"
+							style="height: 150px; width: 200px;"
+							rendered="#{category.image!=null}">
+							<f:param name="id" value="#{category.image.thumbnailDataId}" />
+						</p:graphicImage>
+						<br />
+						<h:outputText value="Product: #{category.productNumber}" />
+						<br />
+						<h:outputText value="Sub Category: #{category.childNumber}" />
+						<p:commandButton value="Sub category > " />
+					</h:panelGrid>
+				</p:panel>
+			</p:dataGrid>
+		</h:form>
+
 	</ui:define>
 </ui:composition>

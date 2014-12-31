@@ -23,11 +23,12 @@ public interface CategoryDao extends
 	@Query(value = "SELECT count(*) FROM CATEGORY", nativeQuery = true)
     int countRowNum();
 	
-	@Query(value = "SELECT count(*) FROM CATEGORY WHERE parent_id = ?1", nativeQuery = true)
+	@Query(value = "SELECT count(*) FROM CATEGORY WHERE parent_category_id = ?1", nativeQuery = true)
     int countChildNumber(Long categoryId);
 	
 	List<Category> findByNameStartsWithAndParentIsNull(String name);
 	List<Category> findByNameStartsWith(String name);
-
+	List<Category> findByParent(Category parent);
+	
 	Category findById(Long id);
 }

@@ -12,9 +12,12 @@ public interface ManageCategoryFacadeService {
 	List<CategoryDTO> getCategoryList(int page, int size, String sortField,
 			int sortOrder, String filter, String filterColumnName);
 	
+	public List<CategoryDTO> getAllCategory();
+	
 	public int getRowNumber();
 	
 	List<CategoryDTO> searchCategoryByName(String name);
+	List<CategoryDTO> searchCategoryByParent(CategoryDTO parent);
 	
 	CategoryDTO getCategory(Long id);
 }

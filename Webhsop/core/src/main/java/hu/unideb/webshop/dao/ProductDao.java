@@ -23,5 +23,8 @@ public interface ProductDao extends PagingAndSortingRepository<Product, Long>,
 	int countRowNum();
 
 	List<Product> findByNameStartsWith(String name);
+	
+	@Query(value = "SELECT count(*) FROM PRODUCT WHERE category_id = ?1", nativeQuery = true)
+    int countCategoryProductNumber(Long categoryId);
 
 }

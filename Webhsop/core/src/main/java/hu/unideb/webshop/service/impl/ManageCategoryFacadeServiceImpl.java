@@ -58,4 +58,16 @@ public class ManageCategoryFacadeServiceImpl implements
 		return categoryService.getCategory(id);
 	}
 
+	@Override
+	public List<CategoryDTO> getAllCategory() {
+
+		return categoryService.getAllCategory();
+	}
+
+	@Override
+	public List<CategoryDTO> searchCategoryByParent(CategoryDTO parent) {
+		
+		return categoryService.searchCategoryByParent(parent);
+	}
+
 }
