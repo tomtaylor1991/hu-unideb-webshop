@@ -16,17 +16,17 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 @RequestScoped
-@ManagedBean(name="imageBean")
+@ManagedBean(name = "imageBean")
 public class ImageBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@ManagedProperty(value = "#{manageImageFacadeService}")
 	private ManageImageFacadeService manageImageFacadeService;
-	
+
 	public StreamedContent getImage() throws IOException {
 		FacesContext context = FacesContext.getCurrentInstance();
-		//System.out.println("++++++ "+context.getExternalContext().getRequestParameterMap());
+		// System.out.println("++++++ "+context.getExternalContext().getRequestParameterMap());
 		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
 			// So, we're rendering the view. Return a stub StreamedContent so
 			// that it will generate right URL.
@@ -34,12 +34,20 @@ public class ImageBean implements Serializable {
 		} else {
 			// So, browser is requesting the image. Return a real
 			// StreamedContent with the image bytes.
-			
+
 			String id = context.getExternalContext().getRequestParameterMap()
 					.get("id");
+			if (id.equals("")) {
+				id = "-2";
+			}
 			System.out.println("IMAGE ID: " + id);
-			byte[] image = manageImageFacadeService.getImage(new Long(id));
-			return new DefaultStreamedContent(new ByteArrayInputStream(image));
+			try {
+				byte[] image = manageImageFacadeService.getImage(new Long(id));
+				return new DefaultStreamedContent(new ByteArrayInputStream(
+						image));
+			} catch (NullPointerException e) {
+				return null;
+			}
 		}
 	}
 
@@ -51,5 +59,5 @@ public class ImageBean implements Serializable {
 			ManageImageFacadeService manageImageFacadeService) {
 		this.manageImageFacadeService = manageImageFacadeService;
 	}
-	
+
 }

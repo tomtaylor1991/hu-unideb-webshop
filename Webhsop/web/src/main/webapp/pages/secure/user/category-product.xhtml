@@ -14,16 +14,23 @@
 
 	<ui:define name="content">
 		<h1>teszt</h1>
-		<h:form id="form">
-
+		<h:form id="categoryList">
+			<p:commandButton value="Back"
+				rendered="#{categoryProductController.beforeCategorys.size()>0}"
+				action="#{categoryProductController.backCategory()}"
+				update=":categoryList" />
 			<p:dataGrid id="category" var="category"
 				value="#{categoryProductController.visibleCategory}" columns="3"
 				layout="grid" rows="12" paginator="true"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				rowsPerPageTemplate="6,12,16">
 				<f:facet name="header">
-		            Category
-		        </f:facet>
+					<h:outputText value="Categorys"
+						rendered="#{categoryProductController.parentCategory==null}" />
+					<h:outputText
+						value="#{categoryProductController.parentCategory.name}"
+						rendered="#{categoryProductController.parentCategory!=null}" />
+				</f:facet>
 				<p:panel header="#{category.name}" style="text-align:center">
 					<h:panelGrid columns="1" style="width:100%">
 						<p:graphicImage value="#{imageBean.image}"
@@ -31,11 +38,16 @@
 							rendered="#{category.image!=null}">
 							<f:param name="id" value="#{category.image.thumbnailDataId}" />
 						</p:graphicImage>
-						<br />
-						<h:outputText value="Product: #{category.productNumber}" />
-						<br />
-						<h:outputText value="Sub Category: #{category.childNumber}" />
-						<p:commandButton value="Sub category > " />
+						<p:graphicImage name="/images/no_image.jpg"
+							style="height: 150px; width: 200px;"
+							rendered="#{category.image==null}">
+						</p:graphicImage>
+						<h:panelGrid columns="2" style="width:100%">
+							<p:commandButton value="Sub category ( #{category.childNumber} )"
+								action="#{categoryProductController.renderVisibleList(category, false)}"
+								update=":categoryList" />
+							<p:commandButton value="Products ( #{category.productNumber} )" />
+						</h:panelGrid>
 					</h:panelGrid>
 				</p:panel>
 			</p:dataGrid>

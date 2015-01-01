@@ -20,10 +20,10 @@ public class CategoryProductController implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private CategoryDTO selectedCategory;
-	private CategoryDTO parentCategory;
+	private CategoryDTO parentCategory = null;
+	private List<CategoryDTO> beforeCategorys;
 	// //
 	private List<CategoryDTO> visibleCategory;
-	private List<CategoryDTO> allCategory;
 
 	@ManagedProperty(value = "#{manageCategoryFacadeService}")
 	private ManageCategoryFacadeService manageCategoryFacadeService;
@@ -33,14 +33,26 @@ public class CategoryProductController implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		// allCategory = manageCategoryFacadeService.getAllCategory();
-		renderVisibleList(null);
+		beforeCategorys = new LinkedList<CategoryDTO>();
+		renderVisibleList(null, false);
 	}
 
-	public void renderVisibleList(CategoryDTO parentCategory) {
+	public void renderVisibleList(CategoryDTO parentCategory, boolean isBack) {
+		if (parentCategory != null && !isBack) {
+			beforeCategorys.add(this.getParentCategory());
+		}
 		this.setParentCategory(parentCategory);
 		this.visibleCategory = manageCategoryFacadeService
 				.searchCategoryByParent(parentCategory);
+	}
+
+	public void backCategory() {
+		if (beforeCategorys.size() > 0) {
+			CategoryDTO parent = beforeCategorys
+					.get(beforeCategorys.size() - 1);
+			beforeCategorys.remove(beforeCategorys.size() - 1);
+			renderVisibleList(parent, true);
+		}
 	}
 
 	public CategoryDTO getSelectedCategory() {
@@ -83,6 +95,14 @@ public class CategoryProductController implements Serializable {
 
 	public void setParentCategory(CategoryDTO parentCategory) {
 		this.parentCategory = parentCategory;
+	}
+
+	public List<CategoryDTO> getBeforeCategorys() {
+		return beforeCategorys;
+	}
+
+	public void setBeforeCategorys(List<CategoryDTO> beforeCategorys) {
+		this.beforeCategorys = beforeCategorys;
 	}
 
 }

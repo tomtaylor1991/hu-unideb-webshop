@@ -86,7 +86,7 @@ public class CategoryServiceImpl implements CategoryService {
 	public List<CategoryDTO> searchCategoryByName(String name) {
 		List<CategoryDTO> ret = new LinkedList<CategoryDTO>();
 		List<Category> entities = categoryDao
-				.findByNameStartsWithAndParentIsNull(name);
+				.findByNameStartsWith(name);
 		if (entities != null && entities.size() > 0) {
 			for (Category c : entities) {
 				ret.add(categoryDao.toDto(c));
