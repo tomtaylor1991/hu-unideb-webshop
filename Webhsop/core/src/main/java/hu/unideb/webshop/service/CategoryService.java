@@ -13,7 +13,8 @@ public interface CategoryService {
 	public int getRowNumber();
 	
 	public List<CategoryDTO> getAllCategory();
-	
+	public int countCategoryProductNumber(CategoryDTO category);
+
 	List<CategoryDTO> searchCategoryByName(String name);
 	List<CategoryDTO> searchCategoryByParent(CategoryDTO parent);
 	List<CategoryDTO> searchAllCategoryByName(String name);

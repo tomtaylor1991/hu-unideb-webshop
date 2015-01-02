@@ -85,8 +85,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public List<CategoryDTO> searchCategoryByName(String name) {
 		List<CategoryDTO> ret = new LinkedList<CategoryDTO>();
-		List<Category> entities = categoryDao
-				.findByNameStartsWith(name);
+		List<Category> entities = categoryDao.findByNameStartsWith(name);
 		if (entities != null && entities.size() > 0) {
 			for (Category c : entities) {
 				ret.add(categoryDao.toDto(c));
@@ -131,12 +130,13 @@ public class CategoryServiceImpl implements CategoryService {
 		if (parent == null) {
 			entities = categoryDao.findByParent(null);
 		} else {
-			entities = categoryDao.findByParent(categoryDao
-					.toEntity(parent, null));
+			entities = categoryDao.findByParent(categoryDao.toEntity(parent,
+					null));
 		}
 		for (Category c : entities) {
 			CategoryDTO category = categoryDao.toDto(c);
-			Integer childNumber = categoryDao.countChildNumber(category.getId());
+			Integer childNumber = categoryDao
+					.countChildNumber(category.getId());
 			category.setChildNumber(childNumber != null ? childNumber : 0);
 			Integer productNumber = productDao
 					.countCategoryProductNumber(category.getId());
@@ -144,5 +144,18 @@ public class CategoryServiceImpl implements CategoryService {
 			ret.add(category);
 		}
 		return ret;
+	}
+
+	@Override
+	public int countCategoryProductNumber(CategoryDTO category) {
+		Integer productNumber;
+		if (category != null) {
+			productNumber = productDao.countCategoryProductNumber(category
+					.getId());
+		} else {
+			productNumber = productDao.countTopLevelCategoryProductNumber();
+		}
+		
+		return productNumber != null ? productNumber : 0;
 	}
 }

@@ -69,4 +69,18 @@ public class ManageProductFacadeServiceImpl implements
 		return registryService.countFreeProductNumber(product);
 	}
 
+	@Override
+	public List<ProductDTO> searchProductByCategory(CategoryDTO category,
+			int page, int size, String sortField, int sortOrder, String filter,
+			String filterColumnName) {
+		
+		return productService.searchProductByCategory(category, page, size, sortField, sortOrder, filter, filterColumnName);
+	}
+
+	@Override
+	public int countCategoryProductNumber(CategoryDTO category) {
+		
+		return categoryService.countCategoryProductNumber(category);
+	}
+
 }

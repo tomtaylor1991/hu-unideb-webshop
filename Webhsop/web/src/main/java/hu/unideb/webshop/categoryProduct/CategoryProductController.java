@@ -1,8 +1,10 @@
 package hu.unideb.webshop.categoryProduct;
 
 import hu.unideb.webshop.dto.CategoryDTO;
+import hu.unideb.webshop.dto.ProductDTO;
 import hu.unideb.webshop.service.ManageCategoryFacadeService;
 import hu.unideb.webshop.service.ManageImageFacadeService;
+import hu.unideb.webshop.service.ManageProductFacadeService;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -24,16 +26,21 @@ public class CategoryProductController implements Serializable {
 	private List<CategoryDTO> beforeCategorys;
 	// //
 	private List<CategoryDTO> visibleCategory;
+	// //
+	private LazyCategoryProductModel productModel;
 
 	@ManagedProperty(value = "#{manageCategoryFacadeService}")
 	private ManageCategoryFacadeService manageCategoryFacadeService;
-
+	@ManagedProperty(value = "#{manageProductFacadeService}")
+	private ManageProductFacadeService manageProductFacadeService;
 	@ManagedProperty(value = "#{manageImageFacadeService}")
 	private ManageImageFacadeService manageImageFacadeService;
 
 	@PostConstruct
 	public void init() {
 		beforeCategorys = new LinkedList<CategoryDTO>();
+		productModel = new LazyCategoryProductModel(manageProductFacadeService,
+				manageImageFacadeService);
 		renderVisibleList(null, false);
 	}
 
@@ -44,6 +51,10 @@ public class CategoryProductController implements Serializable {
 		this.setParentCategory(parentCategory);
 		this.visibleCategory = manageCategoryFacadeService
 				.searchCategoryByParent(parentCategory);
+	}
+
+	public void renderProductListOfCategory(CategoryDTO category) {
+		productModel.setCurrentCategory(category);
 	}
 
 	public void backCategory() {
@@ -105,4 +116,24 @@ public class CategoryProductController implements Serializable {
 		this.beforeCategorys = beforeCategorys;
 	}
 
+	public LazyCategoryProductModel getProductModel() {
+		return productModel;
+	}
+
+	public void setProductModel(LazyCategoryProductModel productModel) {
+		this.productModel = productModel;
+	}
+
+	public ManageProductFacadeService getManageProductFacadeService() {
+		return manageProductFacadeService;
+	}
+
+	public void setManageProductFacadeService(
+			ManageProductFacadeService manageProductFacadeService) {
+		this.manageProductFacadeService = manageProductFacadeService;
+	}
+
+	public void test(ProductDTO product){
+		System.out.println(product);
+	}
 }

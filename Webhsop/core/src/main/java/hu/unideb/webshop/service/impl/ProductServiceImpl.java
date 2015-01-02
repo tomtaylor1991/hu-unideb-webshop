@@ -1,7 +1,10 @@
 package hu.unideb.webshop.service.impl;
 
+import hu.unideb.webshop.dao.CategoryDao;
 import hu.unideb.webshop.dao.ProductDao;
+import hu.unideb.webshop.dto.CategoryDTO;
 import hu.unideb.webshop.dto.ProductDTO;
+import hu.unideb.webshop.entity.Category;
 import hu.unideb.webshop.entity.Product;
 import hu.unideb.webshop.service.ProductService;
 
@@ -22,6 +25,8 @@ public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	ProductDao productDao;
+	@Autowired
+	CategoryDao categoryDao;
 
 	@Override
 	public void saveProduct(ProductDTO product) {
@@ -79,6 +84,29 @@ public class ProductServiceImpl implements ProductService {
 		List<Product> entities = productDao.findByNameStartsWith(name);
 		if (entities != null && entities.size() > 0) {
 			for (Product p : entities) {
+				ret.add(productDao.toDto(p));
+			}
+		}
+		return ret;
+	}
+
+	@Override
+	public List<ProductDTO> searchProductByCategory(CategoryDTO category,
+			int page, int size, String sortField, int sortOrder, String filter,
+			String filterColumnName) {
+		Direction dir = sortOrder == 1 ? Sort.Direction.ASC
+				: Sort.Direction.DESC;
+
+		PageRequest pageRequest = new PageRequest(page, size, new Sort(
+				new Order(dir, sortField)));
+		List<ProductDTO> ret = new ArrayList<ProductDTO>(size);
+		Page<Product> entities;
+		Category categoryEntity = category != null ? categoryDao.toEntity(
+				category, null) : null;
+		entities = productDao.findByCategory(categoryEntity, pageRequest);
+		if (entities != null && entities.getSize() > 0) {
+			List<Product> contents = entities.getContent();
+			for (Product p : contents) {
 				ret.add(productDao.toDto(p));
 			}
 		}

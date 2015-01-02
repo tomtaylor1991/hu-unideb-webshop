@@ -14,6 +14,51 @@
 
 	<ui:define name="content">
 		<h1>teszt</h1>
+		<h:form id="productList">
+			<h:form
+				rendered="#{categoryProductController.productModel.currentCategory!=null}">
+				<p:dataScroller
+					value="#{categoryProductController.productModel.visibleProductList}"
+					var="product">
+					<f:facet name="header">
+			            Scroll Down to Load More Product
+			        </f:facet>
+					<p:panelGrid style="width:100%;"> 
+						<p:row style="width:100%">
+							<p:column style="width:30%">
+								<p:graphicImage value="#{imageBean.image}"
+									style="height: auto; width: 100%;"
+									visible="#{product.images.size() > 0}"
+									rendered="#{product.images.size() > 0}">
+									<f:param name="id"
+										value="#{product.images.get(0).thumbnailDataId}" />
+								</p:graphicImage>
+								<p:graphicImage name="/images/no_image.jpg"
+									style="height: auto; width: 100%;"
+									visible="#{product.images.size() == 0}"
+									rendered="#{product.images.size() == 0}">
+								</p:graphicImage>
+							</p:column>
+							<p:column style="width:70%">
+								<h:panelGrid columns="2" cellpadding="5"
+									style="height: 100%;">
+									<h:outputText value="Name:" />
+									<h:outputText value="#{product.name}" style="font-weight: bold" />
+									<p:commandButton value="test"
+										action="#{categoryProductController.test(product)}" />
+								</h:panelGrid>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:dataScroller>
+				<p:commandButton value="More"
+					rendered="#{categoryProductController.productModel.visibleProductList.size() lt categoryProductController.productModel.rowNumber}"
+					action="#{categoryProductController.productModel.loadMore()}"
+					update=":productList" />
+			</h:form>
+		</h:form>
+		<br />
+		<br />
 		<h:form id="categoryList">
 			<p:commandButton value="Back"
 				rendered="#{categoryProductController.beforeCategorys.size()>0}"
@@ -33,6 +78,7 @@
 				</f:facet>
 				<p:panel header="#{category.name}" style="text-align:center">
 					<h:panelGrid columns="1" style="width:100%">
+						<!-- Image -->
 						<p:graphicImage value="#{imageBean.image}"
 							style="height: 150px; width: 200px;"
 							rendered="#{category.image!=null}">
@@ -42,11 +88,14 @@
 							style="height: 150px; width: 200px;"
 							rendered="#{category.image==null}">
 						</p:graphicImage>
+						<!-- Image -->
 						<h:panelGrid columns="2" style="width:100%">
 							<p:commandButton value="Sub category ( #{category.childNumber} )"
 								action="#{categoryProductController.renderVisibleList(category, false)}"
 								update=":categoryList" />
-							<p:commandButton value="Products ( #{category.productNumber} )" />
+							<p:commandButton value="Products ( #{category.productNumber} )"
+								action="#{categoryProductController.productModel.initProductList(category)}"
+								update=":productList" />
 						</h:panelGrid>
 					</h:panelGrid>
 				</p:panel>

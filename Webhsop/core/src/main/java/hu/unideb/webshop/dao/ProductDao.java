@@ -1,6 +1,7 @@
 package hu.unideb.webshop.dao;
 
 import hu.unideb.webshop.dto.ProductDTO;
+import hu.unideb.webshop.entity.Category;
 import hu.unideb.webshop.entity.Product;
 
 import java.util.List;
@@ -26,5 +27,9 @@ public interface ProductDao extends PagingAndSortingRepository<Product, Long>,
 	
 	@Query(value = "SELECT count(*) FROM PRODUCT WHERE category_id = ?1", nativeQuery = true)
     int countCategoryProductNumber(Long categoryId);
-
+	
+	@Query(value = "SELECT count(*) FROM PRODUCT WHERE category_id is null", nativeQuery = true)
+    int countTopLevelCategoryProductNumber();
+	
+	Page<Product> findByCategory(Category category, Pageable pageable);
 }
