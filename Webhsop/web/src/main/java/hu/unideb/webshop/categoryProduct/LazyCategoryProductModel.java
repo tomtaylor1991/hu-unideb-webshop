@@ -72,9 +72,9 @@ public class LazyCategoryProductModel extends LazyDataModel<ProductDTO> {
 				.searchProductByCategory(currentCategory, first, pageSize,
 						sortField, dir, filter, filterColumnName);
 
-		System.out.println(first + " " + pageSize);
-		System.out.println("List : : " + newVisibleProductList + " size: "
-				+ newVisibleProductList.size());
+		//System.out.println(first + " " + pageSize);
+		//System.out.println("List : : " + newVisibleProductList + " size: "
+			//	+ newVisibleProductList.size());
 
 		// Set images to the products
 		for (ProductDTO product : newVisibleProductList) {

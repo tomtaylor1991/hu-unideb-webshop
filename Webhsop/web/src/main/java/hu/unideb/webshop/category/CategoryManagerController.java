@@ -33,6 +33,7 @@ public class CategoryManagerController implements Serializable {
 	private UploadedFile uploadedFile;
 	private String uploadedFileName;
 	private List<CategoryDTO> completeTextResults;
+	
 
 	@ManagedProperty(value = "#{manageCategoryFacadeService}")
 	private ManageCategoryFacadeService manageCategoryFacadeService;
@@ -200,5 +201,7 @@ public class CategoryManagerController implements Serializable {
 	public void setCompleteTextResults(List<CategoryDTO> completeTextResults) {
 		this.completeTextResults = completeTextResults;
 	}
+
+
 
 }

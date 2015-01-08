@@ -51,6 +51,25 @@ public class ImageBean implements Serializable {
 		}
 	}
 
+	public StreamedContent getImage(Long id) throws IOException {
+		FacesContext context = FacesContext.getCurrentInstance();
+		// System.out.println("++++++ "+context.getExternalContext().getRequestParameterMap());
+		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+			// So, we're rendering the view. Return a stub StreamedContent so
+			// that it will generate right URL.
+			return new DefaultStreamedContent();
+		} else {
+
+			try {
+				byte[] image = manageImageFacadeService.getImage(id);
+				return new DefaultStreamedContent(new ByteArrayInputStream(
+						image));
+			} catch (NullPointerException e) {
+				return null;
+			}
+		}
+	}
+
 	public ManageImageFacadeService getManageImageFacadeService() {
 		return manageImageFacadeService;
 	}

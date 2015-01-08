@@ -10,10 +10,79 @@
 
 	<ui:define name="head-extra">
 		<!-- custom css -->
+		<style type="text/css">
+.ui-galleria {
+	width: 100% !important;
+}
+</style>
 	</ui:define>
 
 	<ui:define name="content">
 		<h1>teszt</h1>
+		<h:form id="productImageBox">
+			<p:dialog header="Modal Dialog" widgetVar="productImage" modal="true" dynamic="true"
+				style="height: 80%; width:auto;" resizable="true">
+				<p:graphicImage value="#{imageBean.image}"
+					rendered="#{categoryProductController.selectedImageId!=null}"
+					style="height: auto; width: 100%;">
+					<f:param name="id"
+						value="#{categoryProductController.selectedImageId}" />
+				</p:graphicImage>
+			</p:dialog>
+		</h:form>
+		<h:form id="currentProduct">
+			<p:panelGrid style="width:100%;"
+				rendered="#{categoryProductController.selectedProduct!=null}">
+				<div class="ui-grid ui-grid-responsive" style="width: 100%;">
+					<div class="ui-grid-row" style="width: 100%;">
+						<div class="ui-grid-col-6">
+							<p:galleria autoPlay="false" style="height: 300px;"
+								showCaption="false"
+								visible="#{categoryProductController.selectedProduct.images.size() > 0}"
+								rendered="#{categoryProductController.selectedProduct.images.size() > 0}">
+								<ui:repeat
+									value="#{categoryProductController.selectedProduct.images}"
+									var="image">
+									<p:commandLink
+										action="#{categoryProductController.setSelectedImageId(image.imageDataId)}"
+										onclick="PF('productImage').show();" update=":productImageBox">
+										<p:graphicImage value="#{imageBean.image}"
+											alt="#{categoryProductController.selectedProduct.name} : #{image.fileName}"
+											title="#{categoryProductController.selectedProduct.name}"
+											style="height: auto; width: 100%;">
+											<f:param name="id" value="#{image.imageDataId}" />
+										</p:graphicImage>
+									</p:commandLink>
+								</ui:repeat>
+							</p:galleria>
+							<p:graphicImage name="/images/no_image.jpg"
+								style="height: auto; width: 100%; max-height:100px;"
+								visible="#{categoryProductController.selectedProduct.images.size() == 0}"
+								rendered="#{categoryProductController.selectedProduct.images.size() == 0}">
+							</p:graphicImage>
+						</div>
+						<div class="ui-grid-col-6">
+							<div>
+								<h:outputText value="Name:" />
+								<h:outputText
+									value="#{categoryProductController.selectedProduct.name}"
+									style="font-weight: bold" />
+								<h:outputText value="Price:" />
+								<h:outputText
+									value="#{categoryProductController.selectedProduct.isSpecial?categoryProductController.selectedProduct.specialPrice:categoryProductController.selectedProduct.price}"
+									style="font-weight: bold" />
+								<h:outputText value="Text:" />
+								<h:outputText
+									value="#{categoryProductController.selectedProduct.shortText}"
+									style="font-weight: bold" />
+								<p:commandButton value="Modal" type="button" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</p:panelGrid>
+		</h:form>
+
 		<h:form id="productList">
 			<h:form
 				rendered="#{categoryProductController.productModel.currentCategory!=null}">
@@ -21,11 +90,22 @@
 					value="#{categoryProductController.productModel.visibleProductList}"
 					var="product">
 					<f:facet name="header">
-			            Scroll Down to Load More Product
-			        </f:facet>
-					<p:panelGrid style="width:100%;"> 
-						<p:row style="width:100%">
+			            Category: <h:outputText
+							value="#{categoryProductController.productModel.currentCategory.name}" />
+					</f:facet>
+					<p:panelGrid style="width:100%;">
+						<p:row style="width:100%;">
 							<p:column style="width:30%">
+								<!-- 								<p:imageSwitch effect="fade" id="fadeEffect">
+									<ui:repeat value="#{product.images}" var="image"
+										id="fadeEffectImages" visible="#{product.images.size() > 0}"
+										rendered="#{product.images.size() > 0}">
+										<p:graphicImage value="#{imageBean.image}"
+											style="height: auto; width: 100%;">
+											<f:param name="id" value="#{image.thumbnailDataId}" />
+										</p:graphicImage>
+									</ui:repeat>
+								</p:imageSwitch> -->
 								<p:graphicImage value="#{imageBean.image}"
 									style="height: auto; width: 100%;"
 									visible="#{product.images.size() > 0}"
@@ -34,18 +114,25 @@
 										value="#{product.images.get(0).thumbnailDataId}" />
 								</p:graphicImage>
 								<p:graphicImage name="/images/no_image.jpg"
-									style="height: auto; width: 100%;"
+									style="height: auto; width: 100%; max-height:100px;"
 									visible="#{product.images.size() == 0}"
 									rendered="#{product.images.size() == 0}">
 								</p:graphicImage>
 							</p:column>
 							<p:column style="width:70%">
-								<h:panelGrid columns="2" cellpadding="5"
-									style="height: 100%;">
+								<h:panelGrid columns="2" cellpadding="5" style="height: 100%;">
 									<h:outputText value="Name:" />
 									<h:outputText value="#{product.name}" style="font-weight: bold" />
-									<p:commandButton value="test"
-										action="#{categoryProductController.test(product)}" />
+									<h:outputText value="Price:" />
+									<h:outputText
+										value="#{product.isSpecial?product.specialPrice:product.price}"
+										style="font-weight: bold" />
+									<h:outputText value="Text:" />
+									<h:outputText value="#{product.shortText}"
+										style="font-weight: bold" />
+									<p:commandButton value="Show Datails"
+										action="#{categoryProductController.showProduct(product)}"
+										update=":currentProduct" />
 								</h:panelGrid>
 							</p:column>
 						</p:row>

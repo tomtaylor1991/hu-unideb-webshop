@@ -28,7 +28,10 @@ public class CategoryProductController implements Serializable {
 	private List<CategoryDTO> visibleCategory;
 	// //
 	private LazyCategoryProductModel productModel;
-
+	// //
+	private ProductDTO selectedProduct;
+	private Long selectedImageId;
+	
 	@ManagedProperty(value = "#{manageCategoryFacadeService}")
 	private ManageCategoryFacadeService manageCategoryFacadeService;
 	@ManagedProperty(value = "#{manageProductFacadeService}")
@@ -64,6 +67,10 @@ public class CategoryProductController implements Serializable {
 			beforeCategorys.remove(beforeCategorys.size() - 1);
 			renderVisibleList(parent, true);
 		}
+	}
+
+	public void showProduct(ProductDTO product) {
+		selectedProduct = product;
 	}
 
 	public CategoryDTO getSelectedCategory() {
@@ -133,7 +140,25 @@ public class CategoryProductController implements Serializable {
 		this.manageProductFacadeService = manageProductFacadeService;
 	}
 
-	public void test(ProductDTO product){
+	public void test(ProductDTO product) {
 		System.out.println(product);
 	}
+
+	public ProductDTO getSelectedProduct() {
+		return selectedProduct;
+	}
+
+	public void setSelectedProduct(ProductDTO selectedProduct) {
+		this.selectedProduct = selectedProduct;
+	}
+
+	public Long getSelectedImageId() {
+		return selectedImageId;
+	}
+
+	public void setSelectedImageId(Long selectedImageId) {
+		this.selectedImageId = selectedImageId;
+		System.out.println(selectedImageId);
+	}
+	
 }
