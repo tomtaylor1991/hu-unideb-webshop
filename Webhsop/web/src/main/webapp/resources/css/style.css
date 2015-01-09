@@ -1,0 +1,53 @@
+@CHARSET "UTF-8";
+.ui-galleria {
+	width: 100% !important;
+}
+
+.autoWidthDialog {
+	width: 100% !important;
+	height: auto !important;
+	max-width: 800px !important;
+	max-height: 600px !important;
+	position: absolute !important;
+	top: 0 !important;
+	bottom: 0 !important;
+	left: 0 !important;
+	right: 0 !important;
+	margin: auto !important;
+	text-align: center !important;;
+	background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.productIMG {
+	margin: 2px !important;
+	border: 1px solid black !important;
+	height: 100px !important;
+	width: auto !important;
+}
+
+.productBox {
+	padding: 5px;
+	width: 95%;
+	margin-bottom: 2em;
+	height: 100%;
+}
+
+.productRow {
+	width: 100%;
+	margin-bottom: 2em;
+	border: 1px solid black;
+	padding-bottom: 2em;
+	padding-top: 1em;
+	background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.showIMG {
+	height: auto !important;
+	width: 100% !important;
+	top: 10px !important;
+	margin: 0 auto !important;
+}
+
+.dottedText {
+	text-decoration: line-through;
+}

@@ -112,5 +112,13 @@ public class RegistryDTO extends BaseDTO implements Serializable {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "RegistryDTO [id=" + id + ", quantity=" + quantity
+				+ ", originalQuantity=" + originalQuantity + ", product="
+				+ product + ", warehouse=" + warehouse + ", order=" + order
+				+ ", status=" + status + "]";
+	}
+
 
 }
