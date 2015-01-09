@@ -1,6 +1,7 @@
 package hu.unideb.webshop.categoryProduct;
 
 import hu.unideb.webshop.dto.CategoryDTO;
+import hu.unideb.webshop.dto.ImageInfoDTO;
 import hu.unideb.webshop.dto.ProductDTO;
 import hu.unideb.webshop.service.ManageCategoryFacadeService;
 import hu.unideb.webshop.service.ManageImageFacadeService;
@@ -22,6 +23,7 @@ public class CategoryProductController implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private CategoryDTO selectedCategory;
+	// //
 	private CategoryDTO parentCategory = null;
 	private List<CategoryDTO> beforeCategorys;
 	// //
@@ -30,8 +32,8 @@ public class CategoryProductController implements Serializable {
 	private LazyCategoryProductModel productModel;
 	// //
 	private ProductDTO selectedProduct;
-	private Long selectedImageId;
-	
+	private ImageInfoDTO selectedImage;
+
 	@ManagedProperty(value = "#{manageCategoryFacadeService}")
 	private ManageCategoryFacadeService manageCategoryFacadeService;
 	@ManagedProperty(value = "#{manageProductFacadeService}")
@@ -45,6 +47,37 @@ public class CategoryProductController implements Serializable {
 		productModel = new LazyCategoryProductModel(manageProductFacadeService,
 				manageImageFacadeService);
 		renderVisibleList(null, false);
+	}
+
+	public void stepImage(boolean isNext) {
+		if (selectedProduct != null) {
+			int max = selectedProduct.getImages().size();
+			if (max > 0) {
+				//System.out.println("current img id: " + selectedImage);
+				for (int i = 0; i < max; i++) {
+					if (selectedProduct.getImages().get(i).getId() == selectedImage
+							.getId()) {
+						int pos = i;
+						if (isNext) {
+							if (pos + 1 < max) {
+								pos++;
+							} else {
+								pos = 0;
+							}
+						} else {
+							if (pos - 1 >= 0) {
+								pos--;
+							} else {
+								pos = max - 1;
+							}
+						}
+						selectedImage = selectedProduct.getImages().get(pos);
+						//System.out.println("pos: " + pos);
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	public void renderVisibleList(CategoryDTO parentCategory, boolean isBack) {
@@ -67,6 +100,10 @@ public class CategoryProductController implements Serializable {
 			beforeCategorys.remove(beforeCategorys.size() - 1);
 			renderVisibleList(parent, true);
 		}
+	}
+
+	public void initImageView(ImageInfoDTO selectedImage) {
+		setSelectedImage(selectedImage);
 	}
 
 	public void showProduct(ProductDTO product) {
@@ -152,13 +189,12 @@ public class CategoryProductController implements Serializable {
 		this.selectedProduct = selectedProduct;
 	}
 
-	public Long getSelectedImageId() {
-		return selectedImageId;
+	public ImageInfoDTO getSelectedImage() {
+		return selectedImage;
 	}
 
-	public void setSelectedImageId(Long selectedImageId) {
-		this.selectedImageId = selectedImageId;
-		System.out.println(selectedImageId);
+	public void setSelectedImage(ImageInfoDTO selectedImage) {
+		this.selectedImage = selectedImage;
 	}
-	
+
 }
