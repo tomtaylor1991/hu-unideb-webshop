@@ -36,18 +36,35 @@
 					<ui:insert name="content" />
 				</div>
 			</pe:layoutPane>
-			<pe:layoutPane position="east" size="200" resizeWhileDragging="true">
+			<pe:layoutPane position="east" size="220" resizeWhileDragging="true">
 				<f:facet name="header">
 					<h:outputText value="Cart" />
 				</f:facet>
 				<h:form id="cart">
-					<p:dataList value="#{cartController.cart}" var="product"
-						type="ordered">
+					<p:dataGrid value="#{cartController.cart}" var="product"
+						type="definition" id="list" columns="1">
+
 						<f:facet name="header">
-				            Items: 
-				        </f:facet>
-				        #{product.product.name}, #{product.quantity}
-				    </p:dataList>
+					            Items: 
+					        </f:facet>
+						<p:fieldset legend="#{product.product.name}"
+							style="margin-bottom:2px">
+							<h:panelGrid columns="3">
+								<h:outputText
+									value="#{product.quantity*product.product.price} HUF" />
+								<h:outputText value=" ( #{product.quantity} )" />
+								<p:commandButton icon="fa fa-remove"
+									action="#{cartController.removeElementFromCart(product)}"
+									update=":cart" />
+							</h:panelGrid>
+						</p:fieldset>
+					</p:dataGrid>
+					<p:commandButton value="Order"
+						action="#{cartController.order()}" update=":cart"
+						disabled="#{cartController.cart.size()==0}" />
+					<p:commandButton value="Remove all"
+						action="#{cartController.removeAll()}" update=":cart"
+						disabled="#{cartController.cart.size()==0}" />
 				</h:form>
 			</pe:layoutPane>
 		</pe:layout>

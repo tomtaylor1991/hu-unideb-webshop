@@ -6,7 +6,9 @@ import hu.unideb.webshop.service.ManageOrderFacadeService;
 import hu.unideb.webshop.service.ManageRegistryFacadeService;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -45,11 +47,17 @@ public class CartController implements Serializable {
 		cart.add(tmp);
 		// //
 		quantity = 1;
-		System.out.println(cart);
 	}
 
-	public void removeElementFromCart(RegistryDTO product) {
-		cart.remove(product);
+	public void removeAll(){
+		cart = new LinkedHashSet<RegistryDTO>();
+	}
+	public void removeElementFromCart(RegistryDTO product) {		
+		cart.remove(product);		
+	}
+	
+	public void order(){
+		System.out.println("ORDER");
 	}
 
 	public ManageOrderFacadeService getManageOrderFacadeService() {
