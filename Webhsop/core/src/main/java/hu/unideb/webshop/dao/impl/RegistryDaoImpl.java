@@ -43,6 +43,7 @@ public class RegistryDaoImpl implements BaseConvertDao<Registry, RegistryDTO> {
 		ret.setQuantity(dto.getQuantity());
 		ret.setStatus(dto.getStatus());
 		ret.setOriginalQuantity(dto.getOriginalQuantity());
+		ret.setCost(dto.getCost());
 		return ret;
 	}
 
@@ -66,6 +67,7 @@ public class RegistryDaoImpl implements BaseConvertDao<Registry, RegistryDTO> {
 		ret.setId(entity.getId());
 		ret.setStatus(entity.getStatus());
 		ret.setOriginalQuantity(entity.getOriginalQuantity());
+		ret.setCost(entity.getCost());
 		return ret;
 	}
 

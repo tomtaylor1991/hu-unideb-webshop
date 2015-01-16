@@ -16,6 +16,8 @@ public class Registry extends BaseEntity {
 	private int originalQuantity;
 
 	private String status;
+	
+	private int cost;
 
 	@ManyToOne
 	@JoinColumn(name = "product_id")
@@ -75,6 +77,14 @@ public class Registry extends BaseEntity {
 
 	public void setOrder(Order order) {
 		this.order = order;
+	}
+
+	public int getCost() {
+		return cost;
+	}
+
+	public void setCost(int cost) {
+		this.cost = cost;
 	}
 	
 

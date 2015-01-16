@@ -19,7 +19,44 @@
 
 	<ui:define name="content">
 		<h1>Order</h1>
-		<p:commandButton value="create order" action="#{cartController.saveOrder(request.userPrincipal.name)}"/>
-
+		<h:form id="order_form">
+			<p:wizard>
+				<p:tab id="order_details" title="Order Details">
+					<p:panel header="Order Details">
+						<p:dataTable var="product"
+							value="#{cartOrderController.cartController.cart}">
+							<p:column headerText="Name">
+								<h:outputText value="#{product.product.name}" />
+							</p:column>
+							<p:column headerText="Price of 1 product">
+								<h:outputText
+									value="#{product.product.isSpecial?product.product.specialPrice:product.product.price}" />
+							</p:column>
+							<p:column headerText="Quantity">
+								<h:outputText value="#{product.quantity}" />
+							</p:column>
+							<p:column headerText="Cost">
+								<h:outputText value="#{product.cost}" />
+							</p:column>
+						</p:dataTable>
+						<br />
+						<p:panelGrid columns="2">
+							<h:outputText value="Cost:" />
+							<h:outputText value="#{cartController.cost}" />
+						</p:panelGrid>
+					</p:panel>
+				</p:tab>
+				<p:tab id="personal_details" title="Personal Details">
+					<p:panel header="Personal Details">
+					</p:panel>
+				</p:tab>
+				<p:tab id="order_confirm" title="Confirm">
+					<p:panel header="Confirm">
+						<p:commandButton value="create order"
+							action="#{cartOrderController.saveOrder(request.userPrincipal.name)}" />
+					</p:panel>
+				</p:tab>
+			</p:wizard>
+		</h:form>
 	</ui:define>
 </ui:composition>

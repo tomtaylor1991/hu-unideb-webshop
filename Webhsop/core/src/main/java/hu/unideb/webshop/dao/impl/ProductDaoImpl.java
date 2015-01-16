@@ -30,7 +30,7 @@ public class ProductDaoImpl implements BaseConvertDao<Product, ProductDTO> {
 		ret.setIsSpecial(dto.getIsSpecial());
 		ret.setSpecialPrice(dto.getSpecialPrice());
 		ret.setIsHighlight(dto.getIsHighlight());
-		ret.setShortText(dto.getShortText());
+		ret.setShortText(dto.getShortText());		
 		if (dto.getCategory() != null) {
 			ret.setCategory(categoryDao.toEntity(dto.getCategory(), null));
 		}

@@ -16,8 +16,11 @@ public class LeaderTestInfoDTO implements Serializable {
 	public void calculate() {
 		// calculate income
 		for (Need n : need) {
-			income += n.getProduct().getPrice()
-					* n.getRegistry().getOriginalQuantity();
+			/*
+			 * income += n.getProduct().getPrice()
+			 * n.getRegistry().getOriginalQuantity();
+			 */
+			income += n.getRegistry().getCost();
 			// transport check
 			if (!order.getStatus().equals("TRANSPORT")
 					&& !order.getStatus().equals("READY")) {

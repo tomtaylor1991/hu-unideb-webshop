@@ -13,6 +13,7 @@ public class RegistryDTO extends BaseDTO implements Serializable {
     private WarehouseDTO warehouse;
     private OrderDTO order;
     private String status;
+	private int cost;
 
     public RegistryDTO() {
 
@@ -118,6 +119,14 @@ public class RegistryDTO extends BaseDTO implements Serializable {
 				+ ", originalQuantity=" + originalQuantity + ", product="
 				+ product + ", warehouse=" + warehouse + ", order=" + order
 				+ ", status=" + status + "]";
+	}
+
+	public int getCost() {
+		return cost;
+	}
+
+	public void setCost(int cost) {
+		this.cost = cost;
 	}
 
 
