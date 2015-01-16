@@ -1,8 +1,11 @@
 package hu.unideb.webshop.service.impl;
 
 import hu.unideb.webshop.dao.PartnerDao;
+import hu.unideb.webshop.dao.UserDao;
 import hu.unideb.webshop.dto.PartnerDTO;
+import hu.unideb.webshop.dto.UserDTO;
 import hu.unideb.webshop.entity.Partner;
+import hu.unideb.webshop.entity.User;
 import hu.unideb.webshop.service.PartnerService;
 import hu.unideb.webshop.service.UserService;
 
@@ -26,6 +29,9 @@ public class PartnerServiceImpl implements PartnerService {
 
 	@Autowired
 	PartnerDao partnerDao;
+
+	@Autowired
+	UserDao userDao;
 
 	@Autowired
 	UserService userService;
@@ -98,6 +104,18 @@ public class PartnerServiceImpl implements PartnerService {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public PartnerDTO findPartnerByUser(UserDTO user) {
+		Partner partner = partnerDao.findPartnerByUserId(user.getId());
+		//System.out.println(partner);
+		if (partner == null) {
+			return null;
+		} else {
+			return partnerDao.toDto(partner);
+		}
+
 	}
 
 }

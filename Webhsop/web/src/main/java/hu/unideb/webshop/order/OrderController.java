@@ -162,8 +162,7 @@ public class OrderController implements Serializable {
 				.saveRegistrys(new ArrayList<>(addedProducts));
 
 		selectedPartner = null;
-		addedProducts.clear();
-		beerName = null;
+		addedProducts.clear();		
 		quantity = 0;
 
 		RequestContext rc = RequestContext.getCurrentInstance();

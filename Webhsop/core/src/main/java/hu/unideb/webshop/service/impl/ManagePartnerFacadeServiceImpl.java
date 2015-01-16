@@ -1,6 +1,7 @@
 package hu.unideb.webshop.service.impl;
 
 import hu.unideb.webshop.dto.PartnerDTO;
+import hu.unideb.webshop.dto.UserDTO;
 import hu.unideb.webshop.service.ManagePartnerFacadeService;
 import hu.unideb.webshop.service.PartnerService;
 
@@ -38,6 +39,11 @@ public class ManagePartnerFacadeServiceImpl implements ManagePartnerFacadeServic
 	@Override
 	public PartnerDTO getPartnerByName(String name) {
 		return partnerService.getPartnerByName(name);
+	}
+
+	@Override
+	public PartnerDTO findPartnerByUser(UserDTO user) {	
+		return partnerService.findPartnerByUser(user);
 	}
 
 }

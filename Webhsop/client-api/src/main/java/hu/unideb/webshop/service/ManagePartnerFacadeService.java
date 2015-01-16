@@ -1,6 +1,7 @@
 package hu.unideb.webshop.service;
 
 import hu.unideb.webshop.dto.PartnerDTO;
+import hu.unideb.webshop.dto.UserDTO;
 
 import java.util.List;
 
@@ -46,4 +47,6 @@ public interface ManagePartnerFacadeService {
 	 * @return the partner by name
 	 */
 	PartnerDTO getPartnerByName(String name);
+	
+	PartnerDTO findPartnerByUser(UserDTO user);
 }

@@ -53,15 +53,14 @@
 								<h:outputText
 									value="#{product.quantity*product.product.price} HUF" />
 								<h:outputText value=" ( #{product.quantity} )" />
-								<p:commandButton icon="fa fa-remove"
+								<p:commandButton icon="ui-icon-disk"
 									action="#{cartController.removeElementFromCart(product)}"
 									update=":cart" />
 							</h:panelGrid>
 						</p:fieldset>
 					</p:dataGrid>
-					<p:commandButton value="Order"
-						action="#{cartController.order()}" update=":cart"
-						disabled="#{cartController.cart.size()==0}" />
+					<p:button value="Order" disabled="#{cartController.cart.size()==0}"
+						href="/pages/secure/user/create-order.xhtml" />
 					<p:commandButton value="Remove all"
 						action="#{cartController.removeAll()}" update=":cart"
 						disabled="#{cartController.cart.size()==0}" />

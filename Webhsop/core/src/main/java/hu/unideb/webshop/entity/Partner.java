@@ -1,6 +1,8 @@
 package hu.unideb.webshop.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -22,7 +24,7 @@ public class Partner extends BaseEntity {
 	/** The type. */
 	private String type;
 
-	private User user;
+	private Long userId;
 
 	/**
 	 * Gets the name.
@@ -81,12 +83,12 @@ public class Partner extends BaseEntity {
 		this.type = type;
 	}
 
-	public User getUser() {
-		return user;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 }
