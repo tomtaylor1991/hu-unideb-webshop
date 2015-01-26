@@ -5,13 +5,14 @@ import java.io.IOException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 /**
  * A class which can switch between sites using the redirectToUrl function.
  */
-@ApplicationScoped
+@SessionScoped
 @ManagedBean
 public class MenuView {
 
