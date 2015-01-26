@@ -30,7 +30,7 @@
                         <div id="loginFieldUsrContId">
                             <h:outputText id="outTxtUserNameId"
                                           value="#{out.login_username}: " name="outTxtUserNameNm"></h:outputText>
-                            <p:inputText id="userName" required="true"
+                            <p:inputText id="userName" required="false"
                                          value="#{loginMgmtBean.userName}"
                                          requiredMessage="#{out.login_require_username}" />
                             <h:outputLabel id="outLblUserNameId" for="userName"
@@ -39,7 +39,7 @@
                         <div id="loginFieldPassContId">
                             <h:outputText id="outTxtPasswordId"
                                           value="#{out.login_password}: " name="outTxtPasswordNm"></h:outputText>
-                            <p:password id="password" required="true"
+                            <p:password id="password" required="false"
                                         value="#{loginMgmtBean.password}"
                                         requiredMessage="#{out.login_require_password}"
                                         name="inTxtPasswordNm" />

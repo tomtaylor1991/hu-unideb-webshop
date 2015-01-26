@@ -25,8 +25,8 @@ public class ManageUserFacadeServiceImpl implements ManageUserFacadeService{
 	}
 
 	@Override
-	public void saveUser(UserDTO user) {
-		userService.save(user);
+	public UserDTO saveUser(UserDTO user) {
+		return userService.save(user);
 		
 	}
 	

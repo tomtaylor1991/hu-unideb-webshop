@@ -23,7 +23,7 @@ public interface ManageUserFacadeService {
 	 *
 	 * @param user the user
 	 */
-	void saveUser(UserDTO user);
+	UserDTO saveUser(UserDTO user);
 	
 	/**
 	 * Update user.

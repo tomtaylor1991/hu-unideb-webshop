@@ -19,10 +19,11 @@
 
 	<ui:define name="content">
 		<h1>Order</h1>
-		<h:form id="order_form">
+		<h:form id="order_form" styleClass="orderFormPanel">
 			<p:wizard>
-				<p:tab id="order_details" title="Order Details">
-					<p:panel header="Order Details">
+				<p:tab id="order_details" title="Order Details"
+					styleClass="orderFormPanel">
+					<p:panel header="Order Details" styleClass="orderFormPanel">
 						<p:dataTable var="product"
 							value="#{cartOrderController.cartController.cart}">
 							<p:column headerText="Name">
@@ -52,12 +53,45 @@
 					</p:panel>
 				</p:tab>
 				<p:tab id="personal_details" title="Personal Details">
-					<p:panel header="Personal Details">
+					<p:panel header="Personal Details" styleClass="orderFormPanel">
+						<p:panelGrid columns="2" style=" margin: 0 auto; width: 400px;"
+							rendered="#{cartOrderController.selectedPartner!=null}">
+							<h3>Name:</h3>
+							<h:outputText value="#{cartOrderController.selectedPartner.name}" />
+							<h3>Address:</h3>
+							<h:outputText
+								value="#{cartOrderController.selectedPartner.address}" />
+						</p:panelGrid>
+						<p:panelGrid columns="1" styleClass="orderFormPanel"
+							style="width: 400px;"
+							rendered="#{cartOrderController.selectedPartner==null}"
+							header="Log in!">
+							<h1 style="color: red;">
+								<h:outputText value="Sorry, you have to Log in!" />
+							</h1>
+							<p:commandButton icon="ui-icon-disk" value="Login"
+								action="#{menuView.redirectToUrl('/pages/unsecure/login.xhtml')}" />
+							<p:commandButton icon="ui-icon-disk" value="Create new account"
+								action="#{menuView.redirectToUrl('/pages/unsecure/signup.xhtml')}" />
+						</p:panelGrid>
 					</p:panel>
 				</p:tab>
-				<p:tab id="order_confirm" title="Confirm">
-					<p:panel header="Confirm">
-						<p:commandButton value="create order"
+				<p:tab id="order_confirm" title="Confirm"
+					styleClass="orderFormPanel"
+					rendered="#{cartOrderController.selectedPartner!=null}">
+					<p:panel header="Confirm" styleClass="orderFormPanel">
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							Mauris ut nunc tortor. Suspendisse eu purus nibh. Ut rhoncus eu
+							ipsum in euismod. Sed eros quam, feugiat sed mattis sit amet,
+							lacinia id tellus. Etiam lacinia dolor at neque ullamcorper
+							auctor. Nulla vulputate eu leo non aliquet. Aenean id erat vel
+							dui consequat tincidunt. Mauris nec quam gravida, gravida nibh
+							vitae, eleifend justo. Sed non nulla ut erat elementum finibus.
+							Pellentesque habitant morbi tristique senectus et netus et
+							malesuada fames ac turpis egestas. Pellentesque ut fringilla
+							orci.</p>
+						<br />
+						<p:commandButton value="Create order" update=":cart, :order_form"
 							action="#{cartOrderController.saveOrder(request.userPrincipal.name)}" />
 					</p:panel>
 				</p:tab>

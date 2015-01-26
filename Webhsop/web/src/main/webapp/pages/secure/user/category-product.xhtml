@@ -39,7 +39,7 @@
 	</ui:define>
 
 	<ui:define name="content">
-		<h1>teszt</h1>
+		<h1>Products</h1>
 
 		<h:form id="currentProduct">
 			<p:panelGrid
@@ -201,9 +201,11 @@
 						<!-- Image -->
 						<h:panelGrid columns="2" style="width:100%">
 							<p:commandButton value="Sub category (#{category.childNumber})"
+								disabled="#{category.childNumber==0}"
 								action="#{categoryProductController.renderVisibleList(category, false)}"
 								update=":categoryList" />
 							<p:commandButton value="Products (#{category.productNumber})"
+								disabled="#{category.productNumber==0}"
 								action="#{categoryProductController.productModel.initProductList(category)}"
 								update=":productList" />
 						</h:panelGrid>

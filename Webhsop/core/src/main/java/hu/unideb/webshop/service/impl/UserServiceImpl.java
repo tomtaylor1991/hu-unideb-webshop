@@ -26,81 +26,84 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.REQUIRED)
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    UserDao userDao;
+	@Autowired
+	UserDao userDao;
 
-    @Override
-    public UserDTO getUser(String login) {
-        return userDao.toDto(userDao.findUserByLogin(login));
-    }
+	@Override
+	public UserDTO getUser(String login) {
+		return userDao.toDto(userDao.findUserByLogin(login));
+	}
 
-    @Override
-    public void save(UserDTO user) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        //System.out.println(auth);
-        if (!(auth instanceof AnonymousAuthenticationToken)) {
-            UserDetails userDetails = (UserDetails) SecurityContextHolder
-                    .getContext().getAuthentication().getPrincipal();
+	@Override
+	public UserDTO save(UserDTO user) {
+		Authentication auth = SecurityContextHolder.getContext()
+				.getAuthentication();
+		// System.out.println(auth);
+		if (!(auth instanceof AnonymousAuthenticationToken)) {
+			UserDetails userDetails = (UserDetails) SecurityContextHolder
+					.getContext().getAuthentication().getPrincipal();
 
-            user.setRecUserId(getUser(userDetails.getUsername()).getId() + "");
-            user.setRecDate(new Date());
-            user.setModUserId(getUser(userDetails.getUsername()).getId() + "");
-            user.setModDate(new Date());
-        } else {
-            user.setRecDate(new Date());
-            user.setRecUserId("self");
-            user.setModDate(new Date());
-            user.setModUserId("self");
-        }
-        userDao.save(userDao.toEntity(user, null));
+			user.setRecUserId(getUser(userDetails.getUsername()).getId() + "");
+			user.setRecDate(new Date());
+			user.setModUserId(getUser(userDetails.getUsername()).getId() + "");
+			user.setModDate(new Date());
+		} else {
+			user.setRecDate(new Date());
+			user.setRecUserId("self");
+			user.setModDate(new Date());
+			user.setModUserId("self");
+		}
+		User userEntity = userDao.save(userDao.toEntity(user, null));
+		return userDao.toDto(userEntity);
 
-    }
+	}
 
-    @Override
-    public void update(UserDTO user) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        //System.out.println(auth);
-        if (!(auth instanceof AnonymousAuthenticationToken)) {
-            UserDetails userDetails = (UserDetails) SecurityContextHolder
-                    .getContext().getAuthentication().getPrincipal();
-            user.setModUserId(getUser(userDetails.getUsername()).getId() + "");
-            user.setModDate(new Date());
-        } else {
-            user.setModDate(new Date());
-            user.setModUserId("self");
-        }
-        userDao.save(userDao.toEntity(user, null));
+	@Override
+	public void update(UserDTO user) {
+		Authentication auth = SecurityContextHolder.getContext()
+				.getAuthentication();
+		// System.out.println(auth);
+		if (!(auth instanceof AnonymousAuthenticationToken)) {
+			UserDetails userDetails = (UserDetails) SecurityContextHolder
+					.getContext().getAuthentication().getPrincipal();
+			user.setModUserId(getUser(userDetails.getUsername()).getId() + "");
+			user.setModDate(new Date());
+		} else {
+			user.setModDate(new Date());
+			user.setModUserId("self");
+		}
+		userDao.save(userDao.toEntity(user, null));
 
-    }
+	}
 
-    @Override
-    public List<UserDTO> getUserList(int page, int size, String sortField,
-            int sortOrder, String filter, String filterColumnName) {
-        Direction dir = sortOrder == 1 ? Sort.Direction.ASC
-                : Sort.Direction.DESC;
-        PageRequest pageRequest = new PageRequest(page, size, new Sort(
-                new org.springframework.data.domain.Sort.Order(dir, sortField)));
-        List<UserDTO> ret = new ArrayList<UserDTO>(size);
-        Page<User> entities;
+	@Override
+	public List<UserDTO> getUserList(int page, int size, String sortField,
+			int sortOrder, String filter, String filterColumnName) {
+		Direction dir = sortOrder == 1 ? Sort.Direction.ASC
+				: Sort.Direction.DESC;
+		PageRequest pageRequest = new PageRequest(page, size, new Sort(
+				new org.springframework.data.domain.Sort.Order(dir, sortField)));
+		List<UserDTO> ret = new ArrayList<UserDTO>(size);
+		Page<User> entities;
 
-        if (filter.length() != 0 && filterColumnName.equals("login")) {
-            entities = userDao.findByLoginStartsWith(filter, pageRequest);
-        } else {
-            entities = userDao.findAll(pageRequest);
-        }
+		if (filter.length() != 0 && filterColumnName.equals("login")) {
+			entities = userDao.findByLoginStartsWith(filter, pageRequest);
+		} else {
+			entities = userDao.findAll(pageRequest);
+		}
 
-        if (entities != null && entities.getSize() > 0) {
-            List<User> contents = entities.getContent();
-            for (User m : contents) {
-                ret.add(userDao.toDto(m));
-            }
-        }
-        return ret;
-    }
+		if (entities != null && entities.getSize() > 0) {
+			List<User> contents = entities.getContent();
+			for (User m : contents) {
+				ret.add(userDao.toDto(m));
+			}
+		}
+		return ret;
+	}
 
-    @Override
-    public int getRowNumber() {
-        return (int) userDao.count();
-    }
+	@Override
+	public int getRowNumber() {
+		return (int) userDao.count();
+	}
 
 }

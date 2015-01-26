@@ -1,55 +1,66 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:c="http://java.sun.com/jsp/jstl/core"
-                xmlns:p="http://primefaces.org/ui"
-                template="/templates/userLayout.xhtml">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/userLayout.xhtml">
 
-    <ui:define name="pageTitle">#{out.signup_title}</ui:define>
-    <ui:define name="header"> -> #{out.signup_title}</ui:define>
+	<ui:define name="pageTitle">#{out.signup_title}</ui:define>
+	<ui:define name="header"> -> #{out.signup_title}</ui:define>
 
-    <ui:define name="head-extra">
-        <!-- custom css -->
-    </ui:define>
+	<ui:define name="head-extra">
+		<!-- custom css -->
+	</ui:define>
 
-    <ui:define name="content">
-        <div>
+	<ui:define name="content">
+			<h:form id="userFormId" prependId="false">
+				<p:wizard styleClass="orderFormPanel">
+					<p:tab id="p1" title="Login Details" styleClass="orderFormPanel">
+						<h:panelGrid columns="2" id="matchGrid" cellpadding="5">
+							<h:outputLabel id="outTxtUserNameId" value="#{out.username}"
+								name="outTxtUserNameNm"></h:outputLabel>
+							<p:inputText id="userName" required="false"
+								value="#{loginController.userName}"
+								requiredMessage="Please enter username" />
 
-            <h:form id="userFormId" prependId="false">
-                <p:messages id="messages" showDetail="true" autoUpdate="true"
-                            closable="true" />
-                <h:panelGrid columns="2" cellpadding="5">
+							<h:outputLabel for="pwd1" value="#{out.password}: " />
+							<p:password id="pwd1" value="#{loginController.password}"
+								match="pwd2" label="Password 1" required="false" />
 
+							<h:outputLabel for="pwd2" value="#{out.password2}: " />
+							<p:password id="pwd2" value="#{loginController.password}"
+								label="Password 2" required="false" />
 
-                    <h:panelGrid columns="2" id="matchGrid" cellpadding="5">
-                        <h:outputLabel id="outTxtUserNameId" value="#{out.username}"
-                                       name="outTxtUserNameNm"></h:outputLabel>
-                        <p:inputText id="userName" required="true"
-                                     value="#{loginController.userName}"
-                                     requiredMessage="Please enter username" />
-
-                        <h:outputLabel for="pwd1" value="#{out.password}: " />
-                        <p:password id="pwd1" value="#{loginController.password}"
-                                    match="pwd2" label="Password 1" required="true" />
-
-                        <h:outputLabel for="pwd2" value="#{out.password2}: " />
-                        <p:password id="pwd2" value="#{loginController.password}"
-                                    label="Password 2" required="true" />
-
-                    </h:panelGrid>
-
-
-                    <div id="loginBtnPanelId">
-                        <p:commandButton id="btnLoginId" value="#{out.signup}"
-                                         action="#{loginController.addUser()}" styleClass="loginPanelBtn"
-                                         icon="ui-icon-check" />
-                    </div>
-
-                </h:panelGrid>
-            </h:form>
-
-        </div>
-
-    </ui:define>
+						</h:panelGrid>
+					</p:tab>
+					<p:tab id="p2" title="User Details" styleClass="orderFormPanel">
+						<p:panelGrid columns="2" style="width:400px; margin: 0 auto;">
+							<h:outputText value="Name" />
+							<p:inputText value="#{loginController.tmpPartner.name}" />
+							<h:outputText value="Address" />
+							<p:inputText value="#{loginController.tmpPartner.address}" />
+						</p:panelGrid>
+					</p:tab>
+					<p:tab id="p3" title="Create account" styleClass="orderFormPanel">
+						<div id="loginBtnPanelId">
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+								Mauris ut nunc tortor. Suspendisse eu purus nibh. Ut rhoncus eu
+								ipsum in euismod. Sed eros quam, feugiat sed mattis sit amet,
+								lacinia id tellus. Etiam lacinia dolor at neque ullamcorper
+								auctor. Nulla vulputate eu leo non aliquet. Aenean id erat vel
+								dui consequat tincidunt. Mauris nec quam gravida, gravida nibh
+								vitae, eleifend justo. Sed non nulla ut erat elementum finibus.
+								Pellentesque habitant morbi tristique senectus et netus et
+								malesuada fames ac turpis egestas. Pellentesque ut fringilla
+								orci.</p>
+							<br />
+							<p:commandButton id="btnLoginId" value="#{out.signup}"
+								action="#{loginController.addUser()}" styleClass="loginPanelBtn"
+								icon="ui-icon-check" />
+						</div>
+					</p:tab>
+				</p:wizard>
+			</h:form>
+	</ui:define>
 </ui:composition>

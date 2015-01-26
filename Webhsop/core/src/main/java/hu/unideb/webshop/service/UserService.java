@@ -22,7 +22,7 @@ public interface UserService {
 	 *
 	 * @param user the user
 	 */
-	void save(UserDTO user);
+	UserDTO save(UserDTO user);
 	
 	/**
 	 * Update the user.

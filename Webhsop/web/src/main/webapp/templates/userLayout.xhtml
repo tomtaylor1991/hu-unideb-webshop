@@ -32,7 +32,7 @@
 		<p:layout styleClass="userLayout" id="contentDiv" fullPage="false"
 			widgetVar="layoutWdgt"
 			style="min-height:1000px; min-width: 1100px; margin: 0 auto;">
-			<p:layoutUnit position="north" id="head" resizable="false">
+			<p:layoutUnit position="north" id="head" resizable="false" styleClass="headerLayout">
 				<p:toolbar id="tb">
 					<f:facet name="left">
 						<p:commandButton
@@ -53,12 +53,12 @@
 				</p:toolbar>
 
 			</p:layoutUnit>
-			<p:layoutUnit position="center" resizable="false">
+			<p:layoutUnit position="center" resizable="false" styleClass="contentLayout">
 				<div style="width: 100%;">
 					<ui:insert name="content" />
 				</div>
 			</p:layoutUnit>
-			<p:layoutUnit position="east" size="220" resizeWhileDragging="true"
+			<p:layoutUnit position="east" size="220" resizeWhileDragging="true" styleClass="cartLayout"
 				resizable="true" collapsible="true">
 				<f:facet name="header">
 					<h:outputText value="Cart" />
@@ -93,7 +93,7 @@
 				</h:form>
 			</p:layoutUnit>
 		</p:layout>
-		<p:sticky target="tb" />
+		
 	</h:body>
 
 </f:view>

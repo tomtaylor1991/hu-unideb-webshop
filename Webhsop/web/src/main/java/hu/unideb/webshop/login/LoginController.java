@@ -1,11 +1,14 @@
 package hu.unideb.webshop.login;
 
+import hu.unideb.webshop.dto.PartnerDTO;
 import hu.unideb.webshop.dto.RoleDTO;
 import hu.unideb.webshop.dto.UserDTO;
+import hu.unideb.webshop.service.ManagePartnerFacadeService;
 import hu.unideb.webshop.service.ManageUserFacadeService;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -25,10 +28,19 @@ public class LoginController implements Serializable {
 	/** The manage user facade service. */
 	@ManagedProperty(value = "#{manageUserFacadeService}")
 	ManageUserFacadeService manageUserFacadeService;
+	@ManagedProperty(value = "#{managePartnerFacadeService}")
+	ManagePartnerFacadeService managePartnerFacadeService;
+
+	PartnerDTO tmpPartner;
+
+	@PostConstruct
+	public void init() {
+		tmpPartner = new PartnerDTO();
+	}
 
 	/** The user name. */
 	private String userName = "";
-	
+
 	/** The password. */
 	private String password = "";
 
@@ -44,7 +56,8 @@ public class LoginController implements Serializable {
 	/**
 	 * Sets the user name.
 	 *
-	 * @param userName the new user name
+	 * @param userName
+	 *            the new user name
 	 */
 	public void setUserName(String userName) {
 		this.userName = userName;
@@ -62,7 +75,8 @@ public class LoginController implements Serializable {
 	/**
 	 * Sets the password.
 	 *
-	 * @param password the new password
+	 * @param password
+	 *            the new password
 	 */
 	public void setPassword(String password) {
 		this.password = password;
@@ -80,7 +94,8 @@ public class LoginController implements Serializable {
 	/**
 	 * Sets the manage user facade service.
 	 *
-	 * @param manageUserFacadeService the new manage user facade service
+	 * @param manageUserFacadeService
+	 *            the new manage user facade service
 	 */
 	public void setManageUserFacadeService(
 			ManageUserFacadeService manageUserFacadeService) {
@@ -102,7 +117,9 @@ public class LoginController implements Serializable {
 
 		userDTO.getRoles().add(roleDTO);
 		if (manageUserFacadeService.getUser(userName) == null) {
-			manageUserFacadeService.saveUser(userDTO);
+			UserDTO newUser = manageUserFacadeService.saveUser(userDTO);
+			tmpPartner.setUserId(newUser.getId());
+			managePartnerFacadeService.createPartner(tmpPartner);
 		} else {
 			context.addMessage(null, new FacesMessage(
 					FacesMessage.SEVERITY_ERROR, "Error!",
@@ -112,6 +129,25 @@ public class LoginController implements Serializable {
 		context.getExternalContext().getFlash().setKeepMessages(true);
 		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
 				"Info", "Registration sucessful you can log in now"));
+
 		return "/pages/unsecure/login.xhtml?faces-redirect=true";
 	}
+
+	public PartnerDTO getTmpPartner() {
+		return tmpPartner;
+	}
+
+	public void setTmpPartner(PartnerDTO tmpPartner) {
+		this.tmpPartner = tmpPartner;
+	}
+
+	public ManagePartnerFacadeService getManagePartnerFacadeService() {
+		return managePartnerFacadeService;
+	}
+
+	public void setManagePartnerFacadeService(
+			ManagePartnerFacadeService managePartnerFacadeService) {
+		this.managePartnerFacadeService = managePartnerFacadeService;
+	}
+
 }
