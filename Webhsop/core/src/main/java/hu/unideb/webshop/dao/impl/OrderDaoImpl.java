@@ -28,6 +28,7 @@ public class OrderDaoImpl implements BaseConvertDao<Order, OrderDTO> {
         ret.setName(dto.getName());
         ret.setStatus(dto.getStatus());
         ret.setPartnerId(dto.getPartnerDTO().getId());
+        ret.setCostOfAll(dto.getCostOfAll());
         return ret;
     }
 
@@ -48,6 +49,7 @@ public class OrderDaoImpl implements BaseConvertDao<Order, OrderDTO> {
         ret.setModUserId(entity.getModUserId());
         ret.setId(entity.getId());
         ret.setStatus(entity.getStatus());
+        ret.setCostOfAll(entity.getCostOfAll());
         return ret;
     }
 

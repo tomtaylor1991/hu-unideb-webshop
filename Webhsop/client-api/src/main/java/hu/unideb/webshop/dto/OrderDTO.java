@@ -3,7 +3,8 @@ package hu.unideb.webshop.dto;
 import java.io.Serializable;
 import java.util.Date;
 
-public class OrderDTO extends BaseDTO implements Serializable {
+public class OrderDTO extends BaseDTO implements Serializable,
+		Comparable<OrderDTO> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -18,6 +19,8 @@ public class OrderDTO extends BaseDTO implements Serializable {
 	private String status;
 
 	private PartnerDTO partnerDTO;
+
+	private int costOfAll;
 
 	public OrderDTO() {
 
@@ -123,6 +126,25 @@ public class OrderDTO extends BaseDTO implements Serializable {
 
 	public void setInfo(LeaderTestInfoDTO info) {
 		this.info = info;
+	}
+
+	public int getCostOfAll() {
+		return costOfAll;
+	}
+
+	public void setCostOfAll(int costOfAll) {
+		this.costOfAll = costOfAll;
+	}
+
+	@Override
+	public int compareTo(OrderDTO other) {
+		if (this.getId() > other.getId()) {
+			return -1;
+		} else if (this.getId() < other.getId()) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 
 }

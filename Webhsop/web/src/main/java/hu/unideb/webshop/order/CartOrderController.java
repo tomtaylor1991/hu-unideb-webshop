@@ -78,7 +78,8 @@ public class CartOrderController implements Serializable {
 			newOrder.setDate(new Date());
 			newOrder.setStatus("NEW");
 			newOrder.setPartnerDTO(selectedPartner);
-
+			newOrder.setCostOfAll(cartController.getCost());
+			
 			manageOrderFacadeService.createOrder(newOrder);
 			for (RegistryDTO registry : cartController.getCart()) {
 				registry.setOrder(newOrder);

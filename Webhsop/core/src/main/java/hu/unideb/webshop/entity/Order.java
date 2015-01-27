@@ -21,6 +21,9 @@ public class Order extends BaseEntity {
 
 	private Long partnerId;
 	
+	private int costOfAll;
+
+	
 	/**
 	 * Gets the partner id.
 	 *
@@ -91,5 +94,13 @@ public class Order extends BaseEntity {
 	 */
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public int getCostOfAll() {
+		return costOfAll;
+	}
+
+	public void setCostOfAll(int costOfAll) {
+		this.costOfAll = costOfAll;
 	}
 }
