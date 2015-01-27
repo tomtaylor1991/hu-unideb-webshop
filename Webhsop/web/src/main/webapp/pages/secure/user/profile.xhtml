@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/userLayout.xhtml">
+
+	<ui:define name="pageTitle">#{out.index_title}</ui:define>
+
+	<ui:define name="head-extra">
+		<!-- custom css -->
+
+	</ui:define>
+
+	<ui:define name="dialogs">
+
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form id="partnerProfile"
+			rendered="#{profileController.selectedPartner!=null}">
+			<p:panelGrid columns="2" style="width:400px; margin: 0 auto;">
+				<h:outputText value="Name" />
+				<p:inputText value="#{profileController.selectedPartner.name}" />
+				<h:outputText value="Address" />
+				<p:inputText value="#{profileController.selectedPartner.address}" />
+			</p:panelGrid>
+			<p:commandButton value="Update" update=":partnerProfile"
+				action="#{profileController.updatePartnerProfile()}" />
+		</h:form>
+	</ui:define>
+</ui:composition>

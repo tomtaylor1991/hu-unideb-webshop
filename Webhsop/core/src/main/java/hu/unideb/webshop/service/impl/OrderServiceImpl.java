@@ -104,8 +104,12 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public List<OrderDTO> getOrdersByPartner(PartnerDTO partner) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Order> entities = orderDao.findByPartnerId(partner.getId());
+		List<OrderDTO> ret = new LinkedList<OrderDTO>();
+		for (Order o : entities) {
+			ret.add(orderDao.toDto(o));
+		}
+		return ret;
 	}
 
 	@Override

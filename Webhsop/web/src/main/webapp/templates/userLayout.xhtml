@@ -43,10 +43,12 @@
 							icon="ui-icon-folder-open" />
 					</f:facet>
 					<f:facet name="right">
-						<p:commandButton icon="ui-icon-disk" value="Login"
-							action="#{menuView.redirectToUrl('/pages/unsecure/login.xhtml')}" />
-						<p:commandButton icon="ui-icon-disk" value="Sign up"
-							action="#{menuView.redirectToUrl('/pages/unsecure/signup.xhtml')}" />
+						<sec:authorize ifAnyGranted="ROLE_ANONYMOUS">
+							<p:commandButton icon="ui-icon-disk" value="Login"
+								action="#{menuView.redirectToUrl('/pages/unsecure/login.xhtml')}" />
+							<p:commandButton icon="ui-icon-disk" value="Sign up"
+								action="#{menuView.redirectToUrl('/pages/unsecure/signup.xhtml')}" />
+						</sec:authorize>
 					</f:facet>
 				</p:toolbar>
 
@@ -63,19 +65,25 @@
 					<h:outputText value="Cart" />
 				</f:facet>
 				<h:form id="cart">
-					<h3><h:outputText value="Logged as: #{request.userPrincipal.name}"/></h3>
-					<p:menu toggleable="true" style="margin:0 auto;">
-						<p:submenu label="Profile">
-							<p:menuitem value="Show profile" />
-							<p:menuitem value="Log out" />
-						</p:submenu>
-						<p:submenu label="Orders">
-							<p:menuitem value="Orders- status" />
-						</p:submenu>
-					</p:menu>
-					<br/>
-					<p:separator style="height:10px;"/>
-					<br/>
+					<sec:authorize ifAnyGranted="ROLE_USER">
+						<h3>
+							<h:outputText value="Logged as: #{request.userPrincipal.name}" />
+						</h3>
+						<p:menu toggleable="true" style="margin:0 auto;">
+							<p:submenu label="Profile">
+								<p:menuitem value="Show profile"
+									outcome="/pages/secure/user/profile.xhtml" />
+								<p:menuitem value="Log out" url="/j_spring_security_logout"
+									icon="ui-icon-extlink" />
+							</p:submenu>
+							<p:submenu label="Orders">
+								<p:menuitem value="Orders- status" />
+							</p:submenu>
+						</p:menu>
+						<br />
+						<p:separator style="height:10px;" />
+						<br />
+					</sec:authorize>
 					<p:dataGrid value="#{cartController.cart}" var="product"
 						type="definition" id="list" columns="1">
 
@@ -97,6 +105,7 @@
 						<h:outputText value="Cost:" />
 						<h:outputText value="#{cartController.cost}" />
 					</p:panelGrid>
+					<br/>
 					<p:button value="Order" disabled="#{cartController.cart.size()==0}"
 						href="/pages/secure/user/create-order.xhtml" />
 					<p:commandButton value="Remove all"
