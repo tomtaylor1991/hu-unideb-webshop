@@ -78,6 +78,7 @@ body {
 
 .headerLayout {
 	background: #7BB2F0 !important;
+	overflow: hidden;
 }
 
 .ui-widget-content {

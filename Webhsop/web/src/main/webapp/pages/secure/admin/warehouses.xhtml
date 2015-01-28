@@ -131,30 +131,6 @@
 				</p:dataTable>
 			</p:outputPanel>
 		</p:dialog>
-		<p:dialog header="#{out.warehouse}" widgetVar="whBeerDialog" modal="true"
-			showEffect="fade" hideEffect="fade" resizable="true">
-			<p:outputPanel id="whDialogBeerList" style="text-align:center;">
-				<p:separator style="width:100%;height:10px" />
-				<h:outputText value="#{out.warehouses_selected}" />
-				<h:outputText value="#{warehouseController.selectedWarehouse.name}" />
-				<br />
-				<h:outputText value="#{out.warehouses_address}" />
-				<h:outputText value="#{warehouseController.selectedWarehouse.address}" />
-				<p:separator style="width:100%;height:10px" />
-				<p:dataTable var="registry" id="whBeerTableList"
-					value="#{warehouseController.selectedWHRegistryBeerList}"
-					scrollable="true" scrollHeight="200"
-                                        emptyMessage="#{out.empty_message}">
-					<p:ajax event="rowSelect" />
-					<p:column headerText="#{out.warehouses_beer_name}">
-						<h:outputText value="#{registry.beer.name}" />
-					</p:column>
-					<p:column headerText="#{out.materials_table_quantity}">
-						<h:outputText value="#{registry.quantity}" />
-					</p:column>
-				</p:dataTable>
-			</p:outputPanel>
-		</p:dialog>
 		<h:form id="warehouseCommandsForm">
 			<h:panelGrid columns="5" cellpadding="5"
 				headerText="#{out.warehouses_table_details}">
@@ -179,12 +155,6 @@
 					disabled="#{warehouseController.selectedWarehouse == null}"
 					value="#{out.warehouses_show_content_material}" update=":whDialogList"
 					onclick="PF('whDialog').show()">
-				</p:commandButton>
-				<p:commandButton icon="ui-icon-arrowrefresh-1-n"
-					actionListener="#{warehouseController.updateSelectedWHBeerRegistry()}"
-					disabled="#{warehouseController.selectedWarehouse == null}"
-					value="#{out.warehouses_show_content_beer}" update=":whDialogBeerList"
-					onclick="PF('whBeerDialog').show()">
 				</p:commandButton>
 			</h:panelGrid>
 		</h:form>

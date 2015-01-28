@@ -145,36 +145,6 @@ public class WarehouseController implements Serializable {
         }*/
     }
 
-    public void updateSelectedWHBeerRegistry() {
-    	/*
-        if (selectedWarehouse != null) {
-            List<RegistryDTO> list = manageRegistryFacadeService
-                    .getRegistrysByBeer(selectedWarehouse);
-            Map<Long, RegistryDTO> map = new HashMap<Long, RegistryDTO>();
-
-            for (RegistryDTO currentRegistry : list) {
-                //System.out.println(currentRegistry);
-                if (currentRegistry.getBeer() != null
-                        && map.keySet().contains(
-                                currentRegistry.getBeer().getId())) {
-                    RegistryDTO tmpReg = map.get(currentRegistry.getBeer()
-                            .getId());
-                    int currentQuantity = tmpReg.getQuantity();
-                    currentRegistry.setQuantity(currentRegistry.getQuantity()
-                            + currentQuantity);
-                    map.put(currentRegistry.getBeer().getId(), currentRegistry);
-                } else if (currentRegistry.getBeer() != null) {
-                    map.put(currentRegistry.getBeer().getId(), currentRegistry);
-                }
-            }
-            selectedWHRegistryBeerList = new LinkedList<RegistryDTO>();
-            for (Long id : map.keySet()) {
-                selectedWHRegistryBeerList.add(map.get(id));
-            }
-
-        }*/
-    }
-
     public void unselectWarehouse() {
         selectedWarehouse = null;
     }

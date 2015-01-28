@@ -1,5 +1,6 @@
 package hu.unideb.webshop.service.impl;
 
+import hu.unideb.webshop.dto.Need;
 import hu.unideb.webshop.dto.WarehouseDTO;
 import hu.unideb.webshop.service.ManageWarehouseFacadeService;
 import hu.unideb.webshop.service.WarehouseService;
@@ -47,5 +48,11 @@ public class ManageWarehouseFacadeServiceImpl implements
 	public int getRowNumber() {
 		
 		return warehouseService.getRowNumber();
+	}
+
+	@Override
+	public List<Need> getWhQuantityStatics(WarehouseDTO warehosue) {
+		
+		return warehouseService.getWhQuantityStatics(warehosue);
 	}
 }

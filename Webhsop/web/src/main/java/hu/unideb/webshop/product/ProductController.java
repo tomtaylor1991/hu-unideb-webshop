@@ -89,6 +89,21 @@ public class ProductController implements Serializable {
 		}
 	}
 
+	public void initSelectedProductCategory() {
+		if (selectedProduct != null) {
+			selectedCategory = selectedProduct.getCategory();
+		}
+	}
+
+	public void updateProduct() {
+		if (selectedProduct != null) {
+			selectedProduct.setCategory(selectedCategory);
+			manageProductFacadeService.updateProduct(selectedProduct);
+			selectedProduct = null;
+			selectedCategory = null;
+		}
+	}
+
 	public CategoryDTO getSelectedCategory() {
 		return selectedCategory;
 	}
@@ -143,7 +158,7 @@ public class ProductController implements Serializable {
 	}
 
 	public void deleteProductImage(ImageInfoDTO img) {
-		if(img!=null){
+		if (img != null) {
 			manageImageFacadeService.removeImage(img);
 		}
 	}

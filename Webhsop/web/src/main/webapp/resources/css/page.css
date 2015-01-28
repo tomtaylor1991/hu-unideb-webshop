@@ -117,10 +117,9 @@
 .header_logo {
 	opacity: 0.4;
 	filter: alpha(opacity = 40);
-	left: -20px;
-	top: -20px;
-	margin-left: -20px;
 	float: left;
+	height: 60px; 
+	width: auto;
 }
 
 #footer {

@@ -1,6 +1,7 @@
 package hu.unideb.webshop.service.impl;
 
 import hu.unideb.webshop.dao.WarehouseDao;
+import hu.unideb.webshop.dto.Need;
 import hu.unideb.webshop.dto.WarehouseDTO;
 import hu.unideb.webshop.entity.Warehouse;
 import hu.unideb.webshop.service.UserService;
@@ -124,6 +125,12 @@ public class WarehouseServiceImpl implements WarehouseService {
 	public int getRowNumber() {
 		
 		return warehouseDao.countById();
+	}
+
+	@Override
+	public List<Need> getWhQuantityStatics(WarehouseDTO warehosue) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

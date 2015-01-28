@@ -20,71 +20,92 @@
 			<h:form id="newProduct">
 				<p:panelGrid columns="2">
 					<h:outputLabel for="name" value="Name" style="font-weight:bold" />
-
 					<p:inputText id="name" value="#{productController.newProduct.name}" />
-
 					<h:outputLabel for="category" value="Category"
 						style="font-weight:bold" />
-
 					<p:autoComplete id="category"
 						value="#{productController.selectedCategory}"
 						completeMethod="#{productController.completeText}" var="c"
 						itemLabel="#{c.name}" itemValue="#{c}"
 						converter="categoryConverterOfProductController" />
-
 					<h:outputLabel for="price" value="Price" style="font-weight:bold" />
-
 					<p:inputText id="price"
 						value="#{productController.newProduct.price}" />
-
-
 					<h:outputLabel for="isSpecialPrice" value="Is SpecialPrice?"
 						style="font-weight:bold" />
-
 					<p:selectBooleanButton id="isSpecialPrice"
 						value="#{productController.newProduct.isSpecial}" onLabel="Yes"
 						offLabel="No" style="width:60px" />
-
-
 					<h:outputLabel for="specialPrice" value="Special Price"
 						style="font-weight:bold" />
-
 					<p:inputText id="specialPrice"
 						value="#{productController.newProduct.specialPrice}" />
-
-
 					<h:outputLabel for="isHighLight" value="Is Highlight?"
 						style="font-weight:bold" />
-
 					<p:selectBooleanButton id="isHighLight"
 						value="#{productController.newProduct.isHighlight}" onLabel="Yes"
 						offLabel="No" style="width:60px" />
-
-
 					<h:outputLabel for="shortText" value="Short Text?"
 						style="font-weight:bold" />
-
 					<p:inputTextarea id="shortText" rows="6" cols="33"
 						value="#{productController.newProduct.shortText}" />
-
-
 					<h:outputLabel for="text" value="Text?" style="font-weight:bold" />
-
 					<p:editor widgetVar="editorWidget" id="text"
 						style="max-width: 400px;"
 						value="#{productController.newProduct.text}" />
-
-
 					<p:growl id="messages" showDetail="true" />
-
-
-
 					<p:commandButton value="Save"
 						action="#{productController.createProduct()}"
 						update=":productList" onclick="PF('newProductDialog').close();" />
 				</p:panelGrid>
 			</h:form>
 		</p:dialog>
+		<p:dialog header="Update product" modal="true"
+			widgetVar="updateProductDialog" minHeight="300" minWidth="400"
+			maxHeight="650">
+			<h:form id="updateProduct">
+				<p:panelGrid columns="2">
+					<h:outputLabel for="name" value="Name" style="font-weight:bold" />
+					<p:inputText id="name" value="#{productController.selectedProduct.name}" />
+					<h:outputLabel for="category" value="Category"
+						style="font-weight:bold" />
+					<p:autoComplete id="category"
+						value="#{productController.selectedCategory}"
+						completeMethod="#{productController.completeText}" var="c"
+						itemLabel="#{c.name}" itemValue="#{c}"
+						converter="categoryConverterOfProductController" />
+					<h:outputLabel for="price" value="Price" style="font-weight:bold" />
+					<p:inputText id="price"
+						value="#{productController.selectedProduct.price}" />
+					<h:outputLabel for="isSpecialPrice" value="Is SpecialPrice?"
+						style="font-weight:bold" />
+					<p:selectBooleanButton id="isSpecialPrice"
+						value="#{productController.selectedProduct.isSpecial}" onLabel="Yes"
+						offLabel="No" style="width:60px" />
+					<h:outputLabel for="specialPrice" value="Special Price"
+						style="font-weight:bold" />
+					<p:inputText id="specialPrice"
+						value="#{productController.selectedProduct.specialPrice}" />
+					<h:outputLabel for="isHighLight" value="Is Highlight?"
+						style="font-weight:bold" />
+					<p:selectBooleanButton id="isHighLight"
+						value="#{productController.selectedProduct.isHighlight}" onLabel="Yes"
+						offLabel="No" style="width:60px" />
+					<h:outputLabel for="shortText" value="Short Text?"
+						style="font-weight:bold" />
+					<p:inputTextarea id="shortText" rows="6" cols="33"
+						value="#{productController.selectedProduct.shortText}" />
+					<h:outputLabel for="text" value="Text?" style="font-weight:bold" />
+					<p:editor widgetVar="editorWidget" id="text"
+						style="max-width: 400px;"
+						value="#{productController.selectedProduct.text}" />
+					<p:growl id="messages" showDetail="true" />
+					<p:commandButton value="Save"
+						action="#{productController.updateProduct()}"
+						update=":productList" onclick="PF('updateProductDialog').close();" />
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>		
 		<h:form id="productList">
 			<p:dataTable id="productTable" var="currentproduct"
 				value="#{productController.productModel}"
@@ -150,6 +171,9 @@
 				<p:commandButton value="Create new product"
 					action="#{productController.generateNewProduct()}"
 					update=":newProduct" onclick="PF('newProductDialog').show();" />
+				<p:commandButton value="Update selected product"
+					action="#{productController.initSelectedProductCategory()}"
+					update=":updateProduct" onclick="PF('updateProductDialog').show();" />					
 			</p:panel>
 		</h:form>
 	</ui:define>
