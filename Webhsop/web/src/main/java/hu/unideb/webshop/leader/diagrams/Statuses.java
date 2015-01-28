@@ -35,11 +35,9 @@ public class Statuses implements Serializable {
 		data = manageOrderFacadeService.getOrderStatusStatics();
 		pieModel1 = new PieChartModel();
 		for (Need currentNeed : data) {
-			if(currentNeed.getName().equals("DONE")){
-				currentNeed.setName(LocaleSwitcher.getMessage("done"));
+			if (currentNeed.getName().equals("READY")) {
 				continue;
 			}
-			currentNeed.setName(getOrderStatus(currentNeed.getName()));
 			pieModel1.set(
 					currentNeed.getName() + " ( " + currentNeed.getQuantity()
 							+ " )", currentNeed.getQuantity());
@@ -74,10 +72,10 @@ public class Statuses implements Serializable {
 	public void setPieModel1(PieChartModel pieModel1) {
 		this.pieModel1 = pieModel1;
 	}
-	
+
 	public String getOrderStatus(String key) {
 		try {
-			//System.out.println("!!!!!!!!!!!!" + key);
+			// System.out.println("!!!!!!!!!!!!" + key);
 			String s = Status.getByKey(key).toString();
 			return s;
 		} catch (NullPointerException e) {

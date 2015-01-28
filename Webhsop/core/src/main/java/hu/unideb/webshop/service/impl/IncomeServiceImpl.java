@@ -48,6 +48,7 @@ public class IncomeServiceImpl implements IncomeService {
 		Authentication auth = SecurityContextHolder.getContext()
 				.getAuthentication();
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
+			
 			UserDetails userDetails = (UserDetails) SecurityContextHolder
 					.getContext().getAuthentication().getPrincipal();
 			income.setRecUserId(userService.getUser(userDetails.getUsername())

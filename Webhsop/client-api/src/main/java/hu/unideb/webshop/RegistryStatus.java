@@ -19,11 +19,10 @@ public class RegistryStatus implements Serializable{
 	static{
 		statuses = new ArrayList<String>();
 		statuses.add("NEW");
-		statuses.add("DONE");
-		statuses.add("NEEDPRODUCT");
-		statuses.add("READYFORCREATE");
 		statuses.add("READY");
+		statuses.add("NEEDPRODUCT");
 		statuses.add("TRANSPORT");
+		statuses.add("DURINGTRANSPORT");
 	}
 	public static List<String> getStatuses() {
 		return statuses;

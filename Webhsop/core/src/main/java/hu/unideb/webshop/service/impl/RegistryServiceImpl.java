@@ -20,6 +20,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +50,18 @@ public class RegistryServiceImpl implements RegistryService {
 	@Override
 	public void saveRegistrys(List<RegistryDTO> registry) {
 		for (RegistryDTO r : registry) {
+			Authentication auth = SecurityContextHolder.getContext()
+					.getAuthentication();
+			if (!(auth instanceof AnonymousAuthenticationToken)) {				
+				UserDetails userDetails = (UserDetails) SecurityContextHolder
+						.getContext().getAuthentication().getPrincipal();
+				r.setRecUserId(userService.getUser(userDetails.getUsername())
+						.getId() + "");
+				r.setRecDate(new java.util.Date());
+				r.setModUserId(userService.getUser(userDetails.getUsername())
+						.getId() + "");
+				r.setModDate(new java.util.Date());
+			}
 			registryDao.save(registryDao.toEntity(r, null));
 		}
 	}

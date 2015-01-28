@@ -7,6 +7,7 @@ import hu.unideb.webshop.dto.Need;
 import hu.unideb.webshop.dto.OrderDTO;
 import hu.unideb.webshop.dto.PartnerDTO;
 import hu.unideb.webshop.entity.Order;
+import hu.unideb.webshop.entity.Partner;
 import hu.unideb.webshop.service.OrderService;
 import hu.unideb.webshop.service.UserService;
 
@@ -121,15 +122,28 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<Need> getPartnerOrderStatics(java.sql.Date start,
 			java.sql.Date end) {
-		// TODO Auto-generated method stub
-		return null;
+        List<Need> ret = new LinkedList<Need>();
+        Iterable<Partner> partners = partnerDao.findAll();
+        //System.out.println(start);
+        //System.out.println(end);
+        for (Partner p : partners) {
+                Integer tmp = registryDao.getOrderNumByPartner(p.getId(), start,
+                                end);
+                //System.out.println(tmp);
+                int n = tmp == null ? 0 : tmp;
+                ret.add(new Need(p.getName(), n));
+        }
+
+        return ret;
+
 	}
 
-	@Override
-	public int countByStatus(String status) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public int countByStatus(String status) {
+            Integer ret = orderDao.countByStatus(status);
+            return ret == null ? 0 : ret;
+    }
+
 
 	@Override
 	public List<OrderDTO> getOrderList(int page, int size, String sortField,
