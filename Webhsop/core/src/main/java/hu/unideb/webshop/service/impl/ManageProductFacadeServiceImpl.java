@@ -83,4 +83,10 @@ public class ManageProductFacadeServiceImpl implements
 		return categoryService.countCategoryProductNumber(category);
 	}
 
+	@Override
+	public ProductDTO getProduct(Long id) {
+		
+		return productService.getProduct(id);
+	}
+
 }

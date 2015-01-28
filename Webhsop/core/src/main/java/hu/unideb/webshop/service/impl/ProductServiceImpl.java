@@ -113,4 +113,8 @@ public class ProductServiceImpl implements ProductService {
 		return ret;
 	}
 
+	@Override
+	public ProductDTO getProduct(Long id) {
+		return productDao.toDto(productDao.findOne(id));
+	}
 }

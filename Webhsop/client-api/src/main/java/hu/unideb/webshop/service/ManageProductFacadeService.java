@@ -6,6 +6,8 @@ import hu.unideb.webshop.dto.ProductDTO;
 import java.util.List;
 
 public interface ManageProductFacadeService {
+	
+	public ProductDTO getProduct(Long id);
 	public void saveProduct(ProductDTO product);
 
 	public void updateProduct(ProductDTO product);
