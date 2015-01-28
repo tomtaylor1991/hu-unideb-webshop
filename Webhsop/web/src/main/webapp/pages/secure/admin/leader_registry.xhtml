@@ -97,8 +97,9 @@
 					sortBy="#{currentOrder.date}">
 					<h:outputText value="#{currentOrder.date}" />
 				</p:column>
-				<p:column headerText="Expected income">
-					<h:outputText value="#{currentOrder.info.income}" />
+				<p:column headerText="Expected income"
+					sortBy="#{currentOrder.costOfAll}">
+					<h:outputText value="#{currentOrder.costOfAll}" />
 				</p:column>
 				<p:column headerText="#{out.orders_form_status}"
 					sortBy="#{currentOrder.status}" filterBy="#{currentOrder.status}">

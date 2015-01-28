@@ -13,141 +13,91 @@
 	</ui:define>
 
 	<ui:define name="content">
-		<p:messages id="messages" showDetail="true" autoUpdate="true"
-			closable="true" />
-		<h:form id="choose">
-			<h:outputText value="#{out.importer_csv}" style="font-weight:bold;"
-				rendered="#{importerFileUpload.isShowChooseButton}" />
-			<p:fileUpload uploadLabel="#{out.importer_csv}"
-				rendered="#{importerFileUpload.isShowChooseButton}"
-				value="#{out.importer_csv}"
-				fileUploadListener="#{importerFileUpload.handleFileUpload}"
-				mode="advanced" update=":messages :visibleListOfCSVData :choose"
-				auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(csv)$/" />
-		</h:form>
-		<h:form id="visibleListOfCSVData">
-			<h:form rendered="#{not empty importerFileUpload.latestUploadToView}">
-				<p:commandButton action="#{importerFileUpload.save()}"
-					update=":visibleListOfCSVData :messages :choose"
-					icon="ui-icon-close" value="#{out.importer_load}" />
-				<p:commandButton action="#{importerFileUpload.clear()}"
-					update=":visibleListOfCSVData :choose" icon="ui-icon-close"
-					value="#{out.importer_cancel}" />
-				<br />
-				<p:separator style="width:100%;height:10px" />
-				<h:outputText value="#{out.importer_selectwh}"
-					rendered="#{importerFileUpload.selectedWH==null}"
-					style="font-weight:bold; color: red; background-color:#F2F2F2; margin: 4px;" />
-				<p:dataTable var="wh" id="whList"
-					value="#{importerFileUpload.allWH}" selectionMode="single"
-					selection="#{importerFileUpload.selectedWH}" rowKey="#{wh}"
-					emptyMessage="#{out.empty_message}">
-					<p:ajax event="rowSelect" update="" />
-					<p:column headerText="#{out.importer_whname}">
-						<h:outputText value="#{wh.name}" />
-					</p:column>
-					<p:column headerText="#{out.importer_whaddress}">
-						<h:outputText value="#{wh.address}" />
-					</p:column>
-				</p:dataTable>
-				<p:separator style="width:100%;height:10px" />
-				<br />
-				<h:outputLabel for="date" value="Date: " />
-				<h:outputText id="date" value="#{importerFileUpload.date}">
-					<f:convertDateTime pattern="EEE, M/d/yy hh:mm" />
-				</h:outputText>
-				<br />
-				<p:dataTable var="line"
-					value="#{importerFileUpload.latestUploadToView}"
-					emptyMessage="#{out.empty_message}">
-					<p:column headerText="#{out.importer_materialname}">
-						<h:outputText value="#{line[0]}" />
-					</p:column>
-					<p:column headerText="#{out.importer_quantity}">
-						<h:outputText value="#{line[1]}" />
-					</p:column>
-				</p:dataTable>
-			</h:form>
-		</h:form>
 		<p:panel header="#{out.importer_header}" style="top:0px;"
 			id="mainPanel">
-			<h:outputText value="Select a product: " />
-			<br />
-			<h:form id="productList">
-				<p:dataTable id="productTable" var="currentproduct"
-					value="#{importerController.productModel}"
-					rowKey="#{currentproduct.id}" selectionMode="single"
-					selection="#{importerController.selectedProduct}" paginator="true"
-					rows="10"
-					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-					rowsPerPageTemplate="5,10,15" lazy="true"
-					emptyMessage="#{out.empty_message}">
-					<p:ajax event="rowSelect" update="" />
-					<p:column headerText="ID" sortBy="#{currentproduct.id}">
-						<h:outputText value="#{currentproduct.id}" />
-					</p:column>
-					<p:column headerText="Category"
-						sortBy="#{currentproduct.category.name}"
-						filterBy="#{currentproduct.category.name}">
-						<h:outputText value="#{currentproduct.category.name}" />
-					</p:column>
-					<p:column headerText="Name" sortBy="#{currentproduct.name}"
-						filterBy="#{currentproduct.name}">
-						<h:outputText value="#{currentproduct.name}" />
-					</p:column>
-					<p:column headerText="Price" sortBy="#{currentproduct.price}">
-						<h:outputText value="#{currentproduct.price}" />
-					</p:column>
-				</p:dataTable>
-			</h:form>
-			<h:form id="inputData">
-				<div class="ui-grid ui-grid-responsive ui-grid-row ui-grid-col-6">
-					<h:panelGrid columns="2" style="width:100%" cellpadding="5">
-						<h:outputLabel for="quantity" value="#{out.importer_quantity}:"
-							style="font-weight:bold" />
-						<p:inputText id="quantity" value="#{importerController.quantity}" />
-						<p:commandButton update=":inputData :registryTable"
-							action="#{importerController.addRegistryToList()}"
-							icon="ui-icon-close" value="#{out.importer_addtolist}" />
-					</h:panelGrid>
-				</div>
-			</h:form>
+			<p:panel style="background:#D3D7FF !important;">
+				<h:outputText value="Select a product: " />
+				<br />
+				<h:form id="productList">
+					<p:dataTable id="productTable" var="currentproduct"
+						value="#{importerController.productModel}"
+						rowKey="#{currentproduct.id}" selectionMode="single"
+						selection="#{importerController.selectedProduct}" paginator="true"
+						rows="10"
+						paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+						rowsPerPageTemplate="5,10,15" lazy="true"
+						emptyMessage="#{out.empty_message}">
+						<p:ajax event="rowSelect" update="" />
+						<p:column headerText="ID" sortBy="#{currentproduct.id}">
+							<h:outputText value="#{currentproduct.id}" />
+						</p:column>
+						<p:column headerText="Category"
+							sortBy="#{currentproduct.category.name}"
+							filterBy="#{currentproduct.category.name}">
+							<h:outputText value="#{currentproduct.category.name}" />
+						</p:column>
+						<p:column headerText="Name" sortBy="#{currentproduct.name}"
+							filterBy="#{currentproduct.name}">
+							<h:outputText value="#{currentproduct.name}" />
+						</p:column>
+						<p:column headerText="Price" sortBy="#{currentproduct.price}">
+							<h:outputText value="#{currentproduct.price}" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+				<h:form id="inputData">
+					<div style="width: 100%;">
+						<h:panelGrid columns="3" style="width:200px" cellpadding="2">
+							<h:outputLabel for="quantity" value="#{out.importer_quantity}:"
+								style="font-weight:bold" />
+							<p:inputText id="quantity" value="#{importerController.quantity}" />
+							<p:commandButton update=":inputData :registryTable"
+								action="#{importerController.addRegistryToList()}"
+								icon="ui-icon-close" value="#{out.importer_addtolist}" />
+						</h:panelGrid>
+					</div>
+				</h:form>
+			</p:panel>
 			<br />
 			<p:separator />
 			<br />
-			<p:dataTable id="registryTable" var="registry"
-				value="#{importerController.registryList}">
-				<p:column headerText="Product name">
-					<h:outputText value="#{registry.product.name}" />
-				</p:column>
-				<p:column headerText="Quantity">
-					<h:outputText value="#{registry.quantity}" />
-				</p:column>
-				<p:column headerText="Remove?">
-					<p:commandButton value="Remove"
-						action="#{importerController.removeRegistryFromList(registry)}"
-						update=":registryTable" />
-				</p:column>
-			</p:dataTable>
-			<p:separator style="width:100%;height:10px" />
-			<h:form>
-				<h:outputText value="#{out.importer_selectwh}"
-					rendered="#{importerController.selectedWH==null}"
-					style="font-weight:bold; color: red; background-color:#F2F2F2; margin: 4px;" />
-				<p:dataTable var="wh2" id="whList2"
-					value="#{importerFileUpload.allWH}" selectionMode="single"
-					selection="#{importerController.selectedWH}" rowKey="#{wh2}"
-					emptyMessage="#{out.empty_message}">
-					<p:ajax event="rowSelect" update=":submit" />
-					<p:column headerText="#{out.importer_whname}">
-						<h:outputText value="#{wh2.name}" />
+			<p:panel style="background:#84FF9F !important;">
+				<h:outputText value="List:" />
+				<br />
+				<p:dataTable id="registryTable" var="registry"
+					value="#{importerController.registryList}">
+					<p:column headerText="Product name">
+						<h:outputText value="#{registry.product.name}" />
 					</p:column>
-					<p:column headerText="#{out.importer_whaddress}">
-						<h:outputText value="#{wh2.address}" />
+					<p:column headerText="Quantity">
+						<h:outputText value="#{registry.quantity}" />
+					</p:column>
+					<p:column headerText="Remove?">
+						<p:commandButton value="Remove"
+							action="#{importerController.removeRegistryFromList(registry)}"
+							update=":registryTable" />
 					</p:column>
 				</p:dataTable>
-			</h:form>
-			<p:separator style="width:100%;height:10px" />
+				<p:separator />
+				<h:form>
+					<h:outputText value="#{out.importer_selectwh}"
+						rendered="#{importerController.selectedWH==null}"
+						style="font-weight:bold; color: red; background-color:#F2F2F2; margin: 4px;" />
+					<p:dataTable var="wh2" id="whList2"
+						value="#{importerFileUpload.allWH}" selectionMode="single"
+						selection="#{importerController.selectedWH}" rowKey="#{wh2}"
+						emptyMessage="#{out.empty_message}">
+						<p:ajax event="rowSelect" update=":submit" />
+						<p:column headerText="#{out.importer_whname}">
+							<h:outputText value="#{wh2.name}" />
+						</p:column>
+						<p:column headerText="#{out.importer_whaddress}">
+							<h:outputText value="#{wh2.address}" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+			</p:panel>
+			<p:separator />
 			<p:commandButton id="submit" update=":inputData :registryTable"
 				disabled="#{importerController.selectedWH==null}"
 				action="#{importerController.saveToDB()}" icon="ui-icon-close"
