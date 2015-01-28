@@ -17,4 +17,6 @@ public interface ProductService {
 	public List<ProductDTO> searchProductByCategory(CategoryDTO category,
 			int page, int size, String sortField, int sortOrder, String filter,
 			String filterColumnName);
+	
+	public List<ProductDTO> getHighlightedProducts();
 }

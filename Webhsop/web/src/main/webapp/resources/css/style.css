@@ -5,7 +5,7 @@
 }
 
 body {
-	background-color: #FBF5EF;
+	background-color: black;
 	padding-right: 20px;
 	padding-left: 20px;
 	background-image: url("./images/logo.png");
@@ -69,19 +69,19 @@ body {
 }
 
 .cartLayout {
-	background: rgba(245, 236, 206, 0.5) !important;
+	background: #7BB2F0 !important;
 }
 
 .contentLayout {
-	background: rgba(255, 252, 240, 0.7) !important;
+	background: white !important;
 }
 
 .headerLayout {
-	background: rgba(255, 252, 240, 0.7) !important;
+	background: #7BB2F0 !important;
 }
 
 .ui-widget-content {
-	background: rgba(255, 255, 255, 0.0) !important;
+	background: rgba(255, 255, 255, 0.0);
 }
 
 .ui-autocomplete-panel {

@@ -117,4 +117,16 @@ public class ProductServiceImpl implements ProductService {
 	public ProductDTO getProduct(Long id) {
 		return productDao.toDto(productDao.findOne(id));
 	}
+
+	@Override
+	public List<ProductDTO> getHighlightedProducts() {
+		List<ProductDTO> ret = new LinkedList<ProductDTO>();
+		List<Product> entities = productDao.findByIsHighlightTrue();
+		if (entities != null && entities.size() > 0) {
+			for (Product p : entities) {
+				ret.add(productDao.toDto(p));
+			}
+		}
+		return ret;
+	}
 }

@@ -30,5 +30,6 @@ public interface ManageProductFacadeService {
 	int countFreeProductNumber(ProductDTO product);
 	public int countCategoryProductNumber(CategoryDTO category);
 
+	public List<ProductDTO> getHighlightedProducts();
 	
 }

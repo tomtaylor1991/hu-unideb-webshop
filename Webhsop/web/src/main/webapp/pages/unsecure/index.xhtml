@@ -1,21 +1,116 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:c="http://java.sun.com/jsp/jstl/core"
-                xmlns:p="http://primefaces.org/ui"
-                template="/templates/userLayout.xhtml">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/userLayout.xhtml">
 
-    <ui:define name="pageTitle">#{out.index_title}</ui:define>
+	<ui:define name="pageTitle">#{out.index_title}</ui:define>
 
-    <ui:define name="head-extra">
-        <!-- custom css -->
-    </ui:define>
+	<ui:define name="head-extra">
+		<!-- custom css -->
+	</ui:define>
 
-    <ui:define name="content">
-        <p:contentFlow value="#{imagesView.images}" var="image">
-    		<p:graphicImage name="/images/#{image}" styleClass="content" />
-		</p:contentFlow>
-    </ui:define>
-    
+	<ui:define name="content">
+		<div style="padding-left: 10px; font-weight: bold;">
+			<h3>Welcome</h3>
+		</div>
+		<div class="ui-grid">
+			<div class="ui-grid-row"
+				style="padding: 1em; margin-bottom: 10px; background: white !important;">
+				<div class="ui-grid-col-6" style="padding: 1em;">Lorem ipsum
+					dolor sit amet, consectetur adipiscing elit. Nunc porta imperdiet
+					lorem vitae fringilla. Donec efficitur tristique tellus in aliquam.
+					Vivamus gravida in dolor id feugiat. Aliquam justo risus, tristique
+					non lectus nec, sodales varius ipsum. Quisque rutrum consectetur
+					quam, non porttitor eros vestibulum et. Aliquam luctus, odio a
+					varius ultricies, ipsum diam aliquet risus, quis fringilla est
+					felis non massa. Etiam odio felis, sagittis at mauris eu,
+					vestibulum sollicitudin mi. Integer malesuada odio lectus, at
+					aliquet leo viverra in. Sed magna odio, luctus ut mattis eu,
+					venenatis quis augue. Suspendisse vehicula nisi risus, sed varius
+					sapien tempus sit amet. Nullam elementum nulla at mauris dapibus,
+					vitae imperdiet turpis imperdiet. In hac habitasse platea dictumst.
+					Sed suscipit purus non ipsum commodo, ac rutrum lorem ultricies.
+					Quisque ultrices a nisi nec laoreet. Donec dui enim, condimentum
+					non nisi ut, vestibulum lacinia odio. Donec convallis velit in
+					hendrerit fermentum. Sed consequat eros a risus porta pulvinar vel
+					id nibh. Phasellus eget justo sit amet lacus luctus elementum.
+					Fusce et elit at enim sodales vestibulum. Vestibulum pulvinar quam
+					at velit tempor cursus. Class aptent taciti sociosqu ad litora
+					torquent per conubia nostra, per inceptos himenaeos. Sed eget
+					blandit mauris, in venenatis augue. Suspendisse fermentum ac elit a
+					interdum. Maecenas euismod nulla metus, sed ultrices lectus
+					volutpat eu. Aenean a sollicitudin massa. Pellentesque et ipsum
+					quis ex lobortis volutpat vel vulputate massa. Duis accumsan luctus
+					egestas. Nulla varius aliquam consequat. Nullam non velit justo.
+					Aliquam cursus nec nunc tempor viverra. Quisque a aliquet neque, ut
+					pellentesque lacus. Curabitur at diam lectus. Vivamus lacinia ut mi
+					sit amet pretium. Proin commodo lobortis hendrerit. Nunc eu sapien
+					nulla. Nam tincidunt bibendum maximus. Proin eleifend dignissim
+					enim, non imperdiet metus lacinia a. Phasellus rutrum sed ex sit
+					amet varius. Ut at diam est. Ut tristique magna ut bibendum
+					faucibus. Morbi vel imperdiet felis.</div>
+				<div class="ui-grid-col-6">
+					<p:imageSwitch effect="turnDown">
+						<ui:repeat value="#{imagesView.images}" var="image">
+							<p:graphicImage name="/images/#{image}" styleClass="content"
+								style="width:100%; height: auto;" />
+						</ui:repeat>
+					</p:imageSwitch>
+				</div>
+			</div>
+			<p:fieldset legend="Highlighted Products" style="margin-bottom:20px"
+				rendered="#{highlightedProductController.productList!=null}">
+				<div class="ui-grid-row">
+					<p:tabView orientation="left" var="product"
+						value="#{highlightedProductController.productList}"
+						style="width:100%;">
+						<p:tab title="#{product.name}"
+							style="border-left: 1px solid black;">
+							<div class="ui-grid-row">
+								<div class="ui-grid-col-6">
+
+									<p:graphicImage value="#{imageBean.image}"
+										style="height: auto; width: 100%;"
+										visible="#{product.images.size() > 0}"
+										rendered="#{product.images.size() > 0}">
+										<f:param name="id"
+											value="#{product.images.get(0).thumbnailDataId}" />
+									</p:graphicImage>
+									<p:graphicImage name="/images/no_image.jpg"
+										style="height: auto; width: 100%; max-height:100px;"
+										visible="#{product.images.size() == 0}"
+										rendered="#{product.images.size() == 0}">
+									</p:graphicImage>
+
+								</div>
+								<div class="ui-grid-col-6">
+
+									<h:outputText value="Name: " />
+									<h:outputText value="#{product.name}" style="font-weight: bold" />
+									<br />
+									<h:outputText value="Price: " />
+									<h:outputText styleClass="#{product.isSpecial?'dottedText':''}"
+										value="#{product.price}" style="font-weight: bold" />
+									<br />
+									<h:outputText value="Special Price: "
+										rendered="#{product.isSpecial}" />
+									<h:outputText rendered="#{product.isSpecial}"
+										value="#{product.specialPrice}" style="font-weight: bold" />
+									<br />
+									<h:outputText value="Text:" />
+									<h:outputText escape="false" value="#{product.text}"
+										style="font-weight: bold" />
+
+								</div>
+							</div>
+						</p:tab>
+					</p:tabView>
+				</div>
+			</p:fieldset>
+		</div>
+	</ui:define>
+
 </ui:composition>

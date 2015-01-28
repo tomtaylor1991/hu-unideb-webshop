@@ -32,4 +32,6 @@ public interface ProductDao extends PagingAndSortingRepository<Product, Long>,
     int countTopLevelCategoryProductNumber();
 	
 	Page<Product> findByCategory(Category category, Pageable pageable);
+	
+	List<Product> findByIsHighlightTrue();
 }

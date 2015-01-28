@@ -1,4 +1,17 @@
-
+.contentLayoutBorder {
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+	border-top: 2px solid #FAAC58;
+	/*border-bottom: 2px solid #FAAC58;*/
+	/*min-height: 800px;*/
+	background-color: #FBFAF8;
+	z-index: 1;
+	-webkit-box-shadow: 3px 2px 5px 3px rgba(0, 0, 0, 0.75);
+	-moz-box-shadow: 3px 2px 5px 3px rgba(0, 0, 0, 0.75);
+	box-shadow: 3px 2px 5px 3px rgba(0, 0, 0, 0.75);
+	height: auto !important;
+}
 #contentDiv {
 	border-left: 1px solid black;
 	border-right: 1px solid black;

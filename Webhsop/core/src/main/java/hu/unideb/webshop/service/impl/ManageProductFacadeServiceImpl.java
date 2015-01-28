@@ -89,4 +89,10 @@ public class ManageProductFacadeServiceImpl implements
 		return productService.getProduct(id);
 	}
 
+	@Override
+	public List<ProductDTO> getHighlightedProducts() {
+		
+		return productService.getHighlightedProducts();
+	}
+
 }
