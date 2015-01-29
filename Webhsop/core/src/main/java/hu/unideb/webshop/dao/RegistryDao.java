@@ -7,6 +7,7 @@ import hu.unideb.webshop.dto.RegistryDTO;
 import hu.unideb.webshop.entity.Order;
 import hu.unideb.webshop.entity.Product;
 import hu.unideb.webshop.entity.Registry;
+import hu.unideb.webshop.entity.Warehouse;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -25,5 +26,7 @@ public interface RegistryDao extends
 	Integer countByProductIdAndStatus(Long product_id, String status);
     @Query(value = "SELECT sum(r.originalQuantity) FROM REGISTRY r inner join ORDERS o on r.order_id=o.id where r.recDate BETWEEN ?2 AND ?3 and r.status = 'ORDERDATA' and r.order_id in (SELECT id FROM ORDERS WHERE partnerId=?1)", nativeQuery = true)
     Integer getOrderNumByPartner(Long partnerId, Date start, Date end);
+    
+    List<Registry> findByWarehouse(Warehouse warehouse);
 
 }

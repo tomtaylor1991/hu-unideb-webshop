@@ -25,6 +25,7 @@ public interface RegistryService {
     public int countFreeProductNumber(ProductDTO product);
 
 	List<RegistryDTO> findByMaterial(MaterialDTO material);
+	List<RegistryDTO> getRegistrysByWarehouse(WarehouseDTO warehouse);
 
 	List<RegistryDTO> findByStatus(String status);
 

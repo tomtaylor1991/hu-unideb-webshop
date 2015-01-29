@@ -10,6 +10,8 @@ public class IncomeDTO extends BaseDTO implements Serializable {
 	private String comment;
 	private Long orderId;
 	private String type;
+	private String name;
+	private int quantity;
 
 
 	public int getPrice() {
@@ -42,6 +44,22 @@ public class IncomeDTO extends BaseDTO implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
 	@Override

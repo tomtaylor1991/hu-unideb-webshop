@@ -18,7 +18,8 @@ public interface ManageRegistryFacadeService {
 	void deleteRegistry(RegistryDTO registry);
 
 	List<RegistryDTO> getRegistrysByMaterial(WarehouseDTO warehouse);
-
+	List<RegistryDTO> getRegistrysByWarehouse(WarehouseDTO warehouse);
+	
 	List<RegistryDTO> findByMaterial(MaterialDTO material);
 
 	List<RegistryDTO> findByStatus(String status);

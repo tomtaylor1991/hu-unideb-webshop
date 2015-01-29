@@ -117,4 +117,10 @@ public class ManageRegistryFacadeServiceImpl implements
 		return registryService.keepProductForOrder(product, order, quantity);
 	}
 
+	@Override
+	public List<RegistryDTO> getRegistrysByWarehouse(WarehouseDTO warehouse) {
+
+		return registryService.getRegistrysByWarehouse(warehouse);
+	}
+
 }

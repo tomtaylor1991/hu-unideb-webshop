@@ -90,19 +90,23 @@ public class ExporterController implements Serializable {
 	public void exportReady(OrderDTO order) {
 		List<RegistryDTO> removalRegistrys = manageRegistryFacadeService
 				.findByStatusAndOrder("READY", order);
+		int quantity = 0;
 		for (RegistryDTO registry : removalRegistrys) {
+			quantity += registry.getQuantity();
 			manageRegistryFacadeService.deleteRegistry(registry);
 		}
-		///
+		// /
 		order.setStatus("READY");
 		manageOrderFacadeService.updateOrder(order);
-		///
+		// /
 		IncomeDTO income = new IncomeDTO();
 		income.setOrderId(order.getId());
 		income.setType("IN");
-		income.setPrice(order.getInfo().getIncome());
+		income.setQuantity(quantity);
+		income.setPrice(order.getCostOfAll());
+		income.setName(order.getName());
 		manageIncomeFacadeService.createIncome(income);
-		///
+		// /
 	}
 
 	public void transport() {

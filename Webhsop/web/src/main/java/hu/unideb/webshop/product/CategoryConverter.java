@@ -37,7 +37,7 @@ public class CategoryConverter implements Serializable, Converter {
 			} catch (NumberFormatException e) {
 				return null;
 			} catch (NullPointerException e) {
-				return viewScopedBean.getSelectedProduct();
+				return viewScopedBean.getSelectedCategory();
 			}
 		} else {
 			return null;

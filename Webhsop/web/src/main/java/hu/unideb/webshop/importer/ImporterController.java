@@ -69,7 +69,9 @@ public class ImporterController implements Serializable {
 				IncomeDTO income = new IncomeDTO();
 				income.setType("OUT");
 				income.setPrice((int) registry.getProduct().getPurchasePrice()
-						* registry.getQuantity());
+						* registry.getQuantity() * -1);
+				income.setQuantity(registry.getQuantity());
+				income.setName(registry.getProduct().getName());
 				manageIncomeFacadeService.createIncome(income);
 				// /
 			}

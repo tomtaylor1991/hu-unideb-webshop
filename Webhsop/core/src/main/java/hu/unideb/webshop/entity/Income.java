@@ -10,25 +10,20 @@ import javax.persistence.Table;
 @Table(name = "INCOME")
 public class Income extends BaseEntity {
 
-	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
-	
-	/** The price. */
+
 	private int price;
-	
-	/** The comment. */
+
 	private String comment;
 	
 	private String type;
-	
-	/** The order id. */
+
 	private Long orderId;
 
-	/**
-	 * Gets the price.
-	 *
-	 * @return the price
-	 */
+	private String name;
+	
+	private int quantity;
+
 	public int getPrice() {
 		return price;
 	}
@@ -84,6 +79,22 @@ public class Income extends BaseEntity {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
 }

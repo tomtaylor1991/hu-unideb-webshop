@@ -52,7 +52,7 @@ public class RegistryServiceImpl implements RegistryService {
 		for (RegistryDTO r : registry) {
 			Authentication auth = SecurityContextHolder.getContext()
 					.getAuthentication();
-			if (!(auth instanceof AnonymousAuthenticationToken)) {				
+			if (!(auth instanceof AnonymousAuthenticationToken)) {
 				UserDetails userDetails = (UserDetails) SecurityContextHolder
 						.getContext().getAuthentication().getPrincipal();
 				r.setRecUserId(userService.getUser(userDetails.getUsername())
@@ -186,7 +186,7 @@ public class RegistryServiceImpl implements RegistryService {
 		List<Registry> freeProducts = registryDao
 				.findByOrderAndProductAndStatus(null,
 						productDao.toEntity(product, null), "FREE");
-		//System.out.println("kell: " + quantity);
+		// System.out.println("kell: " + quantity);
 		int counter = 0;
 		for (Registry currentRegistry : freeProducts) {
 			quantity -= currentRegistry.getQuantity();
@@ -199,7 +199,7 @@ public class RegistryServiceImpl implements RegistryService {
 				Registry newRegistry = new Registry();
 				newRegistry.setProduct(currentRegistry.getProduct());
 				newRegistry.setQuantity(0 - quantity);
-				//System.out.println("marad: " + newRegistry.getQuantity());
+				// System.out.println("marad: " + newRegistry.getQuantity());
 				newRegistry.setStatus("FREE");
 				registryDao.save(newRegistry);
 				// /
@@ -207,7 +207,7 @@ public class RegistryServiceImpl implements RegistryService {
 				currentRegistry.setStatus("READY");
 				currentRegistry.setQuantity(currentRegistry.getQuantity()
 						+ quantity);
-				//System.out.println("kesz: " + currentRegistry.getQuantity());
+				// System.out.println("kesz: " + currentRegistry.getQuantity());
 				registryDao.save(currentRegistry);
 				counter += currentRegistry.getQuantity();
 				break;
@@ -221,5 +221,16 @@ public class RegistryServiceImpl implements RegistryService {
 		Integer ret = registryDao.countByProductIdAndStatus(product.getId(),
 				"FREE");
 		return ret != null ? ret : 0;
+	}
+
+	@Override
+	public List<RegistryDTO> getRegistrysByWarehouse(WarehouseDTO warehouse) {
+		List<Registry> entities = registryDao.findByWarehouse(warehouseDao
+				.toEntity(warehouse, null));
+		List<RegistryDTO> ret = new LinkedList<RegistryDTO>();
+		for (Registry r : entities) {
+			ret.add(registryDao.toDto(r));
+		}
+		return ret;
 	}
 }

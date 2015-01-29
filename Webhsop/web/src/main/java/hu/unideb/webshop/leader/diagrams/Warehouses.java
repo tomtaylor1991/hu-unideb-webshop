@@ -30,57 +30,56 @@ public class Warehouses implements Serializable {
 	@ManagedProperty(value = "#{manageRegistryFacadeService}")
 	private ManageRegistryFacadeService manageRegistryFacadeService;
 
-	List<PieChartModel> materials;
-	List<PieChartModel> beers;
+	List<PieChartModel> products;
 
 	@PostConstruct
 	public void init() {
-		generateMaterialChartList();
-		generateBeerChartList();
+		generateProductChartList();
 	}
 
-	private void generateMaterialChartList() {
-		/*
-		materials = new LinkedList<PieChartModel>();
-		List<RegistryDTO> selectedWHRegistryList = null;
+	private void generateProductChartList() {
+
+		products = new LinkedList<PieChartModel>();
+		List<RegistryDTO> selectedWHList = null;
 		List<WarehouseDTO> warehouses = manageWarehouseFacadeService
 				.getWarehouseList(0, 100);
 
 		for (WarehouseDTO selectedWarehouse : warehouses) {
 			List<RegistryDTO> list = manageRegistryFacadeService
-					.getRegistrysByMaterial(selectedWarehouse);
+					.getRegistrysByWarehouse(selectedWarehouse);
 			Map<Long, RegistryDTO> map = new HashMap<Long, RegistryDTO>();
 
 			for (RegistryDTO currentRegistry : list) {
 				// System.out.println(currentRegistry);
-				if (currentRegistry.getMaterial() != null
+				if (currentRegistry.getProduct() != null
+						&& !currentRegistry.getStatus().equals("ORDERDATA")
 						&& map.keySet().contains(
-								currentRegistry.getMaterial().getId())) {
-					RegistryDTO tmpReg = map.get(currentRegistry.getMaterial()
+								currentRegistry.getProduct().getId())) {
+					RegistryDTO tmpReg = map.get(currentRegistry.getProduct()
 							.getId());
 					int currentQuantity = tmpReg.getQuantity();
 					currentRegistry.setQuantity(currentRegistry.getQuantity()
 							+ currentQuantity);
-					map.put(currentRegistry.getMaterial().getId(),
+					map.put(currentRegistry.getProduct().getId(),
 							currentRegistry);
-				} else if (currentRegistry.getMaterial() != null) {
-					map.put(currentRegistry.getMaterial().getId(),
+				} else if (currentRegistry.getProduct() != null) {
+					map.put(currentRegistry.getProduct().getId(),
 							currentRegistry);
 				}
 			}
-			selectedWHRegistryList = new LinkedList<RegistryDTO>();
+			selectedWHList = new LinkedList<RegistryDTO>();
 			for (Long id : map.keySet()) {
-				selectedWHRegistryList.add(map.get(id));
+				selectedWHList.add(map.get(id));
 			}
 
 			PieChartModel pieModel2 = new PieChartModel();
 
-			if (selectedWHRegistryList.size() == 0) {
+			if (selectedWHList.size() == 0) {
 				pieModel2.set("Empty WH", 0);
 			}
 
-			for (RegistryDTO r : selectedWHRegistryList) {
-				String text = r.getMaterial().getMaterialName() + " ( "
+			for (RegistryDTO r : selectedWHList) {
+				String text = r.getProduct().getName() + " ( "
 						+ r.getQuantity() + " )";
 				pieModel2.set(text, r.getQuantity());
 			}
@@ -91,66 +90,10 @@ public class Warehouses implements Serializable {
 			pieModel2.setShowDataLabels(true);
 			pieModel2.setDiameter(150);
 
-			materials.add(pieModel2);
+			products.add(pieModel2);
 
 		}
-*/
-	}
 
-	private void generateBeerChartList() {
-		/*
-		beers = new LinkedList<PieChartModel>();
-		List<RegistryDTO> selectedWHRegistryBeerList = null;
-		List<WarehouseDTO> warehouses = manageWarehouseFacadeService
-				.getWarehouseList(0, 100);
-		
-		for (WarehouseDTO selectedWarehouse : warehouses) {
-			List<RegistryDTO> list = manageRegistryFacadeService
-					.getRegistrysByBeer(selectedWarehouse);
-			Map<Long, RegistryDTO> map = new HashMap<Long, RegistryDTO>();
-
-			for (RegistryDTO currentRegistry : list) {
-				//System.out.println(currentRegistry);
-				if (currentRegistry.getBeer() != null
-						&& map.keySet().contains(
-								currentRegistry.getBeer().getId())) {
-					RegistryDTO tmpReg = map.get(currentRegistry.getBeer()
-							.getId());
-					int currentQuantity = tmpReg.getQuantity();
-					currentRegistry.setQuantity(currentRegistry.getQuantity()
-							+ currentQuantity);
-					map.put(currentRegistry.getBeer().getId(), currentRegistry);
-				} else if (currentRegistry.getBeer() != null) {
-					map.put(currentRegistry.getBeer().getId(), currentRegistry);
-				}
-			}
-			selectedWHRegistryBeerList = new LinkedList<RegistryDTO>();
-			for (Long id : map.keySet()) {
-				selectedWHRegistryBeerList.add(map.get(id));
-			}
-			
-			PieChartModel pieModel2 = new PieChartModel();
-
-			if (selectedWHRegistryBeerList.size() == 0) {
-				pieModel2.set("Empty WH", 0);
-			}
-
-			for (RegistryDTO r : selectedWHRegistryBeerList) {
-				String text = r.getBeer().getName() + " ( " + r.getQuantity()
-						+ " )";
-				pieModel2.set(text, r.getQuantity());
-			}
-
-			pieModel2.setTitle(selectedWarehouse.getName());
-			pieModel2.setLegendPosition("e");
-			pieModel2.setFill(false);
-			pieModel2.setShowDataLabels(true);
-			pieModel2.setDiameter(150);
-			
-			beers.add(pieModel2);
-			
-		}
-		*/
 	}
 
 	public ManageWarehouseFacadeService getManageWarehouseFacadeService() {
@@ -171,20 +114,12 @@ public class Warehouses implements Serializable {
 		this.manageRegistryFacadeService = manageRegistryFacadeService;
 	}
 
-	public List<PieChartModel> getMaterials() {
-		return materials;
+	public List<PieChartModel> getProducts() {
+		return products;
 	}
 
-	public void setMaterials(List<PieChartModel> materials) {
-		this.materials = materials;
-	}
-
-	public List<PieChartModel> getBeers() {
-		return beers;
-	}
-
-	public void setBeers(List<PieChartModel> beers) {
-		this.beers = beers;
+	public void setProducts(List<PieChartModel> products) {
+		this.products = products;
 	}
 
 }

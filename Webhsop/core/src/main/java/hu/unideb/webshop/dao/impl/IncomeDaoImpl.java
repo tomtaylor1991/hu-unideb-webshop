@@ -21,6 +21,8 @@ public class IncomeDaoImpl implements BaseConvertDao<Income, IncomeDTO>{
 		ret.setPrice(dto.getPrice());
 		ret.setOrderId(dto.getOrderId());
 		ret.setType(dto.getType());
+		ret.setName(dto.getName());
+		ret.setQuantity(dto.getQuantity());
 		return ret;
 	}
 
@@ -36,6 +38,8 @@ public class IncomeDaoImpl implements BaseConvertDao<Income, IncomeDTO>{
 		ret.setPrice(entity.getPrice());
 		ret.setOrderId(entity.getOrderId());
 		ret.setType(entity.getType());
+		ret.setName(entity.getName());
+		ret.setQuantity(entity.getQuantity());
 		return ret;
 	}
 

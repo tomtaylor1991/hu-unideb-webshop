@@ -13,20 +13,14 @@
     </ui:define>
 
     <ui:define name="content">
-        <h:outputText value="#{out.leader_warehouse_diagram_beer}" stlye="font-weight:bold;color:red;"/>
+        <h:outputText value="Products in WH" stlye="font-weight:bold;color:red;"/>
         <br/>
         <p:panelGrid columns="2">
-            <c:forEach items="#{warehousesController.beers}" var="c">
+            <c:forEach items="#{warehousesController.products}" var="c">
                 <p:chart type="pie" model="#{c}" style="width:400px;height:300px" />
             </c:forEach>
         </p:panelGrid>
-        <h:outputText value="#{out.leader_warehouse_diagram_material}" stlye="font-weight:bold;color:red;"/>
-        <br/>		
-        <p:panelGrid columns="2">
-            <c:forEach items="#{warehousesController.materials}" var="c">
-                <p:chart type="pie" model="#{c}" style="width:400px;height:300px" />
-            </c:forEach>
-        </p:panelGrid>
+
 
     </ui:define>
 </ui:composition>
