@@ -30,8 +30,8 @@ public class Warehouses implements Serializable {
 	@ManagedProperty(value = "#{manageRegistryFacadeService}")
 	private ManageRegistryFacadeService manageRegistryFacadeService;
 
-	List<PieChartModel> products;
-
+	List<PieChartModel> products;	
+	
 	@PostConstruct
 	public void init() {
 		generateProductChartList();

@@ -53,7 +53,7 @@ public class CategoryProductController implements Serializable {
 		if (selectedProduct != null) {
 			int max = selectedProduct.getImages().size();
 			if (max > 0) {
-				//System.out.println("current img id: " + selectedImage);
+				// System.out.println("current img id: " + selectedImage);
 				for (int i = 0; i < max; i++) {
 					if (selectedProduct.getImages().get(i).getId() == selectedImage
 							.getId()) {
@@ -72,7 +72,7 @@ public class CategoryProductController implements Serializable {
 							}
 						}
 						selectedImage = selectedProduct.getImages().get(pos);
-						//System.out.println("pos: " + pos);
+						// System.out.println("pos: " + pos);
 						break;
 					}
 				}
@@ -197,4 +197,12 @@ public class CategoryProductController implements Serializable {
 		this.selectedImage = selectedImage;
 	}
 
+	public void closeProduct() {
+		selectedProduct = null;
+	}
+
+	public void closeProductList() {
+		productModel.setCurrentCategory(null);
+		selectedProduct = null;
+	}
 }

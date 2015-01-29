@@ -41,9 +41,15 @@
 	<ui:define name="content">
 		<h1>Products</h1>
 
-		<h:form id="currentProduct">
+		<h:form id="currentProduct"
+			style="margin-top: 10px; margin-bottom:10px;">
 			<p:panelGrid
 				rendered="#{categoryProductController.selectedProduct!=null}">
+				<f:facet name="header">
+					<p:commandButton value="close"
+						action="#{categoryProductController.closeProduct()}"
+						update=":currentProduct" />
+				</f:facet>
 				<div class="ui-grid ui-grid-responsive productRow">
 					<div class="ui-grid-row" style="width: 98%;">
 						<div class="ui-grid-col-6">
@@ -113,12 +119,20 @@
 						</p:fieldset>
 					</div>
 				</div>
+				<br />
+				<p:separator style="height:5px;" />
+				<br />
 			</p:panelGrid>
+
 		</h:form>
 
-		<h:form id="productList">
+		<h:form id="productList" style="margin-top: 10px; margin-bottom:10px;">
 			<h:form
 				rendered="#{categoryProductController.productModel.currentCategory!=null}">
+				<p:commandButton value="close"
+					action="#{categoryProductController.closeProductList()}"
+					update=":productList :currentProduct" />
+				<br />
 				<p:dataScroller
 					value="#{categoryProductController.productModel.visibleProductList}"
 					var="product">
@@ -165,6 +179,9 @@
 					rendered="#{categoryProductController.productModel.visibleProductList.size() lt categoryProductController.productModel.rowNumber}"
 					action="#{categoryProductController.productModel.loadMore()}"
 					update=":productList" />
+				<br />
+				<p:separator style="height:5px;" />
+				<br />
 			</h:form>
 		</h:form>
 		<br />
