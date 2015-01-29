@@ -149,6 +149,10 @@
 				<p:column headerText="Price" sortBy="#{currentproduct.price}">
 					<h:outputText value="#{currentproduct.price}" />
 				</p:column>
+				<p:column headerText="Purchase Price"
+					sortBy="#{currentproduct.purchasePrice}">
+					<h:outputText value="#{currentproduct.purchasePrice}" />
+				</p:column>
 				<p:column headerText="Short Text">
 					<h:outputText value="#{currentproduct.shortText}" />
 				</p:column>

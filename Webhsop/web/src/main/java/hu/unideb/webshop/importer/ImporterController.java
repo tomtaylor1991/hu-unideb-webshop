@@ -1,5 +1,6 @@
 package hu.unideb.webshop.importer;
 
+import hu.unideb.webshop.dto.IncomeDTO;
 import hu.unideb.webshop.dto.ProductDTO;
 import hu.unideb.webshop.dto.RegistryDTO;
 import hu.unideb.webshop.dto.WarehouseDTO;
@@ -62,6 +63,17 @@ public class ImporterController implements Serializable {
 			}
 			manageRegistryFacadeService
 					.saveRegistrys(new LinkedList<RegistryDTO>(registryList));
+			// /
+			for (RegistryDTO registry : registryList) {
+				// /
+				IncomeDTO income = new IncomeDTO();
+				income.setType("OUT");
+				income.setPrice((int) registry.getProduct().getPurchasePrice()
+						* registry.getQuantity());
+				manageIncomeFacadeService.createIncome(income);
+				// /
+			}
+			// /
 			registryList = new LinkedHashSet<RegistryDTO>();
 		}
 	}
