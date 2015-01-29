@@ -59,6 +59,11 @@
 								<p:commandButton icon="ui-icon-disk" value="Sign up"
 									action="#{menuView.redirectToUrl('/pages/unsecure/signup.xhtml')}" />
 							</sec:authorize>
+							<sec:authorize
+								ifAnyGranted="ROLE_ADMIN,ROLE_IMPORTER,ROLE_EXPORTER,ROLE_LEADER">
+								<p:commandButton icon="ui-icon-disk" value="Admin"
+									action="#{menuView.redirectToUrl('/pages/secure/admin/index.xhtml')}" />
+							</sec:authorize>
 						</f:facet>
 					</p:toolbar>
 				</h:form>

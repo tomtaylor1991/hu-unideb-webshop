@@ -18,6 +18,13 @@
 			widgetVar="newProductDialog" minHeight="300" minWidth="400"
 			maxHeight="650">
 			<h:form id="newProduct">
+				<p:panel
+					style="width:100%; padding:5px;background: white !important;">
+					<h:outputLabel for="purchasePrice" value="Purchase Price"
+						style="font-weight:bold" />
+					<p:inputText id="purchasePrice"
+						value="#{productController.newProduct.purchasePrice}" />
+				</p:panel>
 				<p:panelGrid columns="2">
 					<h:outputLabel for="name" value="Name" style="font-weight:bold" />
 					<p:inputText id="name" value="#{productController.newProduct.name}" />
@@ -64,9 +71,17 @@
 			widgetVar="updateProductDialog" minHeight="300" minWidth="400"
 			maxHeight="650">
 			<h:form id="updateProduct">
+				<p:panel
+					style="width:100%; padding:5px;background: white !important;">
+					<h:outputLabel for="purchasePrice" value="Purchase Price"
+						style="font-weight:bold" />
+					<p:inputText id="purchasePrice"
+						value="#{productController.selectedProduct.purchasePrice}" />
+				</p:panel>
 				<p:panelGrid columns="2">
 					<h:outputLabel for="name" value="Name" style="font-weight:bold" />
-					<p:inputText id="name" value="#{productController.selectedProduct.name}" />
+					<p:inputText id="name"
+						value="#{productController.selectedProduct.name}" />
 					<h:outputLabel for="category" value="Category"
 						style="font-weight:bold" />
 					<p:autoComplete id="category"
@@ -80,8 +95,8 @@
 					<h:outputLabel for="isSpecialPrice" value="Is SpecialPrice?"
 						style="font-weight:bold" />
 					<p:selectBooleanButton id="isSpecialPrice"
-						value="#{productController.selectedProduct.isSpecial}" onLabel="Yes"
-						offLabel="No" style="width:60px" />
+						value="#{productController.selectedProduct.isSpecial}"
+						onLabel="Yes" offLabel="No" style="width:60px" />
 					<h:outputLabel for="specialPrice" value="Special Price"
 						style="font-weight:bold" />
 					<p:inputText id="specialPrice"
@@ -89,8 +104,8 @@
 					<h:outputLabel for="isHighLight" value="Is Highlight?"
 						style="font-weight:bold" />
 					<p:selectBooleanButton id="isHighLight"
-						value="#{productController.selectedProduct.isHighlight}" onLabel="Yes"
-						offLabel="No" style="width:60px" />
+						value="#{productController.selectedProduct.isHighlight}"
+						onLabel="Yes" offLabel="No" style="width:60px" />
 					<h:outputLabel for="shortText" value="Short Text?"
 						style="font-weight:bold" />
 					<p:inputTextarea id="shortText" rows="6" cols="33"
@@ -105,7 +120,7 @@
 						update=":productList" onclick="PF('updateProductDialog').close();" />
 				</p:panelGrid>
 			</h:form>
-		</p:dialog>		
+		</p:dialog>
 		<h:form id="productList">
 			<p:dataTable id="productTable" var="currentproduct"
 				value="#{productController.productModel}"
@@ -173,7 +188,7 @@
 					update=":newProduct" onclick="PF('newProductDialog').show();" />
 				<p:commandButton value="Update selected product"
 					action="#{productController.initSelectedProductCategory()}"
-					update=":updateProduct" onclick="PF('updateProductDialog').show();" />					
+					update=":updateProduct" onclick="PF('updateProductDialog').show();" />
 			</p:panel>
 		</h:form>
 	</ui:define>

@@ -11,6 +11,7 @@ public class ProductDTO extends BaseDTO implements Serializable {
 	private double rate;
 	private String text;
 	private double price;
+	private double purchasePrice;
 	private boolean isSpecial;
 	private double specialPrice;
 	private boolean isHighlight;
@@ -110,6 +111,14 @@ public class ProductDTO extends BaseDTO implements Serializable {
 	public String toString() {
 		return "ProductDTO [id=" + id + ", name=" + name + ", price=" + price
 				+ ", category=" + category + "]";
+	}
+
+	public double getPurchasePrice() {
+		return purchasePrice;
+	}
+
+	public void setPurchasePrice(double purchasePrice) {
+		this.purchasePrice = purchasePrice;
 	}
 
 	@Override

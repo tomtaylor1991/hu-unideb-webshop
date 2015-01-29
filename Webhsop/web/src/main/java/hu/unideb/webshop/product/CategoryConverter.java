@@ -28,17 +28,16 @@ public class CategoryConverter implements Serializable, Converter {
 		if (value != null && value.trim().length() > 0) {
 			try {
 				Long idValue = Long.valueOf(value);
-
-				for (CategoryDTO c : list) {
-					// System.out.println("check start " + c);
+				for (CategoryDTO c : list) {					
 					if (c.getId().equals(idValue)) {
-						// System.out.println(c);
 						return c;
 					}
 				}
 				return null;
 			} catch (NumberFormatException e) {
 				return null;
+			} catch (NullPointerException e) {
+				return viewScopedBean.getSelectedProduct();
 			}
 		} else {
 			return null;

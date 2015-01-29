@@ -21,6 +21,7 @@ public class Product extends BaseEntity {
 	private double specialPrice;
 	private boolean isHighlight;
 	private String shortText;
+	private double purchasePrice;
 	
 	@ManyToOne
 	@JoinColumn(name = "category_id")
@@ -96,6 +97,14 @@ public class Product extends BaseEntity {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	public double getPurchasePrice() {
+		return purchasePrice;
+	}
+
+	public void setPurchasePrice(double purchasePrice) {
+		this.purchasePrice = purchasePrice;
 	}
 
 }

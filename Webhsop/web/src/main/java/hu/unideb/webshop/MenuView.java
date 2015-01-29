@@ -80,8 +80,14 @@ public class MenuView implements Serializable {
 		if (selectedProduct != null) {
 			String url = "/pages/unsecure/product-view.xhtml?id="
 					+ selectedProduct.getId();
-			redirectToUrl(url);			
+			selectedProduct = null;
+			redirectToUrl(url);
 		}
+	}
+
+	public void redirectToProductPage(ProductDTO product) {
+		selectedProduct = product;
+		redirectToCompleteText();
 	}
 
 	public static void addMessage(String summary) {
